@@ -64,7 +64,6 @@ import jestures.core.view.ViewUtilities;
 @SuppressWarnings("restriction")
 public class RecorderScreenView implements RecView {
     private final Recording recorder;
-    private boolean isRecording;
     private FrameLenght frameLength;
 
     // VIEW
@@ -245,7 +244,7 @@ public class RecorderScreenView implements RecView {
         });
     }
 
-    public void createUserInListView(final String nickname, final Image image) {
+    private void createUserInListView(final String nickname, final Image image) {
         ListViewFactory.addVectorToListView(this.listView, image, nickname);
         this.initPlayerDeleteListViewListeners();
         this.scrollPane.setContent(this.listView);
@@ -269,17 +268,14 @@ public class RecorderScreenView implements RecView {
     }
 
     @Override
-    public void setOnStartRecording(final boolean isRecording) {
+    public void setRecording(final boolean isRecording) {
         if (isRecording) {
             Platform.runLater(() -> ViewUtilities.showNotificationPopup("START RECORDING", "Record is started",
                     Duration.MEDIUM, NotificationType.WARNING, null));
-            this.isRecording = true;
         } else {
             Platform.runLater(() -> ViewUtilities.showNotificationPopup("STOP RECORDING", "Record is stopped",
                     Duration.MEDIUM, NotificationType.WARNING, null));
-            this.isRecording = false;
         }
-
     }
 
     // ############################################## INSTANCE METHODS ###################################

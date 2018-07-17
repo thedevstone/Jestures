@@ -63,6 +63,6 @@ public interface RecView {
      */
     FrameLenght getFrameLength();
 
-    void setOnStartRecording(boolean isRecording);
+    void setRecording(boolean isRecording);
 
 }
