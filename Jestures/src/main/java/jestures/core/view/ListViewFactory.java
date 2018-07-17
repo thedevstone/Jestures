@@ -42,8 +42,8 @@ public final class ListViewFactory {
         JFXDepthManager.setDepth(pane, 1);
         label.setId("player-listView-label");
         pane.setId("player-listView-border");
-        imageView.setFitHeight(70);
-        imageView.setFitWidth(90);
+        imageView.setFitHeight(150);
+        imageView.setFitWidth(200);
         BorderPane.setAlignment(imageView, Pos.CENTER_LEFT);
         BorderPane.setAlignment(label, Pos.CENTER_LEFT);
         BorderPane.setAlignment(deletePlayer, Pos.CENTER_RIGHT);

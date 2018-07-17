@@ -33,6 +33,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.chart.LineChart;
@@ -40,7 +41,6 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -64,6 +64,7 @@ import jestures.core.view.ViewUtilities;
 @SuppressWarnings("restriction")
 public class RecorderScreenView implements RecView {
     private final Recording recorder;
+    private boolean isRecording;
     private FrameLenght frameLength;
 
     // VIEW
@@ -200,31 +201,6 @@ public class RecorderScreenView implements RecView {
                 "headerFeatureVector");
     }
 
-    @Override
-    public void createUserInListView(final String nickname, final Image image) {
-        ListViewFactory.addVectorToListView(this.listView, image, nickname);
-        this.initPlayerDeleteListViewListeners();
-        this.scrollPane.setContent(this.listView);
-    }
-
-    public void clearListView() {
-        this.listView.getItems()
-                     .clear();
-    }
-
-    private void initPlayerDeleteListViewListeners() {
-        this.listView.getItems()
-                     .stream()
-                     .map(t -> new Pair<>((Label) t.getCenter(), (JFXButton) t.getRight()))
-                     .forEach(j -> {
-                         j.getValue()
-                          .setOnMouseClicked(k -> {
-                              this.recorder.deleteFeatureVector(j.getKey()
-                                                                 .getText());
-                          });
-                     });
-    }
-
     private void initCombos() {
         this.frameLengthCombo.setOnAction(t -> this.setFrameLength(this.frameLengthCombo.getValue()));
         this.frameLengthCombo.getItems()
@@ -238,6 +214,7 @@ public class RecorderScreenView implements RecView {
         JFXDepthManager.setDepth(this.frameLengthCombo, 4);
     }
 
+    // ############################################## FROM RECORDER ###################################
     @Override
     public void notifyOnFrameChange(final int frame, final Vector2D derivative, final Vector2D path) {
         Platform.runLater(() -> {
@@ -256,7 +233,7 @@ public class RecorderScreenView implements RecView {
                         .add(new XYChart.Data<Number, Number>(frame, (int) derivative.getY()));
 
             this.context.fillOval(-path.getX() + this.canvas.getWidth() / 2, path.getY() + this.canvas.getHeight() / 2,
-                    4, 4);
+                    10, 10);
         });
 
     }
@@ -264,28 +241,54 @@ public class RecorderScreenView implements RecView {
     @Override
     public void notifyOnFeatureVectorEvent(final Queue<Vector2D> featureVector) {
         Platform.runLater(() -> {
-            this.context.clearRect(0, 0, this.canvas.getWidth(), this.canvas.getHeight());
-            final WritableImage writableImage = new WritableImage(100, 100);
-            this.canvas.snapshot(null, writableImage);
-            this.createUserInListView("boh", writableImage);
+            this.createUserInListView("Feature Vector", this.canvas.snapshot(new SnapshotParameters(), null));
         });
     }
 
+    public void createUserInListView(final String nickname, final Image image) {
+        ListViewFactory.addVectorToListView(this.listView, image, nickname);
+        this.initPlayerDeleteListViewListeners();
+        this.scrollPane.setContent(this.listView);
+    }
+
+    public void clearListView() {
+        this.listView.getItems()
+                     .clear();
+    }
+
+    private void initPlayerDeleteListViewListeners() {
+        this.listView.getItems()
+                     .stream()
+                     .map(t -> new Pair<>((Label) t.getCenter(), (JFXButton) t.getRight()))
+                     .forEach(j -> {
+                         j.getValue()
+                          .setOnMouseClicked(k -> {
+                              this.recorder.deleteFeatureVector(3);
+                          });
+                     });
+    }
+
+    @Override
+    public void setOnStartRecording(final boolean isRecording) {
+        if (isRecording) {
+            Platform.runLater(() -> ViewUtilities.showNotificationPopup("START RECORDING", "Record is started",
+                    Duration.MEDIUM, NotificationType.WARNING, null));
+            this.isRecording = true;
+        } else {
+            Platform.runLater(() -> ViewUtilities.showNotificationPopup("STOP RECORDING", "Record is stopped",
+                    Duration.MEDIUM, NotificationType.WARNING, null));
+            this.isRecording = false;
+        }
+
+    }
+
+    // ############################################## INSTANCE METHODS ###################################
     /**
      * Start the Fx thread.
      */
     public static void startFxThread() {
         PlatformImpl.startup(() -> {
         });
-    }
-
-    @Override
-    public void setOnStartRecording(final boolean isRecording) {
-        if (isRecording) {
-            Platform.runLater(() -> ViewUtilities.showNotificationPopup("Start Recording", "Record is started",
-                    Duration.MEDIUM, NotificationType.WARNING, null));
-        }
-
     }
 
     @Override

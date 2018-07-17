@@ -4,7 +4,6 @@ import java.util.Queue;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-import javafx.scene.image.Image;
 import jestures.core.codification.FrameLenght;
 import jestures.core.tracking.Tracking;
 
@@ -65,7 +64,5 @@ public interface RecView {
     FrameLenght getFrameLength();
 
     void setOnStartRecording(boolean isRecording);
-
-    void createUserInListView(final String nickname, final Image image);
 
 }

@@ -122,17 +122,17 @@ public final class Recorder implements TrackingObserver, SensorObserver, Recordi
     public void notifyOnFeatureVectorEvent(final Queue<Vector2D> featureVector) {
         this.view.forEach(t -> t.notifyOnFeatureVectorEvent(featureVector));
         this.listOfFeatureVector.add(featureVector);
-
+        System.out.println(this.listOfFeatureVector.size());
     }
 
     // ############################################## INSTANCE METHODS ###################################
 
     private void secJointTrigger(final Vector2D primaryJoint, final Vector2D secondaryJoint) {
-        if (primaryJoint.getY() < secondaryJoint.getY() && !this.isRecording) {
+        if (secondaryJoint.getY() > primaryJoint.getY() + 50 && !this.isRecording) {
             this.isRecording = true;
             this.view.forEach(t -> t.setOnStartRecording(true));
             this.codifier.resetFrame();
-        } else if (primaryJoint.getY() > secondaryJoint.getY() && this.isRecording) {
+        } else if (primaryJoint.getY() - 50 > secondaryJoint.getY() && this.isRecording) {
             this.isRecording = false;
             this.view.forEach(t -> t.setOnStartRecording(false));
         }
@@ -184,9 +184,8 @@ public final class Recorder implements TrackingObserver, SensorObserver, Recordi
     }
 
     @Override
-    public void deleteFeatureVector(final String text) {
-        // TODO Auto-generated method stub
-
+    public void deleteFeatureVector(final int index) {
+        this.listOfFeatureVector.remove(index);
     }
 
 }

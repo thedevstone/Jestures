@@ -82,6 +82,6 @@ public interface Recording {
      */
     boolean state();
 
-    void deleteFeatureVector(String text);
+    void deleteFeatureVector(int index);
 
 }
