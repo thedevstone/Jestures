@@ -80,6 +80,7 @@ public final class Tracker implements TrackingObserver, SensorObserver, Tracking
         return Tracker.instance;
     }
 
+    // ############################################## OBSERVER ###################################
     @Override
     public void attacheSensor(final Sensor sensor) {
         this.sensor = sensor;
@@ -92,6 +93,7 @@ public final class Tracker implements TrackingObserver, SensorObserver, Tracking
         this.view.forEach(t -> t.setFrameLength(this.frameLength));
     }
 
+    // ############################################## FROM SENSOR ###################################
     @Override
     public void notifyOnSkeletonChange(final Vector2D primaryJoint, final Vector2D secondaryJoint) {
         this.codifier.codifyOnSkeletonChange(primaryJoint);
@@ -103,6 +105,7 @@ public final class Tracker implements TrackingObserver, SensorObserver, Tracking
         this.jointListener.forEach(t -> t.onAccelerometerTracked(acceleration));
     }
 
+    // ############################################## FROM CODIFIER ###################################
     @Override
     public void notifyOnFrameChange(final int frame, final Vector2D derivative, final Vector2D distanceVector) {
         this.view.forEach(t -> t.notifyOnFrameChange(frame, derivative, distanceVector));
@@ -116,6 +119,7 @@ public final class Tracker implements TrackingObserver, SensorObserver, Tracking
         this.view.forEach(t -> t.notifyOnFeatureVectorEvent());
     }
 
+    // ############################################## INSTANCE METHODS ###################################
     @Override
     public void startSensor() {
         try {

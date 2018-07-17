@@ -62,8 +62,8 @@ public class DerivativeCodifier implements Codifier {
             this.resetFrame();
             this.recognizer.notifyOnFeatureVectorEvent(this.featureVector);
         } else {
-            this.incrementFrame();
             this.recognizer.notifyOnFrameChange(this.frame, this.derivative, this.startingVector.subtract(newVector));
+            this.frame++;
         }
     }
 
@@ -80,23 +80,11 @@ public class DerivativeCodifier implements Codifier {
     @Override
     public synchronized void resetFrame() {
         this.frame = 0;
-    }
-
-    private synchronized void incrementFrame() {
-        this.frame++;
-    }
-
-    /**
-     * Get the gesture lenght.
-     *
-     * @return the {@link FrameLenght}
-     */
-    public FrameLenght getGestureLenght() {
-        return this.frameLength;
+        this.featureVector.clear();
     }
 
     @Override
-    public void setFrameLength(final FrameLenght length) {
+    public synchronized void setFrameLength(final FrameLenght length) {
         this.frameLength = length;
     }
 
