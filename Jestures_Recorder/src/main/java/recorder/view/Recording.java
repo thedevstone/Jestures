@@ -82,6 +82,8 @@ public interface Recording {
      */
     boolean state();
 
-    void deleteFeatureVector(int index);
+    void selectFeatureVector(int index);
+
+    void deletePlayer(int index);
 
 }

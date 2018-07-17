@@ -39,16 +39,16 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 import jestures.core.codification.FrameLenght;
+import jestures.core.view.DialogsType.DimDialogs;
 import jestures.core.view.IconDim;
 import jestures.core.view.ListViewFactory;
 import jestures.core.view.NotificationType;
@@ -94,8 +94,12 @@ public class RecorderScreenView implements RecView {
 
     @FXML
     private JFXScrollPane scrollPane;
+
     @FXML
     private JFXListView<BorderPane> listView;
+
+    @FXML
+    private StackPane listViewStackPane;
 
     /**
      * @param recorder
@@ -123,6 +127,7 @@ public class RecorderScreenView implements RecView {
         this.initGraphic();
         this.initCanvas();
         this.initChart();
+        this.initTabPaneListener();
         this.initListView();
         this.stage = new Stage();
         this.scene = new Scene(this.recorderPane);
@@ -189,6 +194,21 @@ public class RecorderScreenView implements RecView {
 
     }
 
+    private void initTabPaneListener() {
+        this.tabPane.getSelectionModel()
+                    .selectedItemProperty()
+                    .addListener((observable, oldValue, newValue) -> {
+                        if (this.tabPane.getTabs()
+                                        .get(2)
+                                        .equals(newValue)
+                                && !oldValue.equals(newValue)) {
+                            ViewUtilities.showDialog(this.listViewStackPane, "Select Feature Vector",
+                                    "left-click > select \n right-click > delete", DimDialogs.MEDIUM, null);
+
+                        }
+                    });
+    }
+
     private void chargeSceneSheets(final FXMLScreens screen) {
         this.scene.getStylesheets()
                   .add(RecorderScreenView.class.getResource(screen.getCssPath())
@@ -240,14 +260,15 @@ public class RecorderScreenView implements RecView {
     @Override
     public void notifyOnFeatureVectorEvent(final Queue<Vector2D> featureVector) {
         Platform.runLater(() -> {
-            this.createUserInListView("Feature Vector", this.canvas.snapshot(new SnapshotParameters(), null));
+            this.createUserInListView(this.listView.getItems()
+                                                   .size(),
+                    this.canvas.snapshot(new SnapshotParameters(), null));
         });
     }
 
-    private void createUserInListView(final String nickname, final Image image) {
-        ListViewFactory.addVectorToListView(this.listView, image, nickname);
-        this.initPlayerDeleteListViewListeners();
-        this.scrollPane.setContent(this.listView);
+    private void createUserInListView(final int index, final Image image) {
+        ListViewFactory.addVectorToListView(this.listView, image, index);
+        this.initPlayerSelectListViewListeners();
     }
 
     public void clearListView() {
@@ -255,16 +276,21 @@ public class RecorderScreenView implements RecView {
                      .clear();
     }
 
-    private void initPlayerDeleteListViewListeners() {
-        this.listView.getItems()
-                     .stream()
-                     .map(t -> new Pair<>((Label) t.getCenter(), (JFXButton) t.getRight()))
-                     .forEach(j -> {
-                         j.getValue()
-                          .setOnMouseClicked(k -> {
-                              this.recorder.deleteFeatureVector(3);
-                          });
-                     });
+    private void initPlayerSelectListViewListeners() {
+        this.listView.setOnMouseClicked(t -> {
+            final int index = this.listView.getSelectionModel()
+                                           .getSelectedIndex();
+            if (t.getButton()
+                 .equals(MouseButton.PRIMARY) && index != -1) {
+                this.recorder.selectFeatureVector(index);
+            } else if (index != -1) {
+                this.recorder.deletePlayer(index);
+                this.listView.getItems()
+                             .remove(index);
+            }
+            this.scrollPane.setContent(this.listView);
+        });
+
     }
 
     @Override

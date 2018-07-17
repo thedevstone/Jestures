@@ -186,7 +186,12 @@ public final class Recorder implements TrackingObserver, SensorObserver, Recordi
     }
 
     @Override
-    public void deleteFeatureVector(final int index) {
+    public void selectFeatureVector(final int index) {
+        System.out.println(this.listOfFeatureVector.get(index));
+    }
+
+    @Override
+    public void deletePlayer(final int index) {
         this.listOfFeatureVector.remove(index);
     }
 

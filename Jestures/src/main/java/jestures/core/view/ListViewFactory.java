@@ -1,8 +1,5 @@
 package jestures.core.view;
 
-import org.kordamp.ikonli.material.Material;
-
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.effects.JFXDepthManager;
 
@@ -27,29 +24,24 @@ public final class ListViewFactory {
      *            the {@link JFXListView}
      * @param imageProfile
      *            the {@link Image} profile
-     * @param nickname
-     *            the {@link String} nickname
+     * @param index
+     *            the {@link Integer} index
      */
     // CHECKSTYLE:OFF AH DI MI TOCCA FARE COSI
     public static void addVectorToListView(final JFXListView<BorderPane> listView, final Image imageProfile,
-            final String nickname) {
+            final int index) {
         final BorderPane pane = new BorderPane();
-        final Label label = new Label(nickname);
+        final Label label = new Label(" " + index);
         final ImageView imageView = new ImageView(imageProfile);
-        final JFXButton deletePlayer = new JFXButton();
-        deletePlayer.setGraphic(ViewUtilities.iconSetter(Material.DELETE, IconDim.MEDIUM));
-        JFXDepthManager.setDepth(deletePlayer, 2);
         JFXDepthManager.setDepth(pane, 1);
         label.setId("player-listView-label");
         pane.setId("player-listView-border");
         imageView.setFitHeight(150);
         imageView.setFitWidth(200);
-        BorderPane.setAlignment(imageView, Pos.CENTER_LEFT);
+        BorderPane.setAlignment(imageView, Pos.CENTER);
         BorderPane.setAlignment(label, Pos.CENTER_LEFT);
-        BorderPane.setAlignment(deletePlayer, Pos.CENTER_RIGHT);
-        pane.setRight(deletePlayer);
-        pane.setLeft(imageView);
-        pane.setCenter(label);
+        pane.setCenter(imageView);
+        pane.setLeft(label);
         listView.getItems()
                 .add(pane);
     }

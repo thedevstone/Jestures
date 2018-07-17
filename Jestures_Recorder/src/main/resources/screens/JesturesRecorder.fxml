@@ -8,7 +8,6 @@
 <?import com.jfoenix.controls.JFXToolbar?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Tab?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -29,15 +28,15 @@
           </Tab>
             <Tab>
               <content>
-                <AnchorPane>
+                  <StackPane fx:id="listViewStackPane">
                      <children>
-                        <JFXScrollPane fx:id="scrollPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <JFXScrollPane fx:id="scrollPane">
                            <children>
-                              <JFXListView fx:id="listView" />
+                              <JFXListView id="list-view-feature" fx:id="listView" />
                            </children>
                         </JFXScrollPane>
                      </children>
-                  </AnchorPane>
+                  </StackPane>
               </content>
             </Tab>
         </tabs>

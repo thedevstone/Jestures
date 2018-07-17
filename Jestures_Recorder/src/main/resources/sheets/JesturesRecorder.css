@@ -63,8 +63,77 @@
 	-fx-opacity: 1;
 }
 
+
+
 #headerFeatureVector {
 	-fx-background-image: url('/images/SignIn-background.jpg');
 	-fx-background-repeat: no-repeat;
 	-fx-background-size: cover;
+}
+
+#player-listView-border {
+	-fx-min-width: 350;
+	-fx-max-height: 50;
+	-fx-background-color: white;
+}
+#player-listView-label {
+	-fx-padding: 20;
+	-fx-font-size: 20;
+}
+#imageViewProfile {
+	-fx-border-color: black;
+}
+
+
+#list-view-feature .list-cell {
+	-fx-background-radius: 10 10 10 30;
+}
+#list-view .list-cell:odd:selected {
+	-fx-background-color: transparent;
+}
+#list-view-feature .list-cell:even:selected {
+	-fx-background-color: transparent;
+}
+#list-view-feature .list-cell:odd {
+	-fx-background-color: transparent;
+}
+#list-view-feature .list-cell:even {
+	-fx-background-color: transparent;
+}
+#list-view-feature .list-cell:even:hover {
+	-fx-background-color: rgba(255,255,255,0.6);
+}
+#list-view-feature .list-cell:odd:hover {
+	-fx-background-color: rgba(255,255,255,0.6);
+}
+#list-view-feature {
+	-fx-background-color: rgba(255,255,255,0.95);
+	-fx-background-radius: 0 0 10 10;
+	-fx-opacity: 1;
+}
+
+
+
+
+
+.dialogContentBackground {
+	-fx-background-color: #448AFF;
+}
+.dialogBackground {
+	-fx-background-color: rgba(0,0,0,0.5); 
+}
+.dialogTextSmall {
+	-fx-fill: white ;
+	-fx-font-size: 15;
+	-fx-font-family: 'Baskerville'; 
+}
+.dialogTextMedium {
+	-fx-fill: white;
+	-fx-font-size: 20;
+	-fx-font-family: 'Baskerville'; 
+}
+.dialogTextBig {
+	-fx-fill: white;
+	-fx-font-size: 25; 
+	-fx-font-family: 'Baskerville'; 
 }
