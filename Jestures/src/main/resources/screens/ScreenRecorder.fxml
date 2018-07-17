@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXToolbar?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="recorderPane" minHeight="500.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <JFXTabPane id="tab-pane" fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab>
+               <content>
+                  <StackPane id="canvas-pane" fx:id="canvasStackPane" prefHeight="150.0" prefWidth="200.0" />
+               </content>
+          </Tab>
+          <Tab>
+               <content>
+                  <VBox id="chart-pane" fx:id="vbox" alignment="CENTER" />
+               </content>
+          </Tab>
+        </tabs>
+      </JFXTabPane>
+   </center>
+   <bottom>
+      <JFXToolbar fx:id="toolbar" minHeight="50.0" BorderPane.alignment="CENTER">
+         <left>
+            <JFXComboBox id="exercise-combo-box" fx:id="frameLengthCombo" minWidth="150.0" promptText="Frame Length" BorderPane.alignment="CENTER" />
+         </left>
+         <right>
+            <JFXButton id="start-button" fx:id="startButton" />
+         </right>
+         <padding>
+            <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <center>
+            <JFXButton fx:id="printButton" text="print" BorderPane.alignment="CENTER" />
+         </center>
+      </JFXToolbar>
+   </bottom>
+</BorderPane>

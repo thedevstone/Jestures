@@ -1,0 +1,4 @@
+language: java
+
+script:
+  - 'if [ "$TRAVIS_BRANCH" = "release" ]; then bash travis_build.sh; fi' 
