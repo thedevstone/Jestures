@@ -1,16 +1,16 @@
-[![Build Status](https://travis-ci.org/Giulianini/Track4J.svg?branch=master)](https://travis-ci.org/Giulianini/Track4J)
-[![PyPI - License](https://img.shields.io/github/license/Giulianini/Track4J.svg)](https://github.com/Giulianini/Track4J/blob/master/LICENSE.txt)
-[![Bintray](https://img.shields.io/bintray/v/giulianini/maven/Track4J.svg)](https://bintray.com/giulianini/maven/Track4J/_latestVersion)
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.giulianini.track4j/track4j.svg)](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A"com.github.giulianini.track4j"%20AND%20a%3A"track4j")
-![GitHub issues](https://img.shields.io/github/issues/Giulianini/Track4J.svg)
-![GitHub last commit](https://img.shields.io/github/last-commit/Giulianini/Track4J.svg)
+[![Build Status](https://travis-ci.org/Giulianini/Track4J.svg?branch=master)](https://travis-ci.org/Giulianini/Jestures)
+[![PyPI - License](https://img.shields.io/github/license/Giulianini/Jestures.svg)](https://github.com/Giulianini/Jestures/blob/master/LICENSE.txt)
+[![Bintray](https://img.shields.io/bintray/v/giulianini/maven/Jestures.svg)](https://bintray.com/giulianini/maven/Jestures/_latestVersion)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.giulianini.jestures/Jestures.svg)](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A"com.github.giulianini.track4j"%20AND%20a%3A"track4j")
+![GitHub issues](https://img.shields.io/github/issues/Giulianini/Jestures.svg)
+![GitHub last commit](https://img.shields.io/github/last-commit/Giulianini/Jestures.svg)
 ![Maintenance](https://img.shields.io/maintenance/yes/2018.svg)
-![GitHub repo size in bytes](https://img.shields.io/github/repo-size/Giulianini/Track4J.svg)
+![GitHub repo size in bytes](https://img.shields.io/github/repo-size/Giulianini/Jestures.svg)
 ---
 
 # Track4J
 
-## A simple framework for body tracking in Java.
+## A simple framework for gesture recognition in Java.
 
 <h1 align="center">
     <img src="/pic/Track4J.png">
