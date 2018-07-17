@@ -33,6 +33,8 @@ public abstract class AbstractView implements View {
     @Override
     public void setFrameLength(final FrameLenght length) {
         this.frameLength = length;
+        this.tracker.setFrameLength(length);
+        System.out.println(length);
     }
 
     @Override

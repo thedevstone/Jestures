@@ -48,7 +48,7 @@ public class Demo {
 
             @Override
             public void onJointTracked(final Vector2D primaryJoint, final Vector2D secondaryJoint) {
-                System.out.println(primaryJoint);
+                // System.out.println(primaryJoint);
 
             }
 

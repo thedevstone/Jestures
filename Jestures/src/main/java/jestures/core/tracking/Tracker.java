@@ -154,7 +154,6 @@ public final class Tracker implements TrackingObserver, SensorObserver, Tracking
     public void setFrameLength(final FrameLenght length) {
         this.frameLength = length;
         this.codifier.setFrameLength(length);
-        this.view.forEach(t -> t.setFrameLength(length));
     }
 
     @Override
