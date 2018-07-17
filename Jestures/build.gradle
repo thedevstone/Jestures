@@ -79,8 +79,11 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.github.haifengl:smile-core:1.5.1'
     compile 'com.jfoenix:jfoenix:8.0.3' // Java 8
-    compile 'org.kordamp.ikonli:ikonli-material-pack:2.1.1'
-    compile 'org.kordamp.ikonli:ikonli-javafx:2.1.1'
+
+	compile 'org.kordamp.ikonli:ikonli-core:1.7.0'
+	compile 'org.kordamp.ikonli:ikonli-javafx:1.7.0'
+    compile 'org.kordamp.ikonli:ikonli-material-pack:1.7.0'
+
     compile 'eu.hansolo.enzo:Enzo:0.3.6'
     compile 'com.google.code.gson:gson:2.8.4' 
 }

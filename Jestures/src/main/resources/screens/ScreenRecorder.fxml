@@ -38,9 +38,6 @@
          <padding>
             <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
          </padding>
-         <center>
-            <JFXButton fx:id="printButton" text="print" BorderPane.alignment="CENTER" />
-         </center>
       </JFXToolbar>
    </bottom>
 </BorderPane>

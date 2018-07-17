@@ -11,3 +11,12 @@ dependencies {
     compile 'org.apache.commons:commons-math3:3.6.1'
     compile project(':Jestures')
 }
+
+jar {
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    manifest {
+        attributes 'Main-Class': 'demo.Demo'
+    }
+}
