@@ -103,7 +103,7 @@ public class RecorderScreenView implements RecView {
 
     /**
      * @param recorder
-     *            the {@link AbstractTracker}
+     *            the {@link RecorderScreenView}
      */
     public RecorderScreenView(final Recording recorder) {
         this.recorder = recorder;

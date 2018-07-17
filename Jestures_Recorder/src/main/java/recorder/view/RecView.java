@@ -28,6 +28,7 @@ public interface RecView {
      * Update view on feature vector event.
      *
      * @param featureVector
+     *            the {@link Queue} feature vector
      */
     void notifyOnFeatureVectorEvent(Queue<Vector2D> featureVector);
 

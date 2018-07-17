@@ -10,7 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
 /**
- * Static Factory for {@link ExerciseScreenController}.
+ * Static Factory.
  */
 public final class ScrollPaneFactory {
 
