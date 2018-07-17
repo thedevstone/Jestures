@@ -1,0 +1,41 @@
+
+#drawerBackground {
+	-fx-border-color: #424242;
+    -fx-border-width: 5px;
+}
+#register-button {
+	-fx-background-radius: 40;
+	-fx-padding: 0 0 10 0;
+}
+#player-listView-border {
+	-fx-min-width: 350;
+	-fx-max-height: 50;
+	-fx-background-color: white;
+}
+#player-listView-label {
+	-fx-padding: 20;
+	-fx-font-size: 20;
+}
+#imageViewProfile {
+	-fx-border-color: black;
+}
+
+
+#headerPlayers {
+	-fx-background-image: url('/images/Player.png');
+	-fx-background-repeat: no-repeat;
+	-fx-background-size: cover;
+}
+#drawerBackgroundImage {
+	-fx-background-image: url('/images/shooter.jpg');
+	-fx-background-repeat: no-repeat;
+	-fx-background-size: cover;
+}
+#signInBackgroundImage {
+	-fx-background-image: url('/images/SignIn-background.jpg');
+	-fx-background-repeat: no-repeat;
+	-fx-background-size: cover;
+}
+#drawerBackgroundBottom {
+	-fx-image: url('/images/ProfileLoader.gif');
+}

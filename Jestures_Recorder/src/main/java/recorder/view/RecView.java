@@ -1,7 +1,10 @@
 package recorder.view;
 
+import java.util.Queue;
+
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+import javafx.scene.image.Image;
 import jestures.core.codification.FrameLenght;
 import jestures.core.tracking.Tracking;
 
@@ -24,8 +27,10 @@ public interface RecView {
 
     /**
      * Update view on feature vector event.
+     *
+     * @param featureVector
      */
-    void notifyOnFeatureVectorEvent();
+    void notifyOnFeatureVectorEvent(Queue<Vector2D> featureVector);
 
     /**
      * Set the frame Length.
@@ -60,4 +65,7 @@ public interface RecView {
     FrameLenght getFrameLength();
 
     void setOnStartRecording(boolean isRecording);
+
+    void createUserInListView(final String nickname, final Image image);
+
 }

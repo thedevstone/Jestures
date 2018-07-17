@@ -17,11 +17,14 @@
 package recorder.view;
 
 import java.io.IOException;
+import java.util.Queue;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.kordamp.ikonli.material.Material;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXScrollPane;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.effects.JFXDepthManager;
 import com.sun.javafx.application.PlatformImpl;
@@ -35,17 +38,23 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import jestures.core.codification.FrameLenght;
 import jestures.core.view.IconDim;
+import jestures.core.view.ListViewFactory;
 import jestures.core.view.NotificationType;
 import jestures.core.view.NotificationType.Duration;
 import jestures.core.view.RecordingFactory;
+import jestures.core.view.ScrollPaneFactory;
 import jestures.core.view.ViewUtilities;
 
 /**
@@ -83,6 +92,11 @@ public class RecorderScreenView implements RecView {
     @FXML
     private ComboBox<FrameLenght> frameLengthCombo;
 
+    @FXML
+    private JFXScrollPane scrollPane;
+    @FXML
+    private JFXListView<BorderPane> listView;
+
     /**
      * @param recorder
      *            the {@link AbstractTracker}
@@ -109,6 +123,7 @@ public class RecorderScreenView implements RecView {
         this.initGraphic();
         this.initCanvas();
         this.initChart();
+        this.initListView();
         this.stage = new Stage();
         this.scene = new Scene(this.recorderPane);
         this.stage.setScene(this.scene);
@@ -167,6 +182,9 @@ public class RecorderScreenView implements RecView {
         this.tabPane.getTabs()
                     .get(1)
                     .setGraphic(ViewUtilities.iconSetter(Material.MULTILINE_CHART, IconDim.MEDIUM));
+        this.tabPane.getTabs()
+                    .get(2)
+                    .setGraphic(ViewUtilities.iconSetter(Material.VIEW_LIST, IconDim.MEDIUM));
         this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY, IconDim.MEDIUM));
 
     }
@@ -175,6 +193,36 @@ public class RecorderScreenView implements RecView {
         this.scene.getStylesheets()
                   .add(RecorderScreenView.class.getResource(screen.getCssPath())
                                                .toString());
+    }
+
+    private void initListView() {
+        ScrollPaneFactory.wrapListViewOnScrollPane(this.scrollPane, this.listView, "Feature Vectors",
+                "headerFeatureVector");
+    }
+
+    @Override
+    public void createUserInListView(final String nickname, final Image image) {
+        ListViewFactory.addVectorToListView(this.listView, image, nickname);
+        this.initPlayerDeleteListViewListeners();
+        this.scrollPane.setContent(this.listView);
+    }
+
+    public void clearListView() {
+        this.listView.getItems()
+                     .clear();
+    }
+
+    private void initPlayerDeleteListViewListeners() {
+        this.listView.getItems()
+                     .stream()
+                     .map(t -> new Pair<>((Label) t.getCenter(), (JFXButton) t.getRight()))
+                     .forEach(j -> {
+                         j.getValue()
+                          .setOnMouseClicked(k -> {
+                              this.recorder.deleteFeatureVector(j.getKey()
+                                                                 .getText());
+                          });
+                     });
     }
 
     private void initCombos() {
@@ -214,8 +262,13 @@ public class RecorderScreenView implements RecView {
     }
 
     @Override
-    public void notifyOnFeatureVectorEvent() {
-        Platform.runLater(() -> this.context.clearRect(0, 0, this.canvas.getWidth(), this.canvas.getHeight()));
+    public void notifyOnFeatureVectorEvent(final Queue<Vector2D> featureVector) {
+        Platform.runLater(() -> {
+            this.context.clearRect(0, 0, this.canvas.getWidth(), this.canvas.getHeight());
+            final WritableImage writableImage = new WritableImage(100, 100);
+            this.canvas.snapshot(null, writableImage);
+            this.createUserInListView("boh", writableImage);
+        });
     }
 
     /**

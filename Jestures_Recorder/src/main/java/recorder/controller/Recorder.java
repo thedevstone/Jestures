@@ -15,7 +15,9 @@
  *******************************************************************************/
 package recorder.controller;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
@@ -49,6 +51,8 @@ public final class Recorder implements TrackingObserver, SensorObserver, Recordi
     private boolean started;
     private boolean isRecording;
 
+    private final List<Queue<Vector2D>> listOfFeatureVector;
+
     private Recorder() {
         this(Codification.DERIVATIVE, FrameLenght.TWO_SECONDS);
     }
@@ -62,7 +66,7 @@ public final class Recorder implements TrackingObserver, SensorObserver, Recordi
         this.frameLength = gestureLenght;
         this.started = false;
         this.codifier.attacheCoreRecognizer(this);
-
+        this.listOfFeatureVector = new ArrayList<>();
         this.view = new HashSet<>();
 
         TrackerView.startFxThread();
@@ -116,7 +120,9 @@ public final class Recorder implements TrackingObserver, SensorObserver, Recordi
 
     @Override
     public void notifyOnFeatureVectorEvent(final Queue<Vector2D> featureVector) {
-        this.view.forEach(t -> t.notifyOnFeatureVectorEvent());
+        this.view.forEach(t -> t.notifyOnFeatureVectorEvent(featureVector));
+        this.listOfFeatureVector.add(featureVector);
+
     }
 
     // ############################################## INSTANCE METHODS ###################################
@@ -175,6 +181,12 @@ public final class Recorder implements TrackingObserver, SensorObserver, Recordi
     @Override
     public boolean state() {
         return this.sensor.state();
+    }
+
+    @Override
+    public void deleteFeatureVector(final String text) {
+        // TODO Auto-generated method stub
+
     }
 
 }
