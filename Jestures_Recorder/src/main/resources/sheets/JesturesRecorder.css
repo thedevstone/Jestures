@@ -1,0 +1,64 @@
+/*TABS*/
+#toolbar {
+	-fx-background-color: #01579B;
+	-fx-alignment: center;
+	-fx-fill-width: true;
+}
+
+#canvas-pane {
+	-fx-background-color: #E8EAF6;
+}
+
+#chart-pane {
+	-fx-background-color: #E8EAF6;
+}
+
+.tab-header-background {
+	-fx-background-color: #01579B;
+	-fx-alignment: center;
+	-fx-fill-width: true;
+}
+
+#start-button {
+	
+	-fx-background-radius: 40;
+	-fx-padding: 0 0 0 3;
+}
+
+/*COMBO BOX */
+#exercise-combo-box {
+	-fx-background-color: transparent;
+}
+#exercise-combo-box .text-input {
+	-fx-background-color: transparent;
+}
+#exercise-combo-box .list-cell {
+	-fx-text-fill: black;
+	-fx-font-weight: 100;
+}
+#exercise-combo-box .combo-box-popup .list-view .list-cell {
+	-fx-background-radius: 10 10 10 30;
+}
+#exercise-combo-box .combo-box-popup .list-view .list-cell:odd:selected {
+	-fx-background-color: transparent;
+}
+#exercise-combo-box .combo-box-popup .list-view .list-cell:even:selected {
+	-fx-background-color: transparent;
+}
+#exercise-combo-box .combo-box-popup .list-view .list-cell:odd {
+	-fx-background-color: transparent;
+}
+#exercise-combo-box .combo-box-popup .list-view .list-cell:even {
+	-fx-background-color: transparent;
+}
+#exercise-combo-box .combo-box-popup .list-view .list-cell:even:hover {
+	-fx-background-color: rgba(255,255,255,0.6);
+}
+#exercise-combo-box .combo-box-popup .list-view .list-cell:odd:hover {
+	-fx-background-color: rgba(255,255,255,0.6);
+}
+#exercise-combo-box .combo-box-popup .list-view {
+	-fx-background-color: rgba(255,255,255,0.95);
+	-fx-background-radius: 0 0 10 10;
+	-fx-opacity: 1;
+}
