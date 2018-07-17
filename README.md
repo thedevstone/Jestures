@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/Giulianini/Track4J.svg?branch=master)](https://travis-ci.org/Giulianini/Jestures)
+[![Build Status](https://travis-ci.org/Giulianini/Jestures.svg?branch=master)](https://travis-ci.org/Giulianini/Jestures)
 [![PyPI - License](https://img.shields.io/github/license/Giulianini/Jestures.svg)](https://github.com/Giulianini/Jestures/blob/master/LICENSE.txt)
 [![Bintray](https://img.shields.io/bintray/v/giulianini/maven/Jestures.svg)](https://bintray.com/giulianini/maven/Jestures/_latestVersion)
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.giulianini.jestures/Jestures.svg)](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A"com.github.giulianini.track4j"%20AND%20a%3A"track4j")
