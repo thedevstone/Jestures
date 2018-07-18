@@ -202,6 +202,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
                             if (((JFXButton) event.getSource()).getText().equals("YES")) {
                                 this.recorder.selectFeatureVector(indexClicked);
                                 this.recorder.deleteFeatureVector(indexClicked);
+                                this.listView.getItems().remove(indexClicked);
                             }
                         });
 
