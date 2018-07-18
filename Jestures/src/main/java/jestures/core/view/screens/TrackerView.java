@@ -111,7 +111,11 @@ public class TrackerView extends AbstractView {
         this.stage = new Stage();
         this.scene = new Scene(this.recorderPane);
         this.stage.setScene(this.scene);
-        this.stage.setOnCloseRequest(e -> this.stopSensor());
+        this.stage.setOnCloseRequest(e -> {
+            this.stopSensor();
+            Platform.exit();
+            System.exit(0);
+        });
         this.chargeSceneSheets(FXMLScreens.HOME);
         this.stage.show();
 

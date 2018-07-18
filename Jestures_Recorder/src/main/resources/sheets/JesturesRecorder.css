@@ -139,9 +139,20 @@
 .dialogContentBackground {
 	-fx-background-color: #448AFF;
 }
+
 .dialogBackground {
 	-fx-background-color: rgba(0,0,0,0.5); 
 }
+
+.confirmDialogContentBackground {
+	-fx-background-color: white;	
+}
+
+.confirmDialogBackground {
+	-fx-background-color: rgba(0,0,0,0.5); 
+}
+
+
 .dialogTextSmall {
 	-fx-fill: white ;
 	-fx-font-size: 15;
@@ -157,3 +168,22 @@
 	-fx-font-size: 25; 
 	-fx-font-family: 'Baskerville'; 
 }
+
+
+
+.confirmDialogTextSmall {
+	-fx-fill: black;
+	-fx-font-size: 15;
+	-fx-font-family: 'Baskerville'; 
+}
+.confirmDialogTextMedium {
+	-fx-fill: black;
+	-fx-font-size: 20;
+	-fx-font-family: 'Baskerville'; 
+}
+.confirmDialogTextBig {
+	-fx-fill: black;
+	-fx-font-size: 25; 
+	-fx-font-family: 'Baskerville'; 
+}
+

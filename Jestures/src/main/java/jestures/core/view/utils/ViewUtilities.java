@@ -3,6 +3,7 @@ package jestures.core.view.utils;
 import org.kordamp.ikonli.Ikon;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
 
@@ -19,9 +20,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import jestures.core.view.enums.DialogsType.DimDialogs;
 import jestures.core.view.enums.IconDim;
 import jestures.core.view.enums.NotificationType;
-import jestures.core.view.enums.DialogsType.DimDialogs;
 
 /**
  * This class has all the utilities for the view.
@@ -132,6 +133,57 @@ public final class ViewUtilities {
         content.setCache(true);
         content.setCacheHint(CacheHint.SPEED);
         dialog.setOnMouseClicked(ev);
+    }
+
+    /**
+     * Show a {@link JFXDialog} into the main {@link Pane}.
+     *
+     * @param mainPane
+     *            the main {@link StackPane}
+     * @param title
+     *            the String title dialog
+     * @param description
+     *            the STring description
+     * @param size
+     *            the {@link DimDialogs} size
+     * @param ev
+     *            the {@link MouseEvent} get text and check if is YES or NO
+     */
+    public static void showConfirmDialog(final StackPane mainPane, final String title, final String description,
+            final DimDialogs size, final EventHandler<? super MouseEvent> ev) {
+        String css = "";
+        final JFXDialogLayout content = new JFXDialogLayout();
+        final Text titolo = new Text(title);
+        final Text descrizione = new Text(description);
+        final JFXButton buttonYes = new JFXButton("YES");
+        final JFXButton buttonNo = new JFXButton("NO");
+        switch (size) {
+        case SMALL:
+            css = "confirmDialogTextSmall";
+            break;
+        case MEDIUM:
+            css = "confirmDialogTextMedium";
+            break;
+        case BIG:
+            css = "confirmDialogTextBig";
+            break;
+        default:
+            break;
+        }
+        descrizione.getStyleClass().add(css);
+        titolo.getStyleClass().add(css);
+        content.setHeading(titolo);
+        content.setBody(descrizione);
+        content.setActions(buttonYes, buttonNo);
+        content.getStyleClass().add("confirmDialogContentBackground");
+        final JFXDialog dialog = new JFXDialog(mainPane, content, JFXDialog.DialogTransition.CENTER);
+        dialog.getStyleClass().add("confirmDialogBackground");
+        buttonYes.setOnMouseClicked(ev);
+        buttonNo.setOnMouseClicked(ev);
+        buttonYes.setOnAction(t -> dialog.close());
+        buttonNo.setOnAction(t -> dialog.close());
+        dialog.show();
+
     }
 
     /**

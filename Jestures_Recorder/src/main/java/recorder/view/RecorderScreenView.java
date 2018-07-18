@@ -20,11 +20,13 @@ import java.io.IOException;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXScrollPane;
 import com.sun.javafx.application.PlatformImpl;
 
 import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -35,6 +37,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import jestures.core.codification.FrameLength;
+import jestures.core.view.enums.DialogsType.DimDialogs;
 import jestures.core.view.enums.NotificationType;
 import jestures.core.view.enums.NotificationType.Duration;
 import jestures.core.view.utils.ListViewFactory;
@@ -87,7 +90,11 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
         this.scene = new Scene(this.recorderPane);
         this.stage.setScene(this.scene);
 
-        this.stage.setOnCloseRequest(e -> this.stopSensor());
+        this.stage.setOnCloseRequest(e -> {
+            this.stopSensor();
+            Platform.exit();
+            System.exit(0);
+        });
         this.chargeSceneSheets(FXMLScreens.HOME);
         this.stage.show();
 
@@ -128,7 +135,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     public void setRecording(final boolean isRecording) {
         if (isRecording) {
             Platform.runLater(() -> ViewUtilities.showNotificationPopup("START RECORDING", "Record is started",
-                    Duration.MEDIUM, NotificationType.WARNING, null));
+                    Duration.MEDIUM, NotificationType.WARNING, t -> System.out.println("Dioporco")));
         } else {
             Platform.runLater(() -> ViewUtilities.showNotificationPopup("STOP RECORDING", "Record is stopped",
                     Duration.MEDIUM, NotificationType.WARNING, null));
@@ -184,7 +191,14 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
         this.listView.setOnMouseClicked(t -> {
             final int indexClicked = this.listView.getSelectionModel().getSelectedIndex();
             if (t.getButton().equals(MouseButton.PRIMARY) && indexClicked != -1) {
-                this.recorder.selectFeatureVector(indexClicked);
+                ViewUtilities.showConfirmDialog(this.scrollPane, "Save",
+                        "Save the feature vector N: " + indexClicked + "?", DimDialogs.MEDIUM, (final Event event) -> {
+                            if (((JFXButton) event.getSource()).getText().equals("YES")) {
+                                this.recorder.selectFeatureVector(indexClicked);
+                                this.recorder.deleteFeatureVector(indexClicked);
+                            }
+                        });
+
             } else if (indexClicked != -1) {
                 this.recorder.deleteFeatureVector(indexClicked);
                 this.listView.getItems().remove(indexClicked);
