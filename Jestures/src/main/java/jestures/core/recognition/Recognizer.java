@@ -1,7 +1,7 @@
 package jestures.core.recognition;
 
 import java.util.HashSet;
-import java.util.Queue;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
@@ -66,7 +66,7 @@ public final class Recognizer extends Tracker implements Recognition {
     }
 
     @Override
-    public void notifyOnFeatureVectorEvent(final Queue<Vector2D> featureVector) {
+    public void notifyOnFeatureVectorEvent(final List<Vector2D> featureVector) {
         super.notifyOnFeatureVectorEvent(featureVector);
         this.view.forEach(t -> t.notifyOnFeatureVectorEvent());
     }

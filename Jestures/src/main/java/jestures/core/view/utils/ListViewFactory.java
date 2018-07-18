@@ -42,8 +42,8 @@ public final class ListViewFactory {
         BorderPane.setAlignment(label, Pos.CENTER_LEFT);
         pane.setCenter(imageView);
         pane.setLeft(label);
-        listView.getItems()
-                .add(pane);
+        listView.getItems().add(pane);
+        listView.scrollTo(index);
     }
     // CHECKSTYLE:ON
 

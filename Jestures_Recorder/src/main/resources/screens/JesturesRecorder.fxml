@@ -8,39 +8,45 @@
 <?import com.jfoenix.controls.JFXToolbar?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane fx:id="recorderPane" minHeight="700.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <JFXTabPane id="tab-pane" fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
-        <tabs>
-          <Tab>
-               <content>
-                  <StackPane id="canvas-pane" fx:id="canvasStackPane" prefHeight="150.0" prefWidth="200.0" />
-               </content>
-          </Tab>
-          <Tab>
-               <content>
-                  <VBox id="chart-pane" fx:id="vbox" alignment="CENTER" />
-               </content>
-          </Tab>
-            <Tab>
-              <content>
-                  <StackPane fx:id="listViewStackPane">
-                     <children>
-                        <JFXScrollPane fx:id="scrollPane">
+      <StackPane fx:id="tabStackPane" BorderPane.alignment="CENTER">
+         <children>
+            <JFXTabPane id="tab-pane" fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab>
+                     <content>
+                        <StackPane id="canvas-pane" fx:id="canvasStackPane" prefHeight="150.0" prefWidth="200.0" />
+                     </content>
+                </Tab>
+                <Tab>
+                     <content>
+                        <VBox id="chart-pane" fx:id="vbox" alignment="CENTER" />
+                     </content>
+                </Tab>
+                  <Tab>
+                    <content>
+          				<AnchorPane fx:id="listViewAnchorPane">
                            <children>
-                              <JFXListView id="list-view-feature" fx:id="listView" />
+                              <JFXScrollPane id="featureVectorScrollPane" fx:id="scrollPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <JFXListView id="list-view-feature" fx:id="listView" />
+                                 </children>
+                              </JFXScrollPane>
+                              <JFXButton id="clearButton" fx:id="clearListViewButton"  AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
                            </children>
-                        </JFXScrollPane>
-                     </children>
-                  </StackPane>
-              </content>
-            </Tab>
-        </tabs>
-      </JFXTabPane>
+      					</AnchorPane> 
+                    </content>
+                  </Tab>
+              </tabs>
+            </JFXTabPane>
+         </children>
+      </StackPane>
    </center>
    <bottom>
       <JFXToolbar fx:id="toolbar" minHeight="50.0" BorderPane.alignment="CENTER">

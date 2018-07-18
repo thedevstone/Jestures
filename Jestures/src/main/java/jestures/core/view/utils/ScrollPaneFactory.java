@@ -32,19 +32,17 @@ public final class ScrollPaneFactory {
     // CHECKSTYLE:OFF Magicnumber AH DI MI TOCCA
     public static void wrapListViewOnScrollPane(final JFXScrollPane pane, final JFXListView<BorderPane> list,
             final String titleString, final String cssId) {
-        list.setMaxHeight(3400);
+        // list.setMinHeight(1000); //ACTIVATE SCROLL
         final StackPane container = new StackPane(list);
         container.setPadding(new Insets(-1));
         pane.setContent(container);
         final Label title = new Label(titleString);
-        pane.getBottomBar()
-            .getChildren()
-            .add(title);
+        pane.getBottomBar().getChildren().add(title);
         title.setStyle("-fx-text-fill:WHITE; -fx-font-size: 40;");
         StackPane.setMargin(title, new Insets(0, 0, 0, 80));
         StackPane.setAlignment(title, Pos.CENTER_LEFT);
-        pane.getMainHeader()
-            .setId(cssId);
+        pane.getMainHeader().setId(cssId);
+
         // CHECKSTYLE:ON Magicnumber
     }
 

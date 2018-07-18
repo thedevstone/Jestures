@@ -23,4 +23,9 @@ public interface RecView extends View {
      */
     void startFxThread();
 
+    /**
+     * Clear the view and clear the featurevectors.
+     */
+    void clearListView();
+
 }

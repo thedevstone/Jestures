@@ -16,7 +16,7 @@
 package jestures.core.tracking;
 
 import java.util.HashSet;
-import java.util.Queue;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
@@ -93,7 +93,7 @@ public abstract class Tracker implements TrackingObserver, SensorObserver, Track
     }
 
     @Override
-    public void notifyOnFeatureVectorEvent(final Queue<Vector2D> featureVector) {
+    public void notifyOnFeatureVectorEvent(final List<Vector2D> featureVector) {
 
     }
 

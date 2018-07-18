@@ -43,10 +43,15 @@ public interface Recording extends Tracking {
 
     /**
      * Delete the feature vector in the list.
-     * 
+     *
      * @param index
      *            the index in the list.
      */
     void deleteFeatureVector(int index);
+
+    /**
+     * Clear the featureVector.
+     */
+    void clearFeatureVectors();
 
 }

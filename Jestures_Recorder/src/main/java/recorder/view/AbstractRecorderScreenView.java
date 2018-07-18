@@ -7,7 +7,6 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXScrollPane;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.effects.JFXDepthManager;
-import com.sun.javafx.application.PlatformImpl;
 
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -16,6 +15,7 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.ComboBox;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -33,10 +33,9 @@ import recorder.controller.Recorder;
  * Recorder abstact view for initialization.
  *
  */
-@SuppressWarnings("restriction")
+
 public abstract class AbstractRecorderScreenView implements RecView {
     private final Recording recorder;
-    private FrameLength frameLength;
 
     // CHART
     private LineChart<Number, Number> lineChartX; // NOPMD
@@ -48,6 +47,10 @@ public abstract class AbstractRecorderScreenView implements RecView {
     private Canvas canvas;
     private GraphicsContext context;
 
+    @FXML
+    private JFXButton clearListViewButton;
+    @FXML
+    private AnchorPane listViewAnchorPane;
     @FXML
     private JFXTabPane tabPane;
     @FXML
@@ -65,7 +68,7 @@ public abstract class AbstractRecorderScreenView implements RecView {
     @FXML
     private JFXListView<BorderPane> listView;
     @FXML
-    private StackPane listViewStackPane;
+    private StackPane tabStackPane;
 
     /**
      * The constructor.
@@ -103,17 +106,20 @@ public abstract class AbstractRecorderScreenView implements RecView {
             }
         });
 
+        this.clearListViewButton.setGraphic(ViewUtilities.iconSetter(Material.CLEAR, IconDim.MEDIUM));
+        JFXDepthManager.setDepth(this.clearListViewButton, 4);
+        this.clearListViewButton.setOnAction(t -> {
+            this.clearListView();
+        });
+
     }
 
     private void initCanvas() {
         this.canvas = new Canvas(this.recorderPane.getMinWidth(), this.recorderPane.getMinHeight());
-        this.canvas.widthProperty()
-                   .bind(this.recorderPane.widthProperty());
-        this.canvas.heightProperty()
-                   .bind(this.recorderPane.heightProperty());
+        this.canvas.widthProperty().bind(this.recorderPane.widthProperty());
+        this.canvas.heightProperty().bind(this.recorderPane.heightProperty());
         this.context = this.canvas.getGraphicsContext2D();
-        this.canvasStackPane.getChildren()
-                            .setAll(this.canvas);
+        this.canvasStackPane.getChildren().setAll(this.canvas);
     }
 
     private void initChart() {
@@ -121,98 +127,47 @@ public abstract class AbstractRecorderScreenView implements RecView {
         this.ySeries = new XYChart.Series<>();
         this.lineChartX = RecordingFactory.createDerivativeLineChart();
         this.lineChartY = RecordingFactory.createDerivativeLineChart();
-        this.lineChartX.getData()
-                       .add(this.xSeries);
-        this.lineChartY.getData()
-                       .add(this.ySeries);
+        this.lineChartX.getData().add(this.xSeries);
+        this.lineChartY.getData().add(this.ySeries);
         this.lineChartX.setTitle("Derivative: X");
         this.lineChartY.setTitle("Derivative: Y");
         HBox.setHgrow(this.lineChartX, Priority.ALWAYS);
         HBox.setHgrow(this.lineChartY, Priority.ALWAYS);
-        this.vbox.getChildren()
-                 .addAll(this.lineChartX, this.lineChartY);
+        this.vbox.getChildren().addAll(this.lineChartX, this.lineChartY);
     }
 
     private void initGraphic() {
-        this.tabPane.getTabs()
-                    .get(0)
-                    .setGraphic(ViewUtilities.iconSetter(Material.BLUR_ON, IconDim.MEDIUM));
-        this.tabPane.getTabs()
-                    .get(1)
-                    .setGraphic(ViewUtilities.iconSetter(Material.MULTILINE_CHART, IconDim.MEDIUM));
-        this.tabPane.getTabs()
-                    .get(2)
-                    .setGraphic(ViewUtilities.iconSetter(Material.VIEW_LIST, IconDim.MEDIUM));
+        this.tabPane.getTabs().get(0).setGraphic(ViewUtilities.iconSetter(Material.BLUR_ON, IconDim.MEDIUM));
+        this.tabPane.getTabs().get(1).setGraphic(ViewUtilities.iconSetter(Material.MULTILINE_CHART, IconDim.MEDIUM));
+        this.tabPane.getTabs().get(2).setGraphic(ViewUtilities.iconSetter(Material.VIEW_LIST, IconDim.MEDIUM));
         this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY, IconDim.MEDIUM));
 
     }
 
     private void initTabPaneListener() {
-        this.tabPane.getSelectionModel()
-                    .selectedItemProperty()
-                    .addListener((observable, oldValue, newValue) -> {
-                        if (this.tabPane.getTabs()
-                                        .get(2)
-                                        .equals(newValue)
-                                && !oldValue.equals(newValue)) {
-                            ViewUtilities.showDialog(this.listViewStackPane, "Select Feature Vector",
-                                    "left-click > select \n right-click > delete", DimDialogs.MEDIUM, null);
-
-                        }
-                    });
+        this.tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (this.tabPane.getTabs().get(2).equals(newValue) && !oldValue.equals(newValue)) {
+                ViewUtilities.showDialog(this.tabStackPane, "Select Feature Vector",
+                        "left-click > select \n right-click > delete", DimDialogs.MEDIUM, null);
+            }
+        });
     }
 
     private void initListView() {
+        // CHECKSTYLE:OFF Magicnumber AH DI MI TOCCA
         ScrollPaneFactory.wrapListViewOnScrollPane(this.scrollPane, this.listView, "Feature Vectors",
                 "headerFeatureVector");
+        this.listView.minHeightProperty().bind(this.listViewAnchorPane.heightProperty().subtract(200));
+        // CHECKSTYLE:ON Magicnumber AH DI MI TOCCA
     }
 
     private void initCombos() {
         this.frameLengthCombo.setOnAction(t -> this.setFrameLength(this.frameLengthCombo.getValue()));
-        this.frameLengthCombo.getItems()
-                             .add(FrameLength.ONE_SECOND);
-        this.frameLengthCombo.getItems()
-                             .add(FrameLength.TWO_SECONDS);
-        this.frameLengthCombo.getItems()
-                             .add(FrameLength.THREE_SECONDS);
-        this.frameLengthCombo.getSelectionModel()
-                             .select(this.frameLength);
+        this.frameLengthCombo.getItems().add(FrameLength.ONE_SECOND);
+        this.frameLengthCombo.getItems().add(FrameLength.TWO_SECONDS);
+        this.frameLengthCombo.getItems().add(FrameLength.THREE_SECONDS);
+        this.frameLengthCombo.getSelectionModel().select(this.getFrameLength());
         JFXDepthManager.setDepth(this.frameLengthCombo, 4);
-    }
-
-    // ################################################ INTERFACE METHODS #####################################
-
-    @Override
-    public void startFxThread() {
-        PlatformImpl.startup(() -> {
-        });
-    }
-
-    @Override
-    public FrameLength getFrameLength() {
-        return this.frameLength;
-    }
-
-    @Override
-    public void setFrameLength(final FrameLength length) {
-        this.frameLength = length;
-        this.recorder.setFrameLength(length);
-        System.out.println(length);
-    }
-
-    @Override
-    public void startSensor() {
-        this.recorder.startSensor();
-    }
-
-    @Override
-    public void stopSensor() {
-        this.recorder.stopSensor();
-    }
-
-    @Override
-    public Recording getTracker() {
-        return this.recorder;
     }
 
     // ################################################ GETTER FOR INSTANCE CLASS #####################################

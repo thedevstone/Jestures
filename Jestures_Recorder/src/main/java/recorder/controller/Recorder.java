@@ -16,9 +16,9 @@
 package recorder.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Queue;
 import java.util.Set;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
@@ -38,7 +38,7 @@ public final class Recorder extends Tracker implements Recording {
     private static Recording instance;
     private final Set<RecView> view;
     private boolean isRecording;
-    private final List<Queue<Vector2D>> listOfFeatureVector;
+    private final List<List<Vector2D>> listOfFeatureVector;
 
     private static final int THREASHOLD = 50;
 
@@ -89,11 +89,10 @@ public final class Recorder extends Tracker implements Recording {
     }
 
     @Override
-    public void notifyOnFeatureVectorEvent(final Queue<Vector2D> featureVector) {
+    public void notifyOnFeatureVectorEvent(final List<Vector2D> featureVector) {
         if (this.isRecording) {
             this.view.forEach(t -> t.notifyOnFeatureVectorEvent());
-            this.listOfFeatureVector.add(featureVector);
-            System.out.println(this.listOfFeatureVector.size());
+            this.listOfFeatureVector.add(Collections.unmodifiableList(featureVector));
         }
     }
 
@@ -118,6 +117,11 @@ public final class Recorder extends Tracker implements Recording {
     @Override
     public void deleteFeatureVector(final int index) {
         this.listOfFeatureVector.remove(index);
+    }
+
+    @Override
+    public void clearFeatureVectors() {
+        this.listOfFeatureVector.clear();
     }
 
 }

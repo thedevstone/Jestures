@@ -22,6 +22,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXScrollPane;
+import com.sun.javafx.application.PlatformImpl;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -33,6 +34,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import jestures.core.codification.FrameLength;
 import jestures.core.view.enums.NotificationType;
 import jestures.core.view.enums.NotificationType.Duration;
 import jestures.core.view.utils.ListViewFactory;
@@ -42,9 +44,10 @@ import jestures.core.view.utils.ViewUtilities;
  *
  *
  */
-
+@SuppressWarnings("restriction")
 public class RecorderScreenView extends AbstractRecorderScreenView implements RecView {
     private final Recording recorder;
+    private FrameLength frameLength;
     // VIEW
     private Stage stage; // NOPMD
     private Scene scene; // NOPMD
@@ -132,6 +135,47 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
         }
     }
 
+    // ############################################## TO RECORDER###################################
+    @Override
+    public void clearListView() {
+        this.listView.getItems().clear();
+        this.recorder.clearFeatureVectors();
+        this.scrollPane.setContent(this.listView);
+    }
+
+    @Override
+    public void setFrameLength(final FrameLength length) {
+        this.frameLength = length;
+        this.recorder.setFrameLength(length);
+        System.out.println(length);
+    }
+
+    @Override
+    public void startSensor() {
+        this.recorder.startSensor();
+    }
+
+    @Override
+    public void stopSensor() {
+        this.recorder.stopSensor();
+    }
+
+    @Override
+    public Recording getTracker() {
+        return this.recorder;
+    }
+
+    @Override
+    public void startFxThread() {
+        PlatformImpl.startup(() -> {
+        });
+    }
+
+    @Override
+    public FrameLength getFrameLength() {
+        return this.frameLength;
+    }
+
     // ############################################## INSTANCE METHODS ###################################
     private void addFeatureVectorToListView(final int index, final Image image) {
         ListViewFactory.addVectorToListView(this.listView, image, index);
@@ -147,10 +191,6 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
             }
             this.scrollPane.setContent(this.listView);
         });
-    }
-
-    private void clearListView() {
-        this.listView.getItems().clear();
     }
 
 }

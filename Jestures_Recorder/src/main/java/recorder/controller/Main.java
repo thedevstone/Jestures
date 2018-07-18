@@ -10,10 +10,13 @@ import recorder.view.RecView;
 import recorder.view.RecorderScreenView;
 import recorder.view.Recording;
 
-public class Main {
+/**
+ * Main class.
+ *
+ */
+public final class Main {
+    private Main() {
 
-    public Main() {
-        // TODO Auto-generated constructor stub
     }
 
     /**
