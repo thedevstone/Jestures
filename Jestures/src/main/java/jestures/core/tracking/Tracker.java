@@ -26,8 +26,7 @@ import jestures.core.codification.Codification;
 import jestures.core.codification.Codifier;
 import jestures.core.codification.DerivativeCodifier;
 import jestures.core.codification.FrameLenght;
-import jestures.core.view.TrackerView;
-import jestures.core.view.View;
+import jestures.core.view.screens.TrackerView;
 import jestures.sensor.IllegalSensorStateException;
 import jestures.sensor.Sensor;
 import jestures.sensor.SensorException;
@@ -37,16 +36,17 @@ import jestures.sensor.SensorObserver;
  * The {@link Tracker} class.
  */
 
-public final class Tracker implements TrackingObserver, SensorObserver, Tracking {
-    private static Tracking instance;
+public abstract class Tracker implements TrackingObserver, SensorObserver, Tracking {
     private Codifier codifier;
     private Sensor sensor;
-    private final Set<View> view;
     private final Set<JointListener> jointListener;
     private FrameLenght frameLength;
-    private boolean started;
+    private static boolean started; // NOPMD
 
-    private Tracker() {
+    /**
+     *
+     */
+    public Tracker() {
         this(Codification.DERIVATIVE, FrameLenght.TWO_SECONDS);
     }
 
@@ -57,27 +57,12 @@ public final class Tracker implements TrackingObserver, SensorObserver, Tracking
         }
 
         this.frameLength = gestureLenght;
-        this.started = false;
+        Tracker.started = false;
         this.codifier.attacheCoreRecognizer(this);
 
-        this.view = new HashSet<>();
         this.jointListener = new HashSet<>();
         TrackerView.startFxThread();
 
-    }
-
-    /**
-     * Get the instance.
-     *
-     * @return the {@link Tracking} instance.
-     */
-    public static Tracking getInstance() {
-        synchronized (Tracking.class) {
-            if (Tracker.instance == null) {
-                Tracker.instance = new Tracker();
-            }
-        }
-        return Tracker.instance;
     }
 
     // ############################################## OBSERVER ###################################
@@ -85,12 +70,6 @@ public final class Tracker implements TrackingObserver, SensorObserver, Tracking
     public void attacheSensor(final Sensor sensor) {
         this.sensor = sensor;
         this.sensor.attacheTracker(this);
-    }
-
-    @Override
-    public void attacheUI(final View view) {
-        this.view.add(view);
-        this.view.forEach(t -> t.setFrameLength(this.frameLength));
     }
 
     // ############################################## FROM SENSOR ###################################
@@ -108,7 +87,6 @@ public final class Tracker implements TrackingObserver, SensorObserver, Tracking
     // ############################################## FROM CODIFIER ###################################
     @Override
     public void notifyOnFrameChange(final int frame, final Vector2D derivative, final Vector2D distanceVector) {
-        this.view.forEach(t -> t.notifyOnFrameChange(frame, derivative, distanceVector));
         this.jointListener.forEach(t -> t.onDerivativeJointTracked(derivative));
         this.jointListener.forEach(t -> t.onDistanceFromStartingJoint(distanceVector));
 
@@ -116,14 +94,14 @@ public final class Tracker implements TrackingObserver, SensorObserver, Tracking
 
     @Override
     public void notifyOnFeatureVectorEvent(final Queue<Vector2D> featureVector) {
-        this.view.forEach(t -> t.notifyOnFeatureVectorEvent());
+
     }
 
     // ############################################## INSTANCE METHODS ###################################
     @Override
     public void startSensor() {
         try {
-            this.started = true;
+            Tracker.started = true;
             this.sensor.startSensor();
         } catch (final SensorException e) {
             e.printStackTrace();
@@ -135,7 +113,7 @@ public final class Tracker implements TrackingObserver, SensorObserver, Tracking
     @Override
     public void stopSensor() {
         try {
-            this.started = false;
+            Tracker.started = false;
             this.sensor.stopSensor();
         } catch (final SensorException e) {
             e.printStackTrace();
@@ -145,13 +123,13 @@ public final class Tracker implements TrackingObserver, SensorObserver, Tracking
     }
 
     @Override
-    public int getFrameLength() {
-        return this.frameLength.getFrameNumber();
+    public FrameLenght getFrameLength() {
+        return this.frameLength;
     }
 
     @Override
     public boolean isStarted() {
-        return this.started;
+        return Tracker.started;
     }
 
     @Override
@@ -168,6 +146,16 @@ public final class Tracker implements TrackingObserver, SensorObserver, Tracking
     @Override
     public boolean state() {
         return this.sensor.state();
+    }
+
+    /**
+     * Check if the sensor is started statically.
+     *
+     * @return <code>true</code> if the sensor is started
+     */
+    public static boolean checkStarted() {
+        return Tracker.started;
+
     }
 
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  *******************************************************************************/
 
-package jestures.core.view;
+package jestures.core.view.screens;
 
 import java.io.IOException;
 
@@ -44,6 +44,10 @@ import javafx.stage.Stage;
 import jestures.core.codification.FrameLenght;
 import jestures.core.tracking.Tracker;
 import jestures.core.tracking.Tracking;
+import jestures.core.view.AbstractView;
+import jestures.core.view.enums.IconDim;
+import jestures.core.view.utils.RecordingFactory;
+import jestures.core.view.utils.ViewUtilities;
 
 /**
  *

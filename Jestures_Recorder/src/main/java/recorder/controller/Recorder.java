@@ -30,7 +30,7 @@ import jestures.core.codification.DerivativeCodifier;
 import jestures.core.codification.FrameLenght;
 import jestures.core.tracking.Tracking;
 import jestures.core.tracking.TrackingObserver;
-import jestures.core.view.TrackerView;
+import jestures.core.view.screens.TrackerView;
 import jestures.sensor.IllegalSensorStateException;
 import jestures.sensor.Sensor;
 import jestures.sensor.SensorException;

@@ -48,14 +48,14 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import jestures.core.codification.FrameLenght;
-import jestures.core.view.DialogsType.DimDialogs;
-import jestures.core.view.IconDim;
-import jestures.core.view.ListViewFactory;
-import jestures.core.view.NotificationType;
-import jestures.core.view.NotificationType.Duration;
-import jestures.core.view.RecordingFactory;
-import jestures.core.view.ScrollPaneFactory;
-import jestures.core.view.ViewUtilities;
+import jestures.core.view.enums.IconDim;
+import jestures.core.view.enums.NotificationType;
+import jestures.core.view.enums.DialogsType.DimDialogs;
+import jestures.core.view.enums.NotificationType.Duration;
+import jestures.core.view.utils.ListViewFactory;
+import jestures.core.view.utils.RecordingFactory;
+import jestures.core.view.utils.ScrollPaneFactory;
+import jestures.core.view.utils.ViewUtilities;
 
 /**
  *

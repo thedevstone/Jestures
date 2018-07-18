@@ -6,11 +6,12 @@ package demo;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+import jestures.core.recognition.Recognizer;
 import jestures.core.tracking.JointListener;
-import jestures.core.tracking.Tracker;
 import jestures.core.tracking.Tracking;
-import jestures.core.view.TrackerView;
 import jestures.core.view.View;
+import jestures.core.view.screens.TrackerView;
+import jestures.sensor.IllegalSensorStateException;
 import jestures.sensor.Joint;
 import jestures.sensor.Sensor;
 import jestures.sensor.SensorException;
@@ -37,10 +38,11 @@ public class Demo {
      *            args
      * @throws SensorException
      *             the sensor exception
+     * @throws IllegalSensorStateException
      */
-    public static void main(final String[] args) throws SensorException {
+    public static void main(final String[] args) throws SensorException, IllegalSensorStateException {
         final Sensor sensor = new Kinect(Joint.RIGHT_HAND, KinectSensors.SKELETON_ONLY, KinectVersion.KINECT1);
-        final Tracking recognizer = Tracker.getInstance();
+        final Tracking recognizer = Recognizer.getInstance();
         recognizer.attacheSensor(sensor);
         final View view = new TrackerView(recognizer);
         recognizer.attacheUI(view);

@@ -14,7 +14,7 @@
  * limitations under the License.
  *******************************************************************************/
 
-package jestures.core.view;
+package jestures.core.view.screens;
 
 import javax.swing.text.html.CSS;
 

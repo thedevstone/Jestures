@@ -71,7 +71,7 @@ public interface Tracking {
      *
      * @return the frame length in frame
      */
-    int getFrameLength();
+    FrameLenght getFrameLength();
 
     /**
      * Start the sensor.
@@ -85,7 +85,7 @@ public interface Tracking {
 
     /**
      * Sensor state.
-     * 
+     *
      * @return <code>true</code> if it's on
      */
     boolean state();

@@ -1,4 +1,4 @@
-package jestures.core.view;
+package jestures.core.view.enums;
 
 /**
  * Enum for text. You can set all the dimensions.

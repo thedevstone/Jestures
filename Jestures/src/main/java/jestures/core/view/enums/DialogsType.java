@@ -1,4 +1,4 @@
-package jestures.core.view;
+package jestures.core.view.enums;
 
 import com.jfoenix.controls.JFXDialog;
 

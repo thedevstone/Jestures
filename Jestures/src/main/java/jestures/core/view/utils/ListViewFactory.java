@@ -1,4 +1,4 @@
-package jestures.core.view;
+package jestures.core.view.utils;
 
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.effects.JFXDepthManager;

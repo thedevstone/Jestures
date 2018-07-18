@@ -14,7 +14,7 @@
  * limitations under the License.
  *******************************************************************************/
 
-package jestures.core.view;
+package jestures.core.view.utils;
 
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;

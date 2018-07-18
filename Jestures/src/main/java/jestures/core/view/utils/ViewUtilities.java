@@ -1,4 +1,4 @@
-package jestures.core.view;
+package jestures.core.view.utils;
 
 import org.kordamp.ikonli.Ikon;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -19,7 +19,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import jestures.core.view.DialogsType.DimDialogs;
+import jestures.core.view.enums.IconDim;
+import jestures.core.view.enums.NotificationType;
+import jestures.core.view.enums.DialogsType.DimDialogs;
 
 /**
  * This class has all the utilities for the view.
