@@ -64,7 +64,7 @@
 }
 
 
-
+/* FEATURE VECTOR TAB */
 #headerFeatureVector {
 	-fx-background-image: url('/images/SignIn-background.jpg');
 	-fx-background-repeat: no-repeat;
@@ -112,9 +112,7 @@
 	-fx-opacity: 1;
 }
 
-
-
-
+/*DIALOG */
 
 .dialogContentBackground {
 	-fx-background-color: #448AFF;

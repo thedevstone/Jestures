@@ -2,7 +2,7 @@ package jestures.core.view;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-import jestures.core.codification.FrameLenght;
+import jestures.core.codification.FrameLength;
 import jestures.core.tracking.Tracking;
 
 /**
@@ -25,6 +25,8 @@ public interface View {
 
     /**
      * Update view on feature vector event.
+     *
+     * 
      */
     void notifyOnFeatureVectorEvent();
 
@@ -32,9 +34,9 @@ public interface View {
      * Set the frame Length.
      *
      * @param length
-     *            the {@link FrameLenght}
+     *            the {@link FrameLength}
      */
-    void setFrameLength(FrameLenght length);
+    void setFrameLength(FrameLength length);
 
     /**
      * Start the {@link Tracking}.
@@ -54,10 +56,10 @@ public interface View {
     Tracking getTracker();
 
     /**
-     * Get the {@link FrameLenght} for tracking.
+     * Get the {@link FrameLength} for tracking.
      *
-     * @return the {@link FrameLenght}
+     * @return the {@link FrameLength}
      */
-    FrameLenght getFrameLength();
+    FrameLength getFrameLength();
 
 }

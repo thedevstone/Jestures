@@ -61,7 +61,7 @@ public interface Codifier {
      * Set the frame length.
      * 
      * @param length
-     *            the {@link FrameLenght}.
+     *            the {@link FrameLength}.
      */
-    void setFrameLength(FrameLenght length);
+    void setFrameLength(FrameLength length);
 }

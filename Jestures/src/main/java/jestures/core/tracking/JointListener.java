@@ -3,7 +3,7 @@ package jestures.core.tracking;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-import jestures.core.codification.FrameLenght;
+import jestures.core.codification.FrameLength;
 
 /**
  * Interface that generate {@link Vector2D} events.
@@ -34,7 +34,7 @@ public interface JointListener {
 
     /**
      * Distance between starting joint position and actual joint position. Starting position depends on
-     * {@link FrameLenght}
+     * {@link FrameLength}
      * <p>
      * Vector values [-1000, 1000]
      *

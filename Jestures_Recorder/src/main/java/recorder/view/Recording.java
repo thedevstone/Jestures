@@ -16,74 +16,37 @@
 
 package recorder.view;
 
-import jestures.core.codification.FrameLenght;
-import jestures.core.view.View;
-import jestures.sensor.Sensor;
+import jestures.core.tracking.Tracking;
 
 /**
  * Inteface for tracking.
  *
  *
  */
-public interface Recording {
-
-    /**
-     * Attache the {@link Sensor}.
-     *
-     * @param sensor
-     *            the {@link Sensor}
-     */
-    void attacheSensor(Sensor sensor);
+public interface Recording extends Tracking {
 
     /**
      * Attache the view.
      *
      * @param view
-     *            the {@link View}
+     *            the {@link RecView}
      */
     void attacheUI(RecView view);
 
     /**
-     * The sensor is started.
+     * Select the feature vector.
      *
-     * @return <code>true</code> if the sensor is started.
+     * @param index
+     *            the index in the list
      */
-    boolean isStarted();
-
-    /**
-     * Set the frame length.
-     *
-     * @param length
-     *            the length
-     */
-    void setFrameLength(FrameLenght length);
-
-    /**
-     * Get the frame length.
-     *
-     * @return the frame length in frame
-     */
-    int getFrameLength();
-
-    /**
-     * Start the sensor.
-     */
-    void startSensor();
-
-    /**
-     * Stop the sensor.
-     */
-    void stopSensor();
-
-    /**
-     * Sensor state.
-     *
-     * @return <code>true</code> if it's on
-     */
-    boolean state();
-
     void selectFeatureVector(int index);
 
-    void deletePlayer(int index);
+    /**
+     * Delete the feature vector in the list.
+     * 
+     * @param index
+     *            the index in the list.
+     */
+    void deleteFeatureVector(int index);
 
 }

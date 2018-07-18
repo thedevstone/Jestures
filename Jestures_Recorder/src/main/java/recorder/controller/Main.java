@@ -26,10 +26,10 @@ public class Main {
      */
     public static void main(final String[] args) throws SensorException {
         final Sensor sensor = new Kinect(Joint.RIGHT_HAND, KinectSensors.SKELETON_ONLY, KinectVersion.KINECT1);
-        final Recording recognizer = Recorder.getInstance();
-        recognizer.attacheSensor(sensor);
-        final RecView view = new RecorderScreenView(recognizer);
-        recognizer.attacheUI(view);
+        final Recording recorder = Recorder.getInstance();
+        recorder.attacheSensor(sensor);
+        final RecView view = new RecorderScreenView(recorder);
+        recorder.attacheUI(view);
     }
 
 }

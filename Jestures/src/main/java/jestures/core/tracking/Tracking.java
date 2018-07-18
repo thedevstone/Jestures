@@ -16,8 +16,7 @@
 
 package jestures.core.tracking;
 
-import jestures.core.codification.FrameLenght;
-import jestures.core.view.View;
+import jestures.core.codification.FrameLength;
 import jestures.sensor.Sensor;
 
 /**
@@ -44,14 +43,6 @@ public interface Tracking {
     void attacheSensor(Sensor sensor);
 
     /**
-     * Attache the view.
-     *
-     * @param view
-     *            the {@link View}
-     */
-    void attacheUI(View view);
-
-    /**
      * The sensor is started.
      *
      * @return <code>true</code> if the sensor is started.
@@ -59,19 +50,24 @@ public interface Tracking {
     boolean isStarted();
 
     /**
+     * Reset the gesture frame.
+     */
+    void resetCodificationFrame();
+
+    /**
      * Set the frame length.
      *
      * @param length
      *            the length
      */
-    void setFrameLength(FrameLenght length);
+    void setFrameLength(FrameLength length);
 
     /**
      * Get the frame length.
      *
      * @return the frame length in frame
      */
-    FrameLenght getFrameLength();
+    FrameLength getFrameLength();
 
     /**
      * Start the sensor.

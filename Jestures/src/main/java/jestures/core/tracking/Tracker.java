@@ -25,7 +25,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import jestures.core.codification.Codification;
 import jestures.core.codification.Codifier;
 import jestures.core.codification.DerivativeCodifier;
-import jestures.core.codification.FrameLenght;
+import jestures.core.codification.FrameLength;
 import jestures.core.view.screens.TrackerView;
 import jestures.sensor.IllegalSensorStateException;
 import jestures.sensor.Sensor;
@@ -40,17 +40,17 @@ public abstract class Tracker implements TrackingObserver, SensorObserver, Track
     private Codifier codifier;
     private Sensor sensor;
     private final Set<JointListener> jointListener;
-    private FrameLenght frameLength;
+    private FrameLength frameLength;
     private static boolean started; // NOPMD
 
     /**
      *
      */
     public Tracker() {
-        this(Codification.DERIVATIVE, FrameLenght.TWO_SECONDS);
+        this(Codification.DERIVATIVE, FrameLength.TWO_SECONDS);
     }
 
-    private Tracker(final Codification codificationType, final FrameLenght gestureLenght) {
+    private Tracker(final Codification codificationType, final FrameLength gestureLenght) {
 
         if (codificationType.equals(Codification.DERIVATIVE)) {
             this.codifier = new DerivativeCodifier(gestureLenght);
@@ -123,7 +123,12 @@ public abstract class Tracker implements TrackingObserver, SensorObserver, Track
     }
 
     @Override
-    public FrameLenght getFrameLength() {
+    public void resetCodificationFrame() {
+        this.codifier.resetFrame();
+    }
+
+    @Override
+    public FrameLength getFrameLength() {
         return this.frameLength;
     }
 
@@ -133,7 +138,7 @@ public abstract class Tracker implements TrackingObserver, SensorObserver, Track
     }
 
     @Override
-    public void setFrameLength(final FrameLenght length) {
+    public void setFrameLength(final FrameLength length) {
         this.frameLength = length;
         this.codifier.setFrameLength(length);
     }

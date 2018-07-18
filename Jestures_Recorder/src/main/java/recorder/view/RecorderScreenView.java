@@ -17,101 +17,56 @@
 package recorder.view;
 
 import java.io.IOException;
-import java.util.Queue;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-import org.kordamp.ikonli.material.Material;
 
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXScrollPane;
-import com.jfoenix.controls.JFXTabPane;
-import com.jfoenix.effects.JFXDepthManager;
-import com.sun.javafx.application.PlatformImpl;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import jestures.core.codification.FrameLenght;
-import jestures.core.view.enums.IconDim;
 import jestures.core.view.enums.NotificationType;
-import jestures.core.view.enums.DialogsType.DimDialogs;
 import jestures.core.view.enums.NotificationType.Duration;
 import jestures.core.view.utils.ListViewFactory;
-import jestures.core.view.utils.RecordingFactory;
-import jestures.core.view.utils.ScrollPaneFactory;
 import jestures.core.view.utils.ViewUtilities;
 
 /**
  *
  *
  */
-@SuppressWarnings("restriction")
-public class RecorderScreenView implements RecView {
-    private final Recording recorder;
-    private FrameLenght frameLength;
 
+public class RecorderScreenView extends AbstractRecorderScreenView implements RecView {
+    private final Recording recorder;
     // VIEW
     private Stage stage; // NOPMD
     private Scene scene; // NOPMD
-    // CHART
-    private LineChart<Number, Number> lineChartX; // NOPMD
-    private LineChart<Number, Number> lineChartY; // NOPMD
-    private XYChart.Series<Number, Number> xSeries;
-    private XYChart.Series<Number, Number> ySeries;
-    // CANVAS
-    private Canvas canvas;
-    private GraphicsContext context;
 
-    @FXML
-    private JFXTabPane tabPane;
     @FXML
     private BorderPane recorderPane; // NOPMD
     @FXML
-    private JFXButton startButton;
-
-    @FXML
-    private VBox vbox;
-    @FXML
-    private StackPane canvasStackPane;
-    @FXML
-    private ComboBox<FrameLenght> frameLengthCombo;
-
-    @FXML
     private JFXScrollPane scrollPane;
-
     @FXML
     private JFXListView<BorderPane> listView;
-
-    @FXML
-    private StackPane listViewStackPane;
 
     /**
      * @param recorder
      *            the {@link RecorderScreenView}
      */
     public RecorderScreenView(final Recording recorder) {
+        super(recorder);
         this.recorder = recorder;
         Platform.runLater(() -> {
             final FXMLLoader loader = new FXMLLoader();
             loader.setController(this);
-            loader.setLocation(this.getClass()
-                                   .getResource(FXMLScreens.HOME.getPath()));
+            loader.setLocation(this.getClass().getResource(FXMLScreens.HOME.getPath()));
             try {
                 this.recorderPane = (BorderPane) loader.load();
             } catch (final IOException e1) {
@@ -120,179 +75,52 @@ public class RecorderScreenView implements RecView {
         });
     }
 
+    @Override
     @FXML
-    private void initialize() { // NOPMD
-        this.initButtons();
-        this.initCombos();
-        this.initGraphic();
-        this.initCanvas();
-        this.initChart();
-        this.initTabPaneListener();
-        this.initListView();
+    public void initialize() { // NOPMD
+        super.initialize();
+
         this.stage = new Stage();
         this.scene = new Scene(this.recorderPane);
         this.stage.setScene(this.scene);
+
         this.stage.setOnCloseRequest(e -> this.stopSensor());
         this.chargeSceneSheets(FXMLScreens.HOME);
         this.stage.show();
 
     }
 
-    private void initButtons() {
-        this.startButton.setOnAction(e -> {
-            if (this.getTracker()
-                    .state()) {
-                this.stopSensor();
-                this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY, IconDim.MEDIUM));
-            } else {
-                this.startSensor();
-                this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY_OFF, IconDim.MEDIUM));
-            }
-        });
-
-    }
-
-    private void initCanvas() {
-        this.canvas = new Canvas(this.recorderPane.getMinWidth(), this.recorderPane.getMinHeight());
-        this.canvas.widthProperty()
-                   .bind(this.recorderPane.widthProperty());
-        this.canvas.heightProperty()
-                   .bind(this.recorderPane.heightProperty());
-        this.context = this.canvas.getGraphicsContext2D();
-        this.canvasStackPane.getChildren()
-                            .setAll(this.canvas);
-    }
-
-    private void initChart() {
-        this.xSeries = new XYChart.Series<>();
-        this.ySeries = new XYChart.Series<>();
-        this.lineChartX = RecordingFactory.createDerivativeLineChart();
-        this.lineChartY = RecordingFactory.createDerivativeLineChart();
-        this.lineChartX.getData()
-                       .add(this.xSeries);
-        this.lineChartY.getData()
-                       .add(this.ySeries);
-        this.lineChartX.setTitle("Derivative: X");
-        this.lineChartY.setTitle("Derivative: Y");
-        HBox.setHgrow(this.lineChartX, Priority.ALWAYS);
-        HBox.setHgrow(this.lineChartY, Priority.ALWAYS);
-        this.vbox.getChildren()
-                 .addAll(this.lineChartX, this.lineChartY);
-    }
-
-    private void initGraphic() {
-        this.tabPane.getTabs()
-                    .get(0)
-                    .setGraphic(ViewUtilities.iconSetter(Material.BLUR_ON, IconDim.MEDIUM));
-        this.tabPane.getTabs()
-                    .get(1)
-                    .setGraphic(ViewUtilities.iconSetter(Material.MULTILINE_CHART, IconDim.MEDIUM));
-        this.tabPane.getTabs()
-                    .get(2)
-                    .setGraphic(ViewUtilities.iconSetter(Material.VIEW_LIST, IconDim.MEDIUM));
-        this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY, IconDim.MEDIUM));
-
-    }
-
-    private void initTabPaneListener() {
-        this.tabPane.getSelectionModel()
-                    .selectedItemProperty()
-                    .addListener((observable, oldValue, newValue) -> {
-                        if (this.tabPane.getTabs()
-                                        .get(2)
-                                        .equals(newValue)
-                                && !oldValue.equals(newValue)) {
-                            ViewUtilities.showDialog(this.listViewStackPane, "Select Feature Vector",
-                                    "left-click > select \n right-click > delete", DimDialogs.MEDIUM, null);
-
-                        }
-                    });
-    }
-
     private void chargeSceneSheets(final FXMLScreens screen) {
-        this.scene.getStylesheets()
-                  .add(RecorderScreenView.class.getResource(screen.getCssPath())
-                                               .toString());
+        this.scene.getStylesheets().add(RecorderScreenView.class.getResource(screen.getCssPath()).toString());
     }
 
-    private void initListView() {
-        ScrollPaneFactory.wrapListViewOnScrollPane(this.scrollPane, this.listView, "Feature Vectors",
-                "headerFeatureVector");
-    }
-
-    private void initCombos() {
-        this.frameLengthCombo.setOnAction(t -> this.setFrameLength(this.frameLengthCombo.getValue()));
-        this.frameLengthCombo.getItems()
-                             .add(FrameLenght.ONE_SECOND);
-        this.frameLengthCombo.getItems()
-                             .add(FrameLenght.TWO_SECONDS);
-        this.frameLengthCombo.getItems()
-                             .add(FrameLenght.THREE_SECONDS);
-        this.frameLengthCombo.getSelectionModel()
-                             .select(this.getFrameLength());
-        JFXDepthManager.setDepth(this.frameLengthCombo, 4);
-    }
-
-    // ############################################## FROM RECORDER ###################################
+    // ############################################## FROM TRACKER (RECORDER) ###################################
     @Override
     public void notifyOnFrameChange(final int frame, final Vector2D derivative, final Vector2D path) {
         Platform.runLater(() -> {
-            if (frame > this.getFrameLength()
-                            .getFrameNumber()
-                    - 1 || frame == 0) {
-                this.context.clearRect(0, 0, this.canvas.getWidth(), this.canvas.getHeight());
-                this.xSeries.getData()
-                            .clear();
-                this.ySeries.getData()
-                            .clear();
+            if (frame == 0) {
+                this.getContext().clearRect(0, 0, this.getCanvas().getWidth(), this.getCanvas().getHeight());
+                this.getxSeries().getData().clear();
+                this.getySeries().getData().clear();
             }
-            this.xSeries.getData()
-                        .add(new XYChart.Data<Number, Number>(frame, (int) derivative.getX()));
-            this.ySeries.getData()
-                        .add(new XYChart.Data<Number, Number>(frame, (int) derivative.getY()));
+            this.getxSeries().getData().add(new XYChart.Data<Number, Number>(frame, (int) derivative.getX()));
+            this.getySeries().getData().add(new XYChart.Data<Number, Number>(frame, (int) derivative.getY()));
 
-            this.context.fillOval(-path.getX() + this.canvas.getWidth() / 2, path.getY() + this.canvas.getHeight() / 2,
-                    10, 10);
+            this.getContext().fillOval(-path.getX() + this.getCanvas().getWidth() / 2,
+                    path.getY() + this.getCanvas().getHeight() / 2, 10, 10);
         });
 
     }
 
     @Override
-    public void notifyOnFeatureVectorEvent(final Queue<Vector2D> featureVector) {
+    public void notifyOnFeatureVectorEvent() {
         Platform.runLater(() -> {
-            this.createUserInListView(this.listView.getItems()
-                                                   .size(),
-                    this.canvas.snapshot(new SnapshotParameters(), null));
+            this.addFeatureVectorToListView(this.listView.getItems().size(),
+                    this.getCanvas().snapshot(new SnapshotParameters(), null));
         });
     }
 
-    private void createUserInListView(final int index, final Image image) {
-        ListViewFactory.addVectorToListView(this.listView, image, index);
-        this.initPlayerSelectListViewListeners();
-    }
-
-    public void clearListView() {
-        this.listView.getItems()
-                     .clear();
-    }
-
-    private void initPlayerSelectListViewListeners() {
-        this.listView.setOnMouseClicked(t -> {
-            final int index = this.listView.getSelectionModel()
-                                           .getSelectedIndex();
-            if (t.getButton()
-                 .equals(MouseButton.PRIMARY) && index != -1) {
-                this.recorder.selectFeatureVector(index);
-            } else if (index != -1) {
-                this.recorder.deletePlayer(index);
-                this.listView.getItems()
-                             .remove(index);
-            }
-            this.scrollPane.setContent(this.listView);
-        });
-
-    }
-
+    // ############################################## FROM RECORDER ###################################
     @Override
     public void setRecording(final boolean isRecording) {
         if (isRecording) {
@@ -305,39 +133,24 @@ public class RecorderScreenView implements RecView {
     }
 
     // ############################################## INSTANCE METHODS ###################################
-    /**
-     * Start the Fx thread.
-     */
-    public static void startFxThread() {
-        PlatformImpl.startup(() -> {
+    private void addFeatureVectorToListView(final int index, final Image image) {
+        ListViewFactory.addVectorToListView(this.listView, image, index);
+
+        // ON CLICK ACTION
+        this.listView.setOnMouseClicked(t -> {
+            final int indexClicked = this.listView.getSelectionModel().getSelectedIndex();
+            if (t.getButton().equals(MouseButton.PRIMARY) && indexClicked != -1) {
+                this.recorder.selectFeatureVector(indexClicked);
+            } else if (indexClicked != -1) {
+                this.recorder.deleteFeatureVector(indexClicked);
+                this.listView.getItems().remove(indexClicked);
+            }
+            this.scrollPane.setContent(this.listView);
         });
     }
 
-    @Override
-    public FrameLenght getFrameLength() {
-        return this.frameLength;
-    }
-
-    @Override
-    public void setFrameLength(final FrameLenght length) {
-        this.frameLength = length;
-        this.recorder.setFrameLength(length);
-        System.out.println(length);
-    }
-
-    @Override
-    public void startSensor() {
-        this.recorder.startSensor();
-    }
-
-    @Override
-    public void stopSensor() {
-        this.recorder.stopSensor();
-    }
-
-    @Override
-    public Recording getTracker() {
-        return this.recorder;
+    private void clearListView() {
+        this.listView.getItems().clear();
     }
 
 }

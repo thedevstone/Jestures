@@ -5,7 +5,7 @@ package jestures.core.view;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-import jestures.core.codification.FrameLenght;
+import jestures.core.codification.FrameLength;
 import jestures.core.tracking.Tracking;
 
 /**
@@ -13,7 +13,7 @@ import jestures.core.tracking.Tracking;
  */
 public abstract class AbstractView implements View {
     private final Tracking tracker;
-    private FrameLenght frameLength;
+    private FrameLength frameLength;
 
     /**
      * The @link{AbstractView.java} constructor.
@@ -26,12 +26,12 @@ public abstract class AbstractView implements View {
     }
 
     @Override
-    public FrameLenght getFrameLength() {
+    public FrameLength getFrameLength() {
         return this.frameLength;
     }
 
     @Override
-    public void setFrameLength(final FrameLenght length) {
+    public void setFrameLength(final FrameLength length) {
         this.frameLength = length;
         this.tracker.setFrameLength(length);
         System.out.println(length);

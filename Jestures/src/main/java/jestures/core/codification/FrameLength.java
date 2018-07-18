@@ -19,7 +19,7 @@ package jestures.core.codification;
 /**
  * The @link{JestureFrameLenght} class.
  */
-public enum FrameLenght {
+public enum FrameLength {
     /**
      * Gestures duration in frame. 30 FPS base
      */
@@ -30,7 +30,7 @@ public enum FrameLenght {
     /**
      * The @link{JestureFrameLenght.java} constructor.
      */
-    FrameLenght(final int frames) {
+    FrameLength(final int frames) {
         this.frameNumber = frames;
     }
 

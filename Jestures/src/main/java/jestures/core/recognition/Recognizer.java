@@ -15,7 +15,7 @@ import jestures.core.view.View;
  *
  *
  */
-public final class Recognizer extends Tracker {
+public final class Recognizer extends Tracker implements Recognition {
     private final Set<View> view;
     private static Recognizer instance;
 

@@ -41,7 +41,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import jestures.core.codification.FrameLenght;
+import jestures.core.codification.FrameLength;
 import jestures.core.tracking.Tracker;
 import jestures.core.tracking.Tracking;
 import jestures.core.view.AbstractView;
@@ -80,7 +80,7 @@ public class TrackerView extends AbstractView {
     @FXML
     private StackPane canvasStackPane;
     @FXML
-    private ComboBox<FrameLenght> frameLengthCombo;
+    private ComboBox<FrameLength> frameLengthCombo;
 
     /**
      * @param tracker
@@ -92,8 +92,7 @@ public class TrackerView extends AbstractView {
         Platform.runLater(() -> {
             final FXMLLoader loader = new FXMLLoader();
             loader.setController(this);
-            loader.setLocation(this.getClass()
-                                   .getResource(FXMLScreens.HOME.getPath()));
+            loader.setLocation(this.getClass().getResource(FXMLScreens.HOME.getPath()));
             try {
                 this.recorderPane = (BorderPane) loader.load();
             } catch (final IOException e1) {
@@ -120,8 +119,7 @@ public class TrackerView extends AbstractView {
 
     private void initButtons() {
         this.startButton.setOnAction(e -> {
-            if (this.getTracker()
-                    .state()) {
+            if (this.getTracker().state()) {
                 this.stopSensor();
                 this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY, IconDim.MEDIUM));
             } else {
@@ -134,13 +132,10 @@ public class TrackerView extends AbstractView {
 
     private void initCanvas() {
         this.canvas = new Canvas(this.recorderPane.getMinWidth(), this.recorderPane.getMinHeight());
-        this.canvas.widthProperty()
-                   .bind(this.recorderPane.widthProperty());
-        this.canvas.heightProperty()
-                   .bind(this.recorderPane.heightProperty());
+        this.canvas.widthProperty().bind(this.recorderPane.widthProperty());
+        this.canvas.heightProperty().bind(this.recorderPane.heightProperty());
         this.context = this.canvas.getGraphicsContext2D();
-        this.canvasStackPane.getChildren()
-                            .setAll(this.canvas);
+        this.canvasStackPane.getChildren().setAll(this.canvas);
     }
 
     private void initChart() {
@@ -148,63 +143,44 @@ public class TrackerView extends AbstractView {
         this.ySeries = new XYChart.Series<>();
         this.lineChartX = RecordingFactory.createDerivativeLineChart();
         this.lineChartY = RecordingFactory.createDerivativeLineChart();
-        this.lineChartX.getData()
-                       .add(this.xSeries);
-        this.lineChartY.getData()
-                       .add(this.ySeries);
+        this.lineChartX.getData().add(this.xSeries);
+        this.lineChartY.getData().add(this.ySeries);
         this.lineChartX.setTitle("Derivative: X");
         this.lineChartY.setTitle("Derivative: Y");
         HBox.setHgrow(this.lineChartX, Priority.ALWAYS);
         HBox.setHgrow(this.lineChartY, Priority.ALWAYS);
-        this.vbox.getChildren()
-                 .addAll(this.lineChartX, this.lineChartY);
+        this.vbox.getChildren().addAll(this.lineChartX, this.lineChartY);
     }
 
     private void initGraphic() {
-        this.tabPane.getTabs()
-                    .get(0)
-                    .setGraphic(ViewUtilities.iconSetter(Material.BLUR_ON, IconDim.MEDIUM));
-        this.tabPane.getTabs()
-                    .get(1)
-                    .setGraphic(ViewUtilities.iconSetter(Material.MULTILINE_CHART, IconDim.MEDIUM));
+        this.tabPane.getTabs().get(0).setGraphic(ViewUtilities.iconSetter(Material.BLUR_ON, IconDim.MEDIUM));
+        this.tabPane.getTabs().get(1).setGraphic(ViewUtilities.iconSetter(Material.MULTILINE_CHART, IconDim.MEDIUM));
         this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY, IconDim.MEDIUM));
 
     }
 
     private void chargeSceneSheets(final FXMLScreens screen) {
-        this.scene.getStylesheets()
-                  .add(TrackerView.class.getResource(screen.getCssPath())
-                                        .toString());
+        this.scene.getStylesheets().add(TrackerView.class.getResource(screen.getCssPath()).toString());
     }
 
     private void initCombos() {
         this.frameLengthCombo.setOnAction(t -> this.setFrameLength(this.frameLengthCombo.getValue()));
-        this.frameLengthCombo.getItems()
-                             .add(FrameLenght.ONE_SECOND);
-        this.frameLengthCombo.getItems()
-                             .add(FrameLenght.TWO_SECONDS);
-        this.frameLengthCombo.getItems()
-                             .add(FrameLenght.THREE_SECONDS);
-        this.frameLengthCombo.getSelectionModel()
-                             .select(this.getFrameLength());
+        this.frameLengthCombo.getItems().add(FrameLength.ONE_SECOND);
+        this.frameLengthCombo.getItems().add(FrameLength.TWO_SECONDS);
+        this.frameLengthCombo.getItems().add(FrameLength.THREE_SECONDS);
+        this.frameLengthCombo.getSelectionModel().select(this.getFrameLength());
         JFXDepthManager.setDepth(this.frameLengthCombo, 4);
     }
 
     @Override
     public void notifyOnFrameChange(final int frame, final Vector2D derivative, final Vector2D path) {
         Platform.runLater(() -> {
-            if (frame > this.getFrameLength()
-                            .getFrameNumber()
-                    - 1) {
-                this.xSeries.getData()
-                            .clear();
-                this.ySeries.getData()
-                            .clear();
+            if (frame > this.getFrameLength().getFrameNumber() - 1) {
+                this.xSeries.getData().clear();
+                this.ySeries.getData().clear();
             }
-            this.xSeries.getData()
-                        .add(new XYChart.Data<Number, Number>(frame, (int) derivative.getX()));
-            this.ySeries.getData()
-                        .add(new XYChart.Data<Number, Number>(frame, (int) derivative.getY()));
+            this.xSeries.getData().add(new XYChart.Data<Number, Number>(frame, (int) derivative.getX()));
+            this.ySeries.getData().add(new XYChart.Data<Number, Number>(frame, (int) derivative.getY()));
 
             this.context.fillOval(-path.getX() + this.canvas.getWidth() / 2, path.getY() + this.canvas.getHeight() / 2,
                     4, 4);
