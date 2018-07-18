@@ -17,7 +17,7 @@ import jestures.core.view.View;
  */
 public final class Recognizer extends Tracker implements Recognition {
     private final Set<View> view;
-    private static Recognizer instance;
+    private static Recognition instance;
 
     /**
      *
@@ -31,7 +31,7 @@ public final class Recognizer extends Tracker implements Recognition {
      *
      * @return the {@link Tracking} instance.
      */
-    public static Tracking getInstance() {
+    public static Recognition getInstance() {
         synchronized (Tracking.class) {
             if (Recognizer.instance == null) {
                 Recognizer.instance = new Recognizer();

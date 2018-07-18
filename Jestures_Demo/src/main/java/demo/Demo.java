@@ -6,9 +6,9 @@ package demo;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+import jestures.core.recognition.Recognition;
 import jestures.core.recognition.Recognizer;
 import jestures.core.tracking.JointListener;
-import jestures.core.tracking.Tracking;
 import jestures.core.view.View;
 import jestures.core.view.screens.TrackerView;
 import jestures.sensor.IllegalSensorStateException;
@@ -42,7 +42,7 @@ public class Demo {
      */
     public static void main(final String[] args) throws SensorException, IllegalSensorStateException {
         final Sensor sensor = new Kinect(Joint.RIGHT_HAND, KinectSensors.SKELETON_ONLY, KinectVersion.KINECT1);
-        final Tracking recognizer = Recognizer.getInstance();
+        final Recognition recognizer = Recognizer.getInstance();
         recognizer.attacheSensor(sensor);
         final View view = new TrackerView(recognizer);
         recognizer.attacheUI(view);
