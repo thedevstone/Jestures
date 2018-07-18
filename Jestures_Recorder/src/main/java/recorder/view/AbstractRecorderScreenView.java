@@ -3,6 +3,7 @@ package recorder.view;
 import org.kordamp.ikonli.material.Material;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXScrollPane;
 import com.jfoenix.controls.JFXTabPane;
@@ -22,6 +23,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import jestures.core.codification.FrameLength;
+import jestures.core.recognition.gesture.DefaultGesture;
 import jestures.core.view.enums.DialogsType.DimDialogs;
 import jestures.core.view.enums.IconDim;
 import jestures.core.view.utils.RecordingFactory;
@@ -64,6 +66,8 @@ public abstract class AbstractRecorderScreenView implements RecView {
     @FXML
     private ComboBox<FrameLength> frameLengthCombo;
     @FXML
+    private JFXComboBox<String> gestureComboBox;
+    @FXML
     private JFXScrollPane scrollPane;
     @FXML
     private JFXListView<BorderPane> listView;
@@ -96,6 +100,7 @@ public abstract class AbstractRecorderScreenView implements RecView {
     }
 
     private void initButtons() {
+        this.startButton.setDisable(true);
         this.startButton.setOnAction(e -> {
             if (this.recorder.state()) {
                 this.stopSensor();
@@ -168,6 +173,17 @@ public abstract class AbstractRecorderScreenView implements RecView {
         this.frameLengthCombo.getItems().add(FrameLength.THREE_SECONDS);
         this.frameLengthCombo.getSelectionModel().select(this.getFrameLength());
         JFXDepthManager.setDepth(this.frameLengthCombo, 4);
+
+        this.gestureComboBox.setOnAction(t -> {
+            this.selectGesture(this.gestureComboBox.getSelectionModel().getSelectedItem());
+            this.startButton.setDisable(false);
+        });
+
+        this.gestureComboBox.getItems().add(DefaultGesture.SWIPE_RIGHT.getGestureName());
+        this.gestureComboBox.getItems().add(DefaultGesture.SWIPE_LEFT.getGestureName());
+        this.gestureComboBox.getItems().add(DefaultGesture.CIRCLE.getGestureName());
+        JFXDepthManager.setDepth(this.gestureComboBox, 4);
+
     }
 
     // ################################################ GETTER FOR INSTANCE CLASS #####################################

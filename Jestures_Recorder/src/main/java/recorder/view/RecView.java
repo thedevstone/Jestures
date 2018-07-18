@@ -28,4 +28,12 @@ public interface RecView extends View {
      */
     void clearListView();
 
+    /**
+     * Select the gesture.
+     * 
+     * @param gesture
+     *            the gesture
+     */
+    void selectGesture(String gesture);
+
 }

@@ -143,6 +143,12 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     }
 
     // ############################################## TO RECORDER###################################
+
+    @Override
+    public void selectGesture(final String gesture) {
+        System.out.println(gesture);
+    }
+
     @Override
     public void clearListView() {
         this.listView.getItems().clear();
