@@ -14,9 +14,10 @@
  * limitations under the License.
  *******************************************************************************/
 
-package recorder.view;
+package recorder.controller;
 
 import jestures.core.tracking.Tracking;
+import recorder.view.RecView;
 
 /**
  * Inteface for tracking.

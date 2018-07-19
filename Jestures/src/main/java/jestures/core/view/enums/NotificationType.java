@@ -34,7 +34,7 @@ public enum NotificationType {
         /**
          * Dims.
          */
-        VERY_VERY_LONG(10), VERY_LONG(7), LONG(5), MEDIUM(3), SHORT(1), SHORTER(0.5), SHORTEST(0.3);
+        VERY_VERY_LONG(10), VERY_LONG(7), LONG(4), MEDIUM(2), SHORT(1), SHORTER(0.5), SHORTEST(0.3);
 
         private double dim;
 

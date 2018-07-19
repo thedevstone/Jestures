@@ -8,7 +8,6 @@ import jestures.sensor.kinect.KinectSensors;
 import jestures.sensor.kinect.KinectVersion;
 import recorder.view.RecView;
 import recorder.view.RecorderScreenView;
-import recorder.view.Recording;
 
 /**
  * Main class.

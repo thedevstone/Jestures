@@ -30,6 +30,7 @@ import jestures.core.view.utils.RecordingFactory;
 import jestures.core.view.utils.ScrollPaneFactory;
 import jestures.core.view.utils.ViewUtilities;
 import recorder.controller.Recorder;
+import recorder.controller.Recording;
 
 /**
  * Recorder abstact view for initialization.

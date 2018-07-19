@@ -71,6 +71,7 @@ repositories {
    	}
 }
 
+
 dependencies {
 	//compile all jar in libs
 	localCompile fileTree(dir: 'libs', include: '*.jar')

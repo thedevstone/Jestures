@@ -35,13 +35,14 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import jestures.core.codification.FrameLength;
 import jestures.core.view.enums.DialogsType.DimDialogs;
-import jestures.core.view.enums.NotificationType;
 import jestures.core.view.enums.NotificationType.Duration;
 import jestures.core.view.utils.ListViewFactory;
 import jestures.core.view.utils.ViewUtilities;
+import recorder.controller.Recording;
 
 /**
  *
@@ -134,11 +135,16 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     @Override
     public void setRecording(final boolean isRecording) {
         if (isRecording) {
-            Platform.runLater(() -> ViewUtilities.showNotificationPopup("START RECORDING", "Record is started",
-                    Duration.MEDIUM, NotificationType.WARNING, t -> System.out.println("Dioporco")));
+
+            Platform.runLater(() -> {
+                ViewUtilities.showSnackBar((Pane) this.recorderPane.getCenter(), "Record is started", Duration.MEDIUM,
+                        DimDialogs.SMALL, null);
+            });
         } else {
-            Platform.runLater(() -> ViewUtilities.showNotificationPopup("STOP RECORDING", "Record is stopped",
-                    Duration.MEDIUM, NotificationType.WARNING, null));
+            Platform.runLater(() -> {
+                ViewUtilities.showSnackBar((Pane) this.recorderPane.getCenter(), "Record is stopped", Duration.MEDIUM,
+                        DimDialogs.SMALL, null);
+            });
         }
     }
 

@@ -28,7 +28,6 @@ import jestures.core.tracking.Tracker;
 import jestures.core.tracking.Tracking;
 import jestures.core.view.screens.TrackerView;
 import recorder.view.RecView;
-import recorder.view.Recording;
 
 /**
  * The {@link Recorder} class.

@@ -21,3 +21,4 @@ jar {
         attributes 'Main-Class': 'recorder.controller.Main'
     }
 }
+

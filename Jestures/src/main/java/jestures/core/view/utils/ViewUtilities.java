@@ -6,10 +6,13 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
+import com.jfoenix.controls.JFXSnackbar;
+import com.jfoenix.controls.JFXSnackbar.SnackbarEvent;
 
 import eu.hansolo.enzo.notification.Notification;
 import eu.hansolo.enzo.notification.NotificationEvent;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
@@ -226,5 +229,28 @@ public final class ViewUtilities {
             break;
         }
         no.setOnNotificationPressed(ev);
+    }
+
+    /**
+     * Create a {@link JFXSnackbar}.
+     *
+     * @param snackBarContainer
+     *            the {@link Pane} container
+     * @param message
+     *            the {@link String} message
+     * @param secondsDuration
+     *            duration
+     * @param textSize
+     *            the {@link DimDialogs} size
+     * @param event
+     *            the {@link ActionEvent}
+     */
+    public static void showSnackBar(final Pane snackBarContainer, final String message,
+            final NotificationType.Duration secondsDuration, final DimDialogs textSize,
+            final EventHandler<ActionEvent> event) {
+        final JFXSnackbar bar = new JFXSnackbar(snackBarContainer);
+        final SnackbarEvent eventToast = new SnackbarEvent(message, null, (long) secondsDuration.getValue() * 1000,
+                false, event);
+        bar.enqueue(eventToast);
     }
 }
