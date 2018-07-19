@@ -15,6 +15,7 @@
  *******************************************************************************/
 package recorder.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -125,9 +126,8 @@ public final class Recorder extends Tracker implements Recording {
 
     // #################### USER MANAGER #####################
     @Override
-    public void selectFeatureVector(final String gesture, final int index) {
-        System.out.println(this.listOfFeatureVector.get(index));
-        System.out.println(gesture);
+    public void selectFeatureVector(final String gesture, final int index) throws IOException {
+        this.userManager.serializeFeatureVector(gesture, this.listOfFeatureVector.get(index));
 
     }
 

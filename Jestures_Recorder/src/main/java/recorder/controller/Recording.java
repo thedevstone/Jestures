@@ -16,6 +16,8 @@
 
 package recorder.controller;
 
+import java.io.IOException;
+
 import jestures.core.tracking.Tracking;
 import recorder.view.RecView;
 
@@ -41,8 +43,10 @@ public interface Recording extends Tracking {
      *            the {@link String} gesture
      * @param index
      *            the index in the list
+     * @throws IOException
+     *             the exception
      */
-    void selectFeatureVector(String gesture, int index);
+    void selectFeatureVector(String gesture, int index) throws IOException;
 
     /**
      * Delete the feature vector in the list.

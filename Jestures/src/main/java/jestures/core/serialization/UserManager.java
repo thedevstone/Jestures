@@ -36,10 +36,10 @@ public class UserManager implements Serializer {
     public void serializeFeatureVector(final String gestureName, final List<Vector2D> featureVector)
             throws IOException {
         this.userData.addGestureFeatureVector(gestureName, featureVector);
-        try (Writer writer = new FileWriter(FileManager.getUserDir(this.userData.getUserName()))) {
+        try (Writer writer = new FileWriter(FileManager.getUserDir(this.userData.getUserName()) + "UserData.json")) {
             this.gson.toJson(this.userData, writer);
         } catch (final Exception e) {
-            System.out.println("Folder does not exist");
+            e.printStackTrace();
             throw e;
         }
 
@@ -59,7 +59,13 @@ public class UserManager implements Serializer {
     @Override
     public boolean loadAndSetUserProfile(final String name) {
         System.out.println("Loading user:" + name);
-        return false;
+        this.userData.setUserName(name);
+        this.deserializeUser(name);
+        return true;
+    }
+
+    private void deserializeUser(final String name) {
+        // TODO Auto-generated method stub
     }
 
 }

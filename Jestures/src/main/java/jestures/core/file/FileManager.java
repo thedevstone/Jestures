@@ -161,8 +161,8 @@ public final class FileManager {
      *             if the file is not found
      */
     public static String getUserDir(final String name) throws FileNotFoundException {
-        final String userFolder = FileManager.libDir + OsUtils.getSeparator() + LibPaths.USER + OsUtils.getSeparator()
-                + name;
+        final String userFolder = FileManager.libDir + OsUtils.getSeparator() + LibPaths.USER.getDirName()
+                + OsUtils.getSeparator() + name + OsUtils.getSeparator();
         if (!FileManager.checkIfFolderExists(userFolder)) {
             throw new FileNotFoundException();
         } else {

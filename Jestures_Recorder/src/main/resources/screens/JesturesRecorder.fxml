@@ -24,30 +24,6 @@
          <children>
             <JFXTabPane id="tab-pane" fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                <Tab>
-                     <content>
-                        <StackPane id="canvas-pane" fx:id="canvasStackPane" prefHeight="150.0" prefWidth="200.0" />
-                     </content>
-                </Tab>
-                <Tab>
-                     <content>
-                        <VBox id="chart-pane" fx:id="vbox" alignment="CENTER" />
-                     </content>
-                </Tab>
-                  <Tab>
-                    <content>
-          				<AnchorPane fx:id="listViewAnchorPane">
-                           <children>
-                              <JFXScrollPane id="featureVectorScrollPane" fx:id="scrollPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <children>
-                                    <JFXListView id="list-view-feature" fx:id="listView" />
-                                 </children>
-                              </JFXScrollPane>
-                              <JFXButton id="clearButton" fx:id="clearListViewButton" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
-                           </children>
-      					</AnchorPane> 
-                    </content>
-                  </Tab>
                   <Tab>
                     <content>
                         <BorderPane id="userBorderPane" fx:id="userBorderPane">
@@ -72,6 +48,30 @@
                               </HBox>
                            </top>
                         </BorderPane>
+                    </content>
+                  </Tab>
+                <Tab>
+                     <content>
+                        <StackPane id="canvas-pane" fx:id="canvasStackPane" prefHeight="150.0" prefWidth="200.0" />
+                     </content>
+                </Tab>
+                <Tab>
+                     <content>
+                        <VBox id="chart-pane" fx:id="vbox" alignment="CENTER" />
+                     </content>
+                </Tab>
+                  <Tab>
+                    <content>
+          				<AnchorPane fx:id="listViewAnchorPane">
+                           <children>
+                              <JFXScrollPane id="featureVectorScrollPane" fx:id="scrollPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <JFXListView id="list-view-feature" fx:id="listView" />
+                                 </children>
+                              </JFXScrollPane>
+                              <JFXButton id="clearButton" fx:id="clearListViewButton" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+                           </children>
+      					</AnchorPane> 
                     </content>
                   </Tab>
               </tabs>

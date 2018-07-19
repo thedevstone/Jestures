@@ -23,8 +23,8 @@ public class UserDataImpl implements UserData {
      * {@link Vector2D}
      *
      */
-    private final Map<String, List<List<Vector2D>>> gestures;
     private String userName;
+    private final Map<String, List<List<Vector2D>>> gestures;
 
     /**
      * The constructor for the {@link UserDataImpl} class.

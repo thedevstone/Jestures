@@ -227,10 +227,17 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
         this.listView.setOnMouseClicked(t -> {
             final int indexClicked = this.listView.getSelectionModel().getSelectedIndex();
             if (t.getButton().equals(MouseButton.PRIMARY) && indexClicked != -1) {
+
                 ViewUtilities.showConfirmDialog(this.scrollPane, "Save",
                         "Save the feature vector N: " + indexClicked + "?", DimDialogs.MEDIUM, (final Event event) -> {
+
                             if (((JFXButton) event.getSource()).getText().equals("YES")) {
-                                this.recorder.selectFeatureVector(this.getGesture(), indexClicked);
+                                try {
+                                    this.recorder.selectFeatureVector(this.getGesture(), indexClicked);
+                                } catch (final IOException e) {
+                                    ViewUtilities.showNotificationPopup("Exception", "Cannot serialize vector",
+                                            Duration.MEDIUM, NotificationType.WARNING, null);
+                                }
                                 this.recorder.deleteFeatureVector(indexClicked);
                                 this.listView.getItems().remove(indexClicked);
                             }

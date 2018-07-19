@@ -21,6 +21,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -177,9 +178,10 @@ public abstract class AbstractRecorderScreenView implements RecView {
     }
 
     private void initGraphic() {
-        this.tabPane.getTabs().get(0).setGraphic(ViewUtilities.iconSetter(Material.BLUR_ON, IconDim.MEDIUM));
-        this.tabPane.getTabs().get(1).setGraphic(ViewUtilities.iconSetter(Material.MULTILINE_CHART, IconDim.MEDIUM));
-        this.tabPane.getTabs().get(2).setGraphic(ViewUtilities.iconSetter(Material.VIEW_LIST, IconDim.MEDIUM));
+        this.tabPane.getTabs().get(0).setGraphic(ViewUtilities.iconSetter(Material.PERSON, IconDim.MEDIUM));
+        this.tabPane.getTabs().get(1).setGraphic(ViewUtilities.iconSetter(Material.BLUR_ON, IconDim.MEDIUM));
+        this.tabPane.getTabs().get(2).setGraphic(ViewUtilities.iconSetter(Material.MULTILINE_CHART, IconDim.MEDIUM));
+        this.tabPane.getTabs().get(3).setGraphic(ViewUtilities.iconSetter(Material.VIEW_LIST, IconDim.MEDIUM));
         this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY, IconDim.MEDIUM));
 
     }
@@ -209,20 +211,40 @@ public abstract class AbstractRecorderScreenView implements RecView {
         this.frameLengthCombo.getSelectionModel().select(this.getFrameLength());
         JFXDepthManager.setDepth(this.frameLengthCombo, 4);
 
+        // GESTURE COMBOBOX
         this.gestureComboBox.setDisable(true);
         this.gestureComboBox.setOnAction(t -> {
-            this.selectGesture(this.gestureComboBox.getSelectionModel().getSelectedItem());
-            this.startButton.setDisable(false);
-        });
+            final int index = this.gestureComboBox.getSelectionModel().getSelectedIndex();
+            final String selected = this.gestureComboBox.getSelectionModel().getSelectedItem();
 
+            if (index != -1) {
+                this.selectGesture(selected);
+                this.startButton.setDisable(false);
+                ViewUtilities.showSnackBar((Pane) this.recorderPane.getCenter(),
+                        "Gesture '" + selected + "' selected!!", Duration.MEDIUM, DimDialogs.SMALL, null);
+            } else {
+                ViewUtilities.showNotificationPopup("Cannot select gesture", "", Duration.MEDIUM,
+                        NotificationType.ERROR, null);
+            }
+        });
         this.gestureComboBox.getItems().add(DefaultGesture.SWIPE_RIGHT.getGestureName());
         this.gestureComboBox.getItems().add(DefaultGesture.SWIPE_LEFT.getGestureName());
         this.gestureComboBox.getItems().add(DefaultGesture.CIRCLE.getGestureName());
         JFXDepthManager.setDepth(this.gestureComboBox, 4);
 
+        // USER COMBOBOX
         this.selectUserCombo.setOnAction(t -> {
-            this.loadUserProfile(this.selectUserCombo.getSelectionModel().getSelectedItem());
-            this.gestureComboBox.setDisable(false);
+            final int index = this.selectUserCombo.getSelectionModel().getSelectedIndex();
+            final String selected = this.selectUserCombo.getSelectionModel().getSelectedItem();
+            if (index != -1) {
+                this.loadUserProfile(selected);
+                this.gestureComboBox.setDisable(false);
+                ViewUtilities.showSnackBar((Pane) this.recorderPane.getCenter(), "User '" + selected + "' Created!",
+                        Duration.MEDIUM, DimDialogs.SMALL, null);
+            } else {
+                ViewUtilities.showNotificationPopup("Cannot select user", "", Duration.MEDIUM, NotificationType.ERROR,
+                        null);
+            }
         });
 
     }
