@@ -26,6 +26,14 @@ import jestures.core.tracking.TrackingObserver;
  * The @link{Codifier} class.
  */
 public interface Codifier {
+
+    /**
+     * Get the {@link Codification}.
+     *
+     * @return the {@link Codification} type
+     */
+    Codification getCodificationType();
+
     /**
      * Codify the body joint according to class specification. This performs discretization on skeleton stream.
      * <p>
@@ -59,7 +67,7 @@ public interface Codifier {
 
     /**
      * Set the frame length.
-     * 
+     *
      * @param length
      *            the {@link FrameLength}.
      */

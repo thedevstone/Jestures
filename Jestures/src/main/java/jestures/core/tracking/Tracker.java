@@ -123,6 +123,11 @@ public abstract class Tracker implements TrackingObserver, SensorObserver, Track
     }
 
     @Override
+    public Codification getCodificationType() {
+        return this.codifier.getCodificationType();
+    }
+
+    @Override
     public void resetCodificationFrame() {
         this.codifier.resetFrame();
     }

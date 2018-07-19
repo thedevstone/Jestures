@@ -16,6 +16,7 @@
 
 package jestures.core.tracking;
 
+import jestures.core.codification.Codification;
 import jestures.core.codification.FrameLength;
 import jestures.sensor.Sensor;
 
@@ -25,6 +26,13 @@ import jestures.sensor.Sensor;
  *
  */
 public interface Tracking {
+
+    /**
+     * Get the {@link Codification} type.
+     * 
+     * @return the {@link Codification} type.
+     */
+    Codification getCodificationType();
 
     /**
      * Attache the listener.

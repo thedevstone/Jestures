@@ -18,6 +18,8 @@ package jestures.core.file;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * Class dedicated to File managing.
@@ -59,47 +61,61 @@ public final class FileManager {
     }
 
     /**
-     * crate subfolders.
-     *
+     * @param path
+     *            the {@link LibPaths} path
      */
-    public static void createLibSubFolder() {
-        final String tempPath = FileManager.crateOrGetLibDir() + OsUtils.getSeparator()
-                + LibPaths.NATIVE_DIR.getDirName();
-        if (!java.nio.file.Files.exists(java.nio.file.Paths.get(tempPath))) {
-            try {
-                java.nio.file.Files.createDirectories(java.nio.file.Paths.get(tempPath));
-            } catch (final IOException e) {
-                System.out.println("Cannot create lib directory");
-            }
-        }
+    public static void createLibSubFolder(final LibPaths path) {
+        final String tempPath = FileManager.libDir + OsUtils.getSeparator() + path.getDirName();
+        FileManager.createDirectory(tempPath);
 
         try {
             FileManager.addDir(tempPath);
         } catch (final IOException e) {
-
             e.printStackTrace();
         }
-
     }
 
     /**
-     * Get lib directory.
-     *
-     * @return the {@link String} directory
+     * Create the lib for native dll (Kinect).
      */
-    public static String crateOrGetLibDir() {
-        if (FileManager.libDir == null) {
-            FileManager.libDir = System.getProperty("user.home") + OsUtils.getSeparator()
-                    + LibPaths.LIB_NAME.getDirName();
-            if (!java.nio.file.Files.exists(java.nio.file.Paths.get(FileManager.libDir))) {
-                try {
-                    java.nio.file.Files.createDirectories(java.nio.file.Paths.get(FileManager.libDir));
-                } catch (final IOException e) {
-                    System.out.println("Cannot create lib directory");
-                }
-            }
+    public static void createKinectNativeFolderLib() {
+        FileManager.createFrameworkDirectory();
+        FileManager.createLibSubFolder(LibPaths.NATIVE_DIR);
+        try {
+            FileManager.addDir(OsUtils.getHomeFolder() + OsUtils.getSeparator() + LibPaths.LIB_NAME.getDirName()
+                    + LibPaths.NATIVE_DIR.getDirName());
+        } catch (final IOException e) {
+            System.out.println("Cannot load the files");
         }
-        return FileManager.libDir;
+    }
+
+    /**
+     * Create the framework main directory.
+     *
+     */
+    public static void createFrameworkDirectory() {
+        if (FileManager.libDir == null) {
+            FileManager.libDir = OsUtils.getHomeFolder() + OsUtils.getSeparator() + LibPaths.LIB_NAME.getDirName();
+            FileManager.createDirectory(FileManager.libDir);
+        }
+    }
+
+    private static boolean checkIfFolderExists(final String folder) {
+        return Files.exists(Paths.get(folder));
+    }
+
+    private static boolean createDirectory(final String folder) {
+        if (!FileManager.checkIfFolderExists(folder)) {
+            try {
+                Files.createDirectories(Paths.get(folder));
+                return true;
+            } catch (final Exception e) {
+                System.out.println("Cannot create lib directory");
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
 }

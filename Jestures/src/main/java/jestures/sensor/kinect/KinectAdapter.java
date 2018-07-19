@@ -31,7 +31,7 @@ import jestures.sensor.Joint;
  */
 class KinectAdapter extends J4KSDK implements KinectInterfaceAdapter {
     static {
-        FileManager.createLibSubFolder();
+        FileManager.createKinectNativeFolderLib();
     }
     private KinectObserver kinect;
     private boolean first;
@@ -107,7 +107,7 @@ class KinectAdapter extends J4KSDK implements KinectInterfaceAdapter {
                 final double[] doubleAcceleration = new double[3];
                 final float[] floatAccleration = this.getAccelerometerReading();
                 IntStream.range(0, floatAccleration.length)
-                        .forEach(index -> doubleAcceleration[index] = floatAccleration[index]);
+                         .forEach(index -> doubleAcceleration[index] = floatAccleration[index]);
                 acceleration = new Vector3D(doubleAcceleration);
 
                 // NOTIFY

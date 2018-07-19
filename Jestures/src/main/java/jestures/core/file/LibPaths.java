@@ -19,7 +19,7 @@ package jestures.core.file;
  * Native file paths.
  *
  */
-enum LibPaths {
+public enum LibPaths {
     /**
      * Kinect1_64.
      */

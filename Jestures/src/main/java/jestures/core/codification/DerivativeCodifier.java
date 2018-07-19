@@ -35,6 +35,7 @@ public class DerivativeCodifier implements Codifier {
     private int frame;
     private FrameLength frameLength;
     private TrackingObserver recognizer;
+    private static final Codification CODIFICATION = Codification.DERIVATIVE;
 
     /**
      * The @link{DerivativeCodifier.java} constructor.
@@ -47,6 +48,11 @@ public class DerivativeCodifier implements Codifier {
         this.oldVector = new Vector2D(0, 0);
         this.frame = 0;
         this.frameLength = frames;
+    }
+
+    @Override
+    public Codification getCodificationType() {
+        return DerivativeCodifier.CODIFICATION;
     }
 
     @Override

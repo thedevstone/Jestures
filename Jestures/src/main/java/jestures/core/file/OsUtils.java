@@ -41,6 +41,7 @@ final class OsUtils {
     // cached result of OS detection
     private static OSType detectedOS; // NOPMD
     private static String separator; // NOPMD
+    private static String home; // NOPMD
 
     /**
      * detect the operating system from the os.name System property and cache the result.
@@ -74,4 +75,17 @@ final class OsUtils {
         }
         return OsUtils.separator;
     }
+
+    /**
+     * Get the system home folder
+     *
+     * @return the home folder
+     */
+    public static String getHomeFolder() {
+        if (OsUtils.home == null) {
+            OsUtils.home = System.getProperty("user.home");
+        }
+        return OsUtils.home;
+    }
+
 }
