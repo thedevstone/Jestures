@@ -27,7 +27,7 @@ public class UserDataImpl implements UserData {
     private String userId;
 
     /**
-     * The constructor for the {@link UserDataImpl.java} class.
+     * The constructor for the {@link UserDataImpl} class.
      */
     public UserDataImpl() {
         this.gestures = new HashMap<>();
