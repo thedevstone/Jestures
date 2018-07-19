@@ -54,7 +54,7 @@ import jestures.core.view.utils.ViewUtilities;
  *
  */
 @SuppressWarnings("restriction")
-public class TrackerView extends AbstractView {
+public class RecognitionView extends AbstractView {
 
     // VIEW
     private Stage stage; // NOPMD
@@ -86,7 +86,7 @@ public class TrackerView extends AbstractView {
      * @param tracker
      *            the {@link Tracker}
      */
-    public TrackerView(final Tracking tracker) {
+    public RecognitionView(final Tracking tracker) {
         super(tracker);
 
         Platform.runLater(() -> {
@@ -164,7 +164,7 @@ public class TrackerView extends AbstractView {
     }
 
     private void chargeSceneSheets(final FXMLScreens screen) {
-        this.scene.getStylesheets().add(TrackerView.class.getResource(screen.getCssPath()).toString());
+        this.scene.getStylesheets().add(RecognitionView.class.getResource(screen.getCssPath()).toString());
     }
 
     private void initCombos() {
@@ -203,6 +203,18 @@ public class TrackerView extends AbstractView {
     public static void startFxThread() {
         PlatformImpl.startup(() -> {
         });
+    }
+
+    @Override
+    public void loadUsers() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void loadUserProfile(final String name) {
+        // TODO Auto-generated method stub
+
     }
 
 }

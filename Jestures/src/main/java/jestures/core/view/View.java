@@ -26,7 +26,7 @@ public interface View {
     /**
      * Update view on feature vector event.
      *
-     * 
+     *
      */
     void notifyOnFeatureVectorEvent();
 
@@ -61,5 +61,18 @@ public interface View {
      * @return the {@link FrameLength}
      */
     FrameLength getFrameLength();
+
+    /**
+     * Load the Users.
+     */
+    void loadUsers();
+
+    /**
+     * Load the userProfile.
+     *
+     * @param name
+     *            the String name
+     */
+    void loadUserProfile(String name);
 
 }

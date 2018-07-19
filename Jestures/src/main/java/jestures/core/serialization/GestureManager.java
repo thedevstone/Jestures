@@ -1,12 +1,13 @@
 /**
  *
  */
-package recorder.controller.serialization;
+package jestures.core.serialization;
 
 import java.util.List;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+import jestures.core.file.FileManager;
 import jestures.core.recognition.gesture.UserData;
 import jestures.core.recognition.gesture.UserDataImpl;
 
@@ -14,7 +15,7 @@ import jestures.core.recognition.gesture.UserDataImpl;
  * The {@link GestureManager} class.
  *
  */
-public class GestureManager implements Serialization {
+public class GestureManager implements Serializer {
     private final UserData gestures;
     private boolean modified = false;
 
@@ -36,6 +37,17 @@ public class GestureManager implements Serialization {
     public void serializeAllFeatureVectors(final String gestureName, final List<List<Vector2D>> featureVector) {
         this.gestures.addAllGestureFeatureVector(gestureName, featureVector);
         this.modified = true;
+    }
+
+    @Override
+    public boolean createUserProfile(final String name) {
+        return FileManager.createLibSubFolder(name.trim());
+    }
+
+    @Override
+    public boolean loadUserProfile(final String name) {
+        System.out.println("Loading user:" + name);
+        return false;
     }
 
 }

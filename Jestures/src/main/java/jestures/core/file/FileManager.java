@@ -19,7 +19,11 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Class dedicated to File managing.
@@ -61,18 +65,13 @@ public final class FileManager {
     }
 
     /**
-     * @param path
-     *            the {@link LibPaths} path
+     * @param folder
+     *            the {@link String} path
+     * @return <code>true</code> if the folder exists
      */
-    public static void createLibSubFolder(final LibPaths path) {
-        final String tempPath = FileManager.libDir + OsUtils.getSeparator() + path.getDirName();
-        FileManager.createDirectory(tempPath);
-
-        try {
-            FileManager.addDir(tempPath);
-        } catch (final IOException e) {
-            e.printStackTrace();
-        }
+    public static boolean createLibSubFolder(final String folder) {
+        final String tempPath = FileManager.libDir + OsUtils.getSeparator() + folder.replaceAll("\\s+", "_");
+        return FileManager.createDirectory(tempPath);
     }
 
     /**
@@ -80,10 +79,10 @@ public final class FileManager {
      */
     public static void createKinectNativeFolderLib() {
         FileManager.createFrameworkDirectory();
-        FileManager.createLibSubFolder(LibPaths.NATIVE_DIR);
+        FileManager.createLibSubFolder(LibPaths.NATIVE_DIR.getDirName());
         try {
             FileManager.addDir(OsUtils.getHomeFolder() + OsUtils.getSeparator() + LibPaths.LIB_NAME.getDirName()
-                    + LibPaths.NATIVE_DIR.getDirName());
+                    + OsUtils.getSeparator() + LibPaths.NATIVE_DIR.getDirName());
         } catch (final IOException e) {
             System.out.println("Cannot load the files");
         }
@@ -115,6 +114,22 @@ public final class FileManager {
             }
         } else {
             return false;
+        }
+    }
+
+    /**
+     * Get the list of directorey.
+     *
+     * @return the {@link List} of directory
+     * @throws IOException
+     *             the {@link IOException}
+     */
+    public static List<String> getAllUserFolder() throws IOException {
+        try (Stream<Path> paths = Files.walk(Paths.get(FileManager.libDir), 1)) {
+            return paths.map(p -> p.getFileName().toString())
+                        .filter(t -> !t.equals(LibPaths.LIB_NAME.getDirName())
+                                && !t.equals(LibPaths.NATIVE_DIR.getDirName()))
+                        .collect(Collectors.toList());
         }
     }
 

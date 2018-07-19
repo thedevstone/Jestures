@@ -7,6 +7,8 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXScrollPane;
 import com.jfoenix.controls.JFXTabPane;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXTreeView;
 import com.jfoenix.effects.JFXDepthManager;
 
 import javafx.fxml.FXML;
@@ -26,6 +28,8 @@ import jestures.core.codification.FrameLength;
 import jestures.core.recognition.gesture.DefaultGesture;
 import jestures.core.view.enums.DialogsType.DimDialogs;
 import jestures.core.view.enums.IconDim;
+import jestures.core.view.enums.NotificationType;
+import jestures.core.view.enums.NotificationType.Duration;
 import jestures.core.view.utils.RecordingFactory;
 import jestures.core.view.utils.ScrollPaneFactory;
 import jestures.core.view.utils.ViewUtilities;
@@ -50,6 +54,16 @@ public abstract class AbstractRecorderScreenView implements RecView {
     private Canvas canvas;
     private GraphicsContext context;
 
+    @FXML
+    private JFXTextField createUserTextField;
+    @FXML
+    private JFXButton createUserButton;
+    @FXML
+    private JFXComboBox<String> selectUserCombo;
+    @FXML
+    private Canvas userCanvas;
+    @FXML
+    private JFXTreeView<String> treeView;
     @FXML
     private JFXButton clearListViewButton;
     @FXML
@@ -98,10 +112,17 @@ public abstract class AbstractRecorderScreenView implements RecView {
         this.initChart();
         this.initTabPaneListener();
         this.initListView();
+        this.initTreeView();
+
+    }
+
+    private void initTreeView() {
+
     }
 
     private void initButtons() {
         this.startButton.setDisable(true);
+
         this.startButton.setOnAction(e -> {
             if (this.recorder.state()) {
                 this.stopSensor();
@@ -116,6 +137,19 @@ public abstract class AbstractRecorderScreenView implements RecView {
         JFXDepthManager.setDepth(this.clearListViewButton, 4);
         this.clearListViewButton.setOnAction(t -> {
             this.clearListView();
+        });
+
+        this.createUserButton.setGraphic(ViewUtilities.iconSetter(Material.CREATE, IconDim.MEDIUM));
+
+        this.createUserButton.setOnAction(t -> {
+            this.loadUsers();
+            if (!this.recorder.createUserProfile(this.createUserTextField.getText())) {
+                ViewUtilities.showNotificationPopup("Cannot create User", "User already exists", Duration.MEDIUM,
+                        NotificationType.WARNING, null);
+            } else {
+                ViewUtilities.showNotificationPopup("User Created", "", Duration.MEDIUM, NotificationType.SUCCESS,
+                        null);
+            }
         });
 
     }
@@ -175,6 +209,7 @@ public abstract class AbstractRecorderScreenView implements RecView {
         this.frameLengthCombo.getSelectionModel().select(this.getFrameLength());
         JFXDepthManager.setDepth(this.frameLengthCombo, 4);
 
+        this.gestureComboBox.setDisable(true);
         this.gestureComboBox.setOnAction(t -> {
             this.selectGesture(this.gestureComboBox.getSelectionModel().getSelectedItem());
             this.startButton.setDisable(false);
@@ -184,6 +219,11 @@ public abstract class AbstractRecorderScreenView implements RecView {
         this.gestureComboBox.getItems().add(DefaultGesture.SWIPE_LEFT.getGestureName());
         this.gestureComboBox.getItems().add(DefaultGesture.CIRCLE.getGestureName());
         JFXDepthManager.setDepth(this.gestureComboBox, 4);
+
+        this.selectUserCombo.setOnAction(t -> {
+            this.loadUserProfile(this.selectUserCombo.getSelectionModel().getSelectedItem());
+            this.gestureComboBox.setDisable(false);
+        });
 
     }
 

@@ -21,6 +21,7 @@ import java.io.IOException;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXScrollPane;
 import com.sun.javafx.application.PlatformImpl;
@@ -38,7 +39,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import jestures.core.codification.FrameLength;
+import jestures.core.file.FileManager;
 import jestures.core.view.enums.DialogsType.DimDialogs;
+import jestures.core.view.enums.NotificationType;
 import jestures.core.view.enums.NotificationType.Duration;
 import jestures.core.view.utils.ListViewFactory;
 import jestures.core.view.utils.ViewUtilities;
@@ -56,6 +59,8 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     private Stage stage; // NOPMD
     private Scene scene; // NOPMD
 
+    @FXML
+    private JFXComboBox<String> selectUserCombo;
     @FXML
     private BorderPane recorderPane; // NOPMD
     @FXML
@@ -193,6 +198,24 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     @Override
     public FrameLength getFrameLength() {
         return this.frameLength;
+    }
+
+    @Override
+    public void loadUsers() {
+        Platform.runLater(() -> {
+            try {
+                this.selectUserCombo.getItems().clear();
+                FileManager.getAllUserFolder().stream().forEachOrdered(t -> this.selectUserCombo.getItems().add(t));
+            } catch (final IOException e) {
+                ViewUtilities.showNotificationPopup("Exception", "Cannot read user data", Duration.MEDIUM,
+                        NotificationType.WARNING, null);
+            }
+        });
+    }
+
+    @Override
+    public void loadUserProfile(final String name) {
+        this.recorder.loadUserProfile(name);
     }
 
     // ############################################## INSTANCE METHODS ###################################

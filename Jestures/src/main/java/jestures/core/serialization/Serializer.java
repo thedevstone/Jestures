@@ -1,17 +1,17 @@
 /**
  *
  */
-package recorder.controller.serialization;
+package jestures.core.serialization;
 
 import java.util.List;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 /**
- * The {@link Serialization} class.
+ * The {@link Serializer} class.
  *
  */
-public interface Serialization {
+public interface Serializer {
     /**
      * Serialize the feature vector.
      *
@@ -31,4 +31,22 @@ public interface Serialization {
      *            the {@link List} of {@link List} of feature vector.
      */
     void serializeAllFeatureVectors(String gestureName, List<List<Vector2D>> featureVector);
+
+    /**
+     * Create user profile.
+     *
+     * @param name
+     *            the {@link String} username
+     * @return <code>true</code> if can create the profile
+     */
+    boolean createUserProfile(String name);
+
+    /**
+     * load user profile.
+     *
+     * @param name
+     *            the {@link String} username
+     * @return <code>true</code> if can load the profile
+     */
+    boolean loadUserProfile(String name);
 }

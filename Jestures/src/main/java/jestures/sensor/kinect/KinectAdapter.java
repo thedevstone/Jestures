@@ -16,6 +16,7 @@
 
 package jestures.sensor.kinect;
 
+import java.io.IOException;
 import java.util.stream.IntStream;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
@@ -32,6 +33,12 @@ import jestures.sensor.Joint;
 class KinectAdapter extends J4KSDK implements KinectInterfaceAdapter {
     static {
         FileManager.createKinectNativeFolderLib();
+        try {
+            FileManager.getAllUserFolder();
+        } catch (final IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
     private KinectObserver kinect;
     private boolean first;

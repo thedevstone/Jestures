@@ -26,7 +26,9 @@ import jestures.core.codification.Codification;
 import jestures.core.codification.Codifier;
 import jestures.core.codification.DerivativeCodifier;
 import jestures.core.codification.FrameLength;
-import jestures.core.view.screens.TrackerView;
+import jestures.core.serialization.GestureManager;
+import jestures.core.serialization.Serializer;
+import jestures.core.view.screens.RecognitionView;
 import jestures.sensor.IllegalSensorStateException;
 import jestures.sensor.Sensor;
 import jestures.sensor.SensorException;
@@ -37,6 +39,7 @@ import jestures.sensor.SensorObserver;
  */
 
 public abstract class Tracker implements TrackingObserver, SensorObserver, Tracking {
+    private final Serializer gestureManager;
     private Codifier codifier;
     private Sensor sensor;
     private final Set<JointListener> jointListener;
@@ -55,13 +58,13 @@ public abstract class Tracker implements TrackingObserver, SensorObserver, Track
         if (codificationType.equals(Codification.DERIVATIVE)) {
             this.codifier = new DerivativeCodifier(gestureLenght);
         }
-
+        this.gestureManager = new GestureManager();
         this.frameLength = gestureLenght;
         Tracker.started = false;
         this.codifier.attacheCoreRecognizer(this);
 
         this.jointListener = new HashSet<>();
-        TrackerView.startFxThread();
+        RecognitionView.startFxThread();
 
     }
 
@@ -156,6 +159,16 @@ public abstract class Tracker implements TrackingObserver, SensorObserver, Track
     @Override
     public boolean state() {
         return this.sensor.state();
+    }
+
+    @Override
+    public boolean createUserProfile(final String name) {
+        return this.gestureManager.createUserProfile(name);
+    }
+
+    @Override
+    public boolean loadUserProfile(final String name) {
+        return this.gestureManager.loadUserProfile(name);
     }
 
     /**
