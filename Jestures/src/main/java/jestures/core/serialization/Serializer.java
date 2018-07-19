@@ -3,6 +3,7 @@
  */
 package jestures.core.serialization;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
@@ -19,8 +20,10 @@ public interface Serializer {
      *            the {@link String} gesture name
      * @param featureVector
      *            the {@link List} feature vector
+     * @throws IOException
+     *             the {@link IOException}
      */
-    void serializeFeatureVector(String gestureName, List<Vector2D> featureVector);
+    void serializeFeatureVector(String gestureName, List<Vector2D> featureVector) throws IOException;
 
     /**
      * Serialize all gesture feature vector.
@@ -48,5 +51,5 @@ public interface Serializer {
      *            the {@link String} username
      * @return <code>true</code> if can load the profile
      */
-    boolean loadUserProfile(String name);
+    boolean loadAndSetUserProfile(String name);
 }

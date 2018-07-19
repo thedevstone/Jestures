@@ -27,7 +27,7 @@ public enum LibPaths {
     /**
      * Native.
      */
-    NATIVE_DIR("native");
+    NATIVE_DIR("native"), USER("users");
 
     private String pathNative;
 

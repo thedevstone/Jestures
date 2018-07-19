@@ -37,10 +37,12 @@ public interface Recording extends Tracking {
     /**
      * Select the feature vector.
      *
+     * @param gesture
+     *            the {@link String} gesture
      * @param index
      *            the index in the list
      */
-    void selectFeatureVector(int index);
+    void selectFeatureVector(String gesture, int index);
 
     /**
      * Delete the feature vector in the list.
@@ -54,5 +56,23 @@ public interface Recording extends Tracking {
      * Clear the featureVector.
      */
     void clearFeatureVectors();
+
+    /**
+     * Create user profile.
+     *
+     * @param name
+     *            the {@link String} username
+     * @return <code>true</code> if can create the profile
+     */
+    boolean createUserProfile(String name);
+
+    /**
+     * Load the user.
+     *
+     * @param name
+     *            the {@link String} username
+     * @return <code>true</code> if is loaded
+     */
+    boolean loadUserProfile(String name);
 
 }

@@ -16,6 +16,7 @@
 package jestures.core.file;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
@@ -37,6 +38,70 @@ public final class FileManager {
      */
     private FileManager() {
         // TODO Auto-generated constructor stub
+    }
+
+    // ##################################### CREATE DIRECTORIES################################
+    /**
+     * Create the framework main directory.
+     *
+     */
+    public static void createFrameworkDirectory() {
+        if (FileManager.libDir == null) {
+            FileManager.libDir = OsUtils.getHomeFolder() + OsUtils.getSeparator() + LibPaths.LIB_NAME.getDirName();
+            FileManager.createDirectory(FileManager.libDir);
+            FileManager.createLibSubFolder(LibPaths.USER.getDirName());
+        }
+    }
+
+    private static boolean createDirectory(final String folder) {
+        if (!FileManager.checkIfFolderExists(folder)) {
+            try {
+                Files.createDirectories(Paths.get(folder));
+                return true;
+            } catch (final Exception e) {
+                System.out.println("Cannot create lib directory");
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @param folder
+     *            the {@link String} path
+     * @return <code>true</code> if the folder exists
+     */
+    public static boolean createLibSubFolder(final String folder) {
+        final String tempPath = FileManager.libDir + OsUtils.getSeparator() + folder;
+        return FileManager.createDirectory(tempPath);
+    }
+
+    // ##################################### CREATE SPECIAL DIRECTORIES################################
+
+    /**
+     * @param folder
+     *            the {@link String} path
+     * @return <code>true</code> if the folder exists
+     */
+    public static boolean createUserFolders(final String folder) {
+        final String tempPath = FileManager.libDir + OsUtils.getSeparator() + LibPaths.USER.getDirName()
+                + OsUtils.getSeparator() + folder.replaceAll("\\s+", "_");
+        return FileManager.createDirectory(tempPath);
+    }
+
+    /**
+     * Create the lib for native dll (Kinect).
+     */
+    public static void createKinectNativeFolderLib() {
+        FileManager.createFrameworkDirectory();
+        FileManager.createLibSubFolder(LibPaths.NATIVE_DIR.getDirName());
+        try {
+            FileManager.addDir(OsUtils.getHomeFolder() + OsUtils.getSeparator() + LibPaths.LIB_NAME.getDirName()
+                    + OsUtils.getSeparator() + LibPaths.NATIVE_DIR.getDirName());
+        } catch (final IOException e) {
+            System.out.println("Cannot load the files");
+        }
     }
 
     private static void addDir(final String s) throws IOException {
@@ -64,57 +129,10 @@ public final class FileManager {
         }
     }
 
-    /**
-     * @param folder
-     *            the {@link String} path
-     * @return <code>true</code> if the folder exists
-     */
-    public static boolean createLibSubFolder(final String folder) {
-        final String tempPath = FileManager.libDir + OsUtils.getSeparator() + folder.replaceAll("\\s+", "_");
-        return FileManager.createDirectory(tempPath);
-    }
-
-    /**
-     * Create the lib for native dll (Kinect).
-     */
-    public static void createKinectNativeFolderLib() {
-        FileManager.createFrameworkDirectory();
-        FileManager.createLibSubFolder(LibPaths.NATIVE_DIR.getDirName());
-        try {
-            FileManager.addDir(OsUtils.getHomeFolder() + OsUtils.getSeparator() + LibPaths.LIB_NAME.getDirName()
-                    + OsUtils.getSeparator() + LibPaths.NATIVE_DIR.getDirName());
-        } catch (final IOException e) {
-            System.out.println("Cannot load the files");
-        }
-    }
-
-    /**
-     * Create the framework main directory.
-     *
-     */
-    public static void createFrameworkDirectory() {
-        if (FileManager.libDir == null) {
-            FileManager.libDir = OsUtils.getHomeFolder() + OsUtils.getSeparator() + LibPaths.LIB_NAME.getDirName();
-            FileManager.createDirectory(FileManager.libDir);
-        }
-    }
+    // ##################################### USEFUL METHODS ################################
 
     private static boolean checkIfFolderExists(final String folder) {
         return Files.exists(Paths.get(folder));
-    }
-
-    private static boolean createDirectory(final String folder) {
-        if (!FileManager.checkIfFolderExists(folder)) {
-            try {
-                Files.createDirectories(Paths.get(folder));
-                return true;
-            } catch (final Exception e) {
-                System.out.println("Cannot create lib directory");
-                return false;
-            }
-        } else {
-            return false;
-        }
     }
 
     /**
@@ -125,11 +143,30 @@ public final class FileManager {
      *             the {@link IOException}
      */
     public static List<String> getAllUserFolder() throws IOException {
-        try (Stream<Path> paths = Files.walk(Paths.get(FileManager.libDir), 1)) {
+        try (Stream<Path> paths = Files.walk(
+                Paths.get(FileManager.libDir + OsUtils.getSeparator() + LibPaths.USER.getDirName()), 1)) {
             return paths.map(p -> p.getFileName().toString())
-                        .filter(t -> !t.equals(LibPaths.LIB_NAME.getDirName())
-                                && !t.equals(LibPaths.NATIVE_DIR.getDirName()))
+                        .filter(t -> !t.equals(LibPaths.USER.getDirName()))
                         .collect(Collectors.toList());
+        }
+    }
+
+    /**
+     * Get the user directory.
+     *
+     * @param name
+     *            the {@link String} name.
+     * @return the String path
+     * @throws FileNotFoundException
+     *             if the file is not found
+     */
+    public static String getUserDir(final String name) throws FileNotFoundException {
+        final String userFolder = FileManager.libDir + OsUtils.getSeparator() + LibPaths.USER + OsUtils.getSeparator()
+                + name;
+        if (!FileManager.checkIfFolderExists(userFolder)) {
+            throw new FileNotFoundException();
+        } else {
+            return userFolder;
         }
     }
 

@@ -24,6 +24,8 @@ import java.util.Set;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+import jestures.core.serialization.Serializer;
+import jestures.core.serialization.UserManager;
 import jestures.core.tracking.Tracker;
 import jestures.core.tracking.Tracking;
 import jestures.core.view.screens.RecognitionView;
@@ -34,6 +36,7 @@ import recorder.view.RecView;
  */
 
 public final class Recorder extends Tracker implements Recording {
+    private final Serializer userManager;
     private static Recording instance;
     private final Set<RecView> view;
     private boolean isRecording;
@@ -43,6 +46,7 @@ public final class Recorder extends Tracker implements Recording {
 
     private Recorder() {
         this.listOfFeatureVector = new ArrayList<>();
+        this.userManager = new UserManager();
         this.view = new HashSet<>();
         RecognitionView.startFxThread();
     }
@@ -110,11 +114,6 @@ public final class Recorder extends Tracker implements Recording {
     }
 
     @Override
-    public void selectFeatureVector(final int index) {
-        System.out.println(this.listOfFeatureVector.get(index));
-    }
-
-    @Override
     public void deleteFeatureVector(final int index) {
         this.listOfFeatureVector.remove(index);
     }
@@ -122,6 +121,24 @@ public final class Recorder extends Tracker implements Recording {
     @Override
     public void clearFeatureVectors() {
         this.listOfFeatureVector.clear();
+    }
+
+    // #################### USER MANAGER #####################
+    @Override
+    public void selectFeatureVector(final String gesture, final int index) {
+        System.out.println(this.listOfFeatureVector.get(index));
+        System.out.println(gesture);
+
+    }
+
+    @Override
+    public boolean createUserProfile(final String name) {
+        return this.userManager.createUserProfile(name);
+    }
+
+    @Override
+    public boolean loadUserProfile(final String name) {
+        return this.userManager.loadAndSetUserProfile(name);
     }
 
 }

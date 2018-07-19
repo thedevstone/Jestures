@@ -17,4 +17,13 @@ public interface Recognition extends Tracking {
      */
     void attacheUI(View view);
 
+    /**
+     * Load the user.
+     *
+     * @param name
+     *            the {@link String} username
+     * @return <code>true</code> if is loaded
+     */
+    boolean loadUserProfile(String name);
+
 }

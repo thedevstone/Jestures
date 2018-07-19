@@ -60,6 +60,8 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     private Scene scene; // NOPMD
 
     @FXML
+    private JFXComboBox<String> gestureComboBox;
+    @FXML
     private JFXComboBox<String> selectUserCombo;
     @FXML
     private BorderPane recorderPane; // NOPMD
@@ -171,7 +173,6 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     public void setFrameLength(final FrameLength length) {
         this.frameLength = length;
         this.recorder.setFrameLength(length);
-        System.out.println(length);
     }
 
     @Override
@@ -229,7 +230,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
                 ViewUtilities.showConfirmDialog(this.scrollPane, "Save",
                         "Save the feature vector N: " + indexClicked + "?", DimDialogs.MEDIUM, (final Event event) -> {
                             if (((JFXButton) event.getSource()).getText().equals("YES")) {
-                                this.recorder.selectFeatureVector(indexClicked);
+                                this.recorder.selectFeatureVector(this.getGesture(), indexClicked);
                                 this.recorder.deleteFeatureVector(indexClicked);
                                 this.listView.getItems().remove(indexClicked);
                             }
@@ -241,6 +242,16 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
             }
             this.scrollPane.setContent(this.listView);
         });
+    }
+
+    @Override
+    public String getGesture() {
+        final int i = this.gestureComboBox.getSelectionModel().getSelectedIndex();
+        if (i != -1) {
+            return this.gestureComboBox.getSelectionModel().getSelectedItem();
+        } else {
+            throw new IllegalStateException("No gesture selected");
+        }
     }
 
 }

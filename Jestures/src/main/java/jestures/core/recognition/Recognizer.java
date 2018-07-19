@@ -71,4 +71,10 @@ public final class Recognizer extends Tracker implements Recognition {
         this.view.forEach(t -> t.notifyOnFeatureVectorEvent());
     }
 
+    @Override
+    public boolean loadUserProfile(final String name) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
 }

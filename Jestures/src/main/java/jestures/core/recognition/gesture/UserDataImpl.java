@@ -24,24 +24,24 @@ public class UserDataImpl implements UserData {
      *
      */
     private final Map<String, List<List<Vector2D>>> gestures;
-    private String userId;
+    private String userName;
 
     /**
      * The constructor for the {@link UserDataImpl} class.
      */
     public UserDataImpl() {
         this.gestures = new HashMap<>();
-        this.userId = "null";
+        this.userName = "null";
     }
 
     @Override
-    public void setUserId(final String id) {
-        this.userId = id;
+    public void setUserName(final String id) {
+        this.userName = id;
     }
 
     @Override
-    public String setUserId() {
-        return this.userId;
+    public String getUserName() {
+        return this.userName;
     }
 
     @Override

@@ -17,19 +17,19 @@ import jestures.core.codification.DerivativeCodifier;
  */
 public interface UserData {
     /**
-     * Set the user id.
+     * Set the user name.
      *
-     * @param id
-     *            the user id
+     * @param name
+     *            the {@link String} user name
      */
-    void setUserId(String id);
+    void setUserName(String name);
 
     /**
-     * Get the user id.
-     * 
-     * @return the String userid
+     * Get the user name.
+     *
+     * @return the String name
      */
-    String setUserId();
+    String getUserName();
 
     /**
      * The Feature Vector to serialize.

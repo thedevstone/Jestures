@@ -30,10 +30,17 @@ public interface RecView extends View {
 
     /**
      * Select the gesture.
-     * 
+     *
      * @param gesture
      *            the gesture
      */
     void selectGesture(String gesture);
+
+    /**
+     * Get the actual gesture.
+     * 
+     * @return the {@link String} gesture
+     */
+    String getGesture();
 
 }
