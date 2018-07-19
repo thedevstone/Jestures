@@ -25,7 +25,7 @@ public class UserManager implements Serializer {
     private final Gson gson;
 
     /**
-     * The constructor for the {@link UserManager.java} class.
+     * The constructor for the {@link UserManager} class.
      */
     public UserManager() {
         this.userData = new UserDataImpl();
