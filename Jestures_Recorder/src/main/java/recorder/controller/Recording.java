@@ -18,6 +18,8 @@ package recorder.controller;
 
 import java.io.IOException;
 
+import com.google.gson.JsonIOException;
+
 import jestures.core.tracking.Tracking;
 import recorder.view.RecView;
 
@@ -45,8 +47,22 @@ public interface Recording extends Tracking {
      *            the index in the list
      * @throws IOException
      *             the exception
+     * @throws JsonIOException
+     *             the {@link JsonIOException}
      */
-    void selectFeatureVector(String gesture, int index) throws IOException;
+    void addFeatureVector(String gesture, int index) throws IOException, JsonIOException;
+
+    /**
+     * Add all templates.
+     *
+     * @param gesture
+     *            the String gesture
+     * @throws IOException
+     *             the exception
+     * @throws JsonIOException
+     *             the {@link JsonIOException}
+     */
+    void addAllFeatureVectors(String gesture) throws IOException, JsonIOException;
 
     /**
      * Delete the feature vector in the list.

@@ -11,6 +11,7 @@ import java.util.List;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
 
 import jestures.core.file.FileManager;
 import jestures.core.recognition.gesture.UserData;
@@ -34,20 +35,18 @@ public class UserManager implements Serializer {
 
     @Override
     public void serializeFeatureVector(final String gestureName, final List<Vector2D> featureVector)
-            throws IOException {
+            throws IOException, JsonIOException {
         this.userData.addGestureFeatureVector(gestureName, featureVector);
-        try (Writer writer = new FileWriter(FileManager.getUserDir(this.userData.getUserName()) + "UserData.json")) {
-            this.gson.toJson(this.userData, writer);
-        } catch (final Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
+        this.serializeUser();
 
     }
 
     @Override
-    public void serializeAllFeatureVectors(final String gestureName, final List<List<Vector2D>> featureVector) {
+    public void serializeAllFeatureVectors(final String gestureName, final List<List<Vector2D>> featureVector)
+            throws JsonIOException, IOException {
         this.userData.addAllGestureFeatureVector(gestureName, featureVector);
+        System.out.println(featureVector);
+        this.serializeUser();
 
     }
 
@@ -66,6 +65,12 @@ public class UserManager implements Serializer {
 
     private void deserializeUser(final String name) {
         // TODO Auto-generated method stub
+    }
+
+    private void serializeUser() throws JsonIOException, IOException {
+        final Writer writer = new FileWriter(FileManager.getUserDir(this.userData.getUserName()) + "UserData.json");
+        this.gson.toJson(this.userData, writer);
+
     }
 
 }

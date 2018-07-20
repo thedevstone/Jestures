@@ -20,6 +20,7 @@ import java.io.IOException;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+import com.google.gson.JsonIOException;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
@@ -139,6 +140,20 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     }
 
     // ############################################## FROM RECORDER ###################################
+
+    @Override
+    public void loadUsers() {
+        Platform.runLater(() -> {
+            try {
+                this.selectUserCombo.getItems().clear();
+                FileManager.getAllUserFolder().stream().forEachOrdered(t -> this.selectUserCombo.getItems().add(t));
+            } catch (final IOException e) {
+                ViewUtilities.showNotificationPopup("Exception", "Cannot read user data", Duration.MEDIUM,
+                        NotificationType.WARNING, null);
+            }
+        });
+    }
+
     @Override
     public void setRecording(final boolean isRecording) {
         if (isRecording) {
@@ -155,18 +170,12 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
         }
     }
 
-    // ############################################## TO RECORDER###################################
+    // ############################################## TO RECORDER ###################################
 
+    // #################################### ALL TABS #############################################
     @Override
     public void selectGesture(final String gesture) {
         System.out.println(gesture);
-    }
-
-    @Override
-    public void clearListView() {
-        this.listView.getItems().clear();
-        this.recorder.clearFeatureVectors();
-        this.scrollPane.setContent(this.listView);
     }
 
     @Override
@@ -201,22 +210,57 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
         return this.frameLength;
     }
 
-    @Override
-    public void loadUsers() {
-        Platform.runLater(() -> {
-            try {
-                this.selectUserCombo.getItems().clear();
-                FileManager.getAllUserFolder().stream().forEachOrdered(t -> this.selectUserCombo.getItems().add(t));
-            } catch (final IOException e) {
-                ViewUtilities.showNotificationPopup("Exception", "Cannot read user data", Duration.MEDIUM,
-                        NotificationType.WARNING, null);
-            }
-        });
-    }
+    // ###### TAB 1 ######
 
     @Override
     public void loadUserProfile(final String name) {
         this.recorder.loadUserProfile(name);
+    }
+
+    // ###### TAB 4 ######
+    @Override
+    public void deleteFeatureVectorInLIstView(final int indexClicked) {
+        this.listView.getItems().remove(indexClicked);
+        this.recorder.deleteFeatureVector(indexClicked);
+        this.scrollPane.setContent(this.listView);
+
+    }
+
+    @Override
+    public void clearListView() {
+        this.listView.getItems().clear();
+        this.recorder.clearFeatureVectors();
+        this.scrollPane.setContent(this.listView);
+    }
+
+    @Override
+    public void addFeatureVector(final String gesture, final int indexClicked) {
+        try {
+            this.recorder.addFeatureVector(this.getGesture(), indexClicked);
+        } catch (final JsonIOException e) {
+            ViewUtilities.showNotificationPopup("Json Exception", "Cannot serialize file", Duration.MEDIUM, // NOPMD
+                    NotificationType.WARNING, t -> e.printStackTrace());
+        } catch (final IOException e2) {
+            ViewUtilities.showNotificationPopup("Io Exception", "Cannot serialize file", Duration.MEDIUM,
+                    NotificationType.WARNING, t -> e2.printStackTrace());
+        }
+        this.deleteFeatureVectorInLIstView(indexClicked);
+    }
+
+    @Override
+    public void addAllElemInListView() {
+        this.listView.getItems().clear();
+        try {
+            this.recorder.addAllFeatureVectors(this.getGesture());
+        } catch (final JsonIOException e) {
+            ViewUtilities.showNotificationPopup("Json Exception", "Cannot serialize file", Duration.MEDIUM,
+                    NotificationType.WARNING, t -> e.printStackTrace());
+
+        } catch (final IOException e2) {
+            ViewUtilities.showNotificationPopup("Io Exception", "Cannot serialize file", Duration.MEDIUM,
+                    NotificationType.WARNING, t -> e2.printStackTrace());
+        }
+
     }
 
     // ############################################## INSTANCE METHODS ###################################
@@ -230,29 +274,19 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
 
                 ViewUtilities.showConfirmDialog(this.scrollPane, "Save",
                         "Save the feature vector N: " + indexClicked + "?", DimDialogs.MEDIUM, (final Event event) -> {
-
                             if (((JFXButton) event.getSource()).getText().equals("YES")) {
-                                try {
-                                    this.recorder.selectFeatureVector(this.getGesture(), indexClicked);
-                                } catch (final IOException e) {
-                                    ViewUtilities.showNotificationPopup("Exception", "Cannot serialize vector",
-                                            Duration.MEDIUM, NotificationType.WARNING, null);
-                                }
-                                this.recorder.deleteFeatureVector(indexClicked);
-                                this.listView.getItems().remove(indexClicked);
+                                this.addFeatureVector(this.getGesture(), indexClicked);
                             }
                         });
 
             } else if (indexClicked != -1) {
-                this.recorder.deleteFeatureVector(indexClicked);
-                this.listView.getItems().remove(indexClicked);
+                this.deleteFeatureVectorInLIstView(indexClicked);
             }
-            this.scrollPane.setContent(this.listView);
+
         });
     }
 
-    @Override
-    public String getGesture() {
+    private String getGesture() {
         final int i = this.gestureComboBox.getSelectionModel().getSelectedIndex();
         if (i != -1) {
             return this.gestureComboBox.getSelectionModel().getSelectedItem();

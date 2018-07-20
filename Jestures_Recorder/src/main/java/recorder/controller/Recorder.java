@@ -25,6 +25,8 @@ import java.util.Set;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+import com.google.gson.JsonIOException;
+
 import jestures.core.serialization.Serializer;
 import jestures.core.serialization.UserManager;
 import jestures.core.tracking.Tracker;
@@ -101,18 +103,7 @@ public final class Recorder extends Tracker implements Recording {
         }
     }
 
-    // ############################################## INSTANCE METHODS ###################################
-
-    private void secJointTrigger(final Vector2D primaryJoint, final Vector2D secondaryJoint) {
-        if (secondaryJoint.getY() > primaryJoint.getY() + Recorder.THREASHOLD && !this.isRecording) {
-            this.isRecording = true;
-            this.view.forEach(t -> t.setRecording(true));
-            this.resetCodificationFrame();
-        } else if (primaryJoint.getY() - Recorder.THREASHOLD > secondaryJoint.getY() && this.isRecording) {
-            this.isRecording = false;
-            this.view.forEach(t -> t.setRecording(false));
-        }
-    }
+    // ############## FEATURE VECTOR ##############
 
     @Override
     public void deleteFeatureVector(final int index) {
@@ -126,9 +117,14 @@ public final class Recorder extends Tracker implements Recording {
 
     // #################### USER MANAGER #####################
     @Override
-    public void selectFeatureVector(final String gesture, final int index) throws IOException {
+    public void addFeatureVector(final String gesture, final int index) throws IOException, JsonIOException {
         this.userManager.serializeFeatureVector(gesture, this.listOfFeatureVector.get(index));
 
+    }
+
+    @Override
+    public void addAllFeatureVectors(final String gesture) throws IOException, JsonIOException {
+        this.userManager.serializeAllFeatureVectors(gesture, this.listOfFeatureVector);
     }
 
     @Override
@@ -141,4 +137,16 @@ public final class Recorder extends Tracker implements Recording {
         return this.userManager.loadAndSetUserProfile(name);
     }
 
+    // ############################################## INSTANCE METHODS ###################################
+
+    private void secJointTrigger(final Vector2D primaryJoint, final Vector2D secondaryJoint) {
+        if (secondaryJoint.getY() > primaryJoint.getY() + Recorder.THREASHOLD && !this.isRecording) {
+            this.isRecording = true;
+            this.view.forEach(t -> t.setRecording(true));
+            this.resetCodificationFrame();
+        } else if (primaryJoint.getY() - Recorder.THREASHOLD > secondaryJoint.getY() && this.isRecording) {
+            this.isRecording = false;
+            this.view.forEach(t -> t.setRecording(false));
+        }
+    }
 }

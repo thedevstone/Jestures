@@ -24,9 +24,32 @@ public interface RecView extends View {
     void startFxThread();
 
     /**
+     * Delete the selected elem from the listView.
+     *
+     * @param indexClicked
+     *            the index clicked
+     */
+    void deleteFeatureVectorInLIstView(int indexClicked);
+
+    /**
      * Clear the view and clear the featurevectors.
      */
     void clearListView();
+
+    /**
+     * Add the selected feature vector to database.
+     *
+     * @param gesture
+     *            the String gesture
+     * @param indexClicked
+     *            the index
+     */
+    void addFeatureVector(String gesture, int indexClicked);
+
+    /**
+     * Add all feature vector elements present in listview.
+     */
+    void addAllElemInListView();
 
     /**
      * Select the gesture.
@@ -35,12 +58,5 @@ public interface RecView extends View {
      *            the gesture
      */
     void selectGesture(String gesture);
-
-    /**
-     * Get the actual gesture.
-     * 
-     * @return the {@link String} gesture
-     */
-    String getGesture();
 
 }

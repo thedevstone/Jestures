@@ -18,6 +18,7 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -65,6 +66,8 @@ public abstract class AbstractRecorderScreenView implements RecView {
     private Canvas userCanvas;
     @FXML
     private JFXTreeView<String> treeView;
+    @FXML
+    private JFXButton addAllListViewButton;
     @FXML
     private JFXButton clearListViewButton;
     @FXML
@@ -122,8 +125,10 @@ public abstract class AbstractRecorderScreenView implements RecView {
     }
 
     private void initButtons() {
+        // DISABLE THE START TILL USER SELECT PROFILE AND GESTURE
         this.startButton.setDisable(true);
 
+        // START AND STOP
         this.startButton.setOnAction(e -> {
             if (this.recorder.state()) {
                 this.stopSensor();
@@ -134,14 +139,23 @@ public abstract class AbstractRecorderScreenView implements RecView {
             }
         });
 
+        // CLEAR THE LISTVIEW
         this.clearListViewButton.setGraphic(ViewUtilities.iconSetter(Material.CLEAR, IconDim.MEDIUM));
+        this.clearListViewButton.setTooltip(new Tooltip("Delete all templates"));
         JFXDepthManager.setDepth(this.clearListViewButton, 4);
         this.clearListViewButton.setOnAction(t -> {
             this.clearListView();
         });
+        // ADD ALL LIST VIEW
+        this.addAllListViewButton.setGraphic(ViewUtilities.iconSetter(Material.ADD, IconDim.MEDIUM));
+        this.addAllListViewButton.setTooltip(new Tooltip("Add all templates"));
+        JFXDepthManager.setDepth(this.addAllListViewButton, 4);
+        this.addAllListViewButton.setOnAction(t -> {
+            this.addAllElemInListView();
+        });
 
+        // CREATE THE USER PROFILE
         this.createUserButton.setGraphic(ViewUtilities.iconSetter(Material.CREATE, IconDim.MEDIUM));
-
         this.createUserButton.setOnAction(t -> {
             this.loadUsers();
             if (!this.recorder.createUserProfile(this.createUserTextField.getText())) {
@@ -239,7 +253,7 @@ public abstract class AbstractRecorderScreenView implements RecView {
             if (index != -1) {
                 this.loadUserProfile(selected);
                 this.gestureComboBox.setDisable(false);
-                ViewUtilities.showSnackBar((Pane) this.recorderPane.getCenter(), "User '" + selected + "' Created!",
+                ViewUtilities.showSnackBar((Pane) this.recorderPane.getCenter(), "User '" + selected + "' selected!",
                         Duration.MEDIUM, DimDialogs.SMALL, null);
             } else {
                 ViewUtilities.showNotificationPopup("Cannot select user", "", Duration.MEDIUM, NotificationType.ERROR,

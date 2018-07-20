@@ -70,6 +70,7 @@
                                  </children>
                               </JFXScrollPane>
                               <JFXButton id="clearButton" fx:id="clearListViewButton" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+                              <JFXButton fx:id="addAllListViewButton" AnchorPane.bottomAnchor="40.0" AnchorPane.rightAnchor="10.0" />
                            </children>
       					</AnchorPane> 
                     </content>
