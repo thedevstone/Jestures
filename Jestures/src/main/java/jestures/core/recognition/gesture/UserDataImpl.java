@@ -3,6 +3,7 @@
  */
 package jestures.core.recognition.gesture;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,7 +18,11 @@ import jestures.core.codification.DerivativeCodifier;
  * The {@link UserDataImpl} class that contains all the gestures codified by the {@link DerivativeCodifier}.
  *
  */
-public class UserDataImpl implements UserData {
+public class UserDataImpl implements UserData, Serializable {
+    /**
+     *
+     */
+    private static final long serialVersionUID = -5499772829046871767L;
     /**
      * Key ==> String (different gesture name) Value ==> List different feature vectors. A feature vector is a list of
      * {@link Vector2D}
@@ -28,10 +33,14 @@ public class UserDataImpl implements UserData {
 
     /**
      * The constructor for the {@link UserDataImpl} class.
+     *
+     * @param name
+     *            the String username
      */
-    public UserDataImpl() {
+    public UserDataImpl(final String name) {
         this.gestures = new HashMap<>();
         this.userName = "null";
+        this.userName = name;
     }
 
     @Override
@@ -42,6 +51,11 @@ public class UserDataImpl implements UserData {
     @Override
     public String getUserName() {
         return this.userName;
+    }
+
+    @Override
+    public List<String> getAllUserGestures() {
+        return new ArrayList<>(this.gestures.keySet());
     }
 
     @Override
@@ -57,9 +71,12 @@ public class UserDataImpl implements UserData {
 
     @Override
     public void addAllGestureFeatureVector(final String gestureName, final List<List<Vector2D>> gestureFeatureVectors) {
-        if (!this.gestures.containsKey(gestureName)) {
+        if (this.gestures.containsKey(gestureName)) {
             this.gestures.get(gestureName).addAll(gestureFeatureVectors);
+        } else {
+            this.gestures.put(gestureName, gestureFeatureVectors);
         }
+
     }
 
     @Override
@@ -70,6 +87,11 @@ public class UserDataImpl implements UserData {
     @Override
     public Map<String, List<List<Vector2D>>> getAllGesturesData() {
         return Collections.unmodifiableMap(this.gestures);
+    }
+
+    @Override
+    public String toString() {
+        return "User name: " + this.userName + "\n" + "Gestures: " + this.gestures;
     }
 
 }

@@ -8,7 +8,23 @@ public enum DefaultGesture {
     /**
      * Gestures duration in frame. 30 FPS base
      */
-    SWIPE_LEFT("SWIPE_LEFT"), SWIPE_RIGHT("SWIPE_RIGHT"), CIRCLE("CIRCLE");
+    SWIPE_LEFT("SWIPE_LEFT"),
+    /**
+     * Gestures duration in frame. 30 FPS base
+     */
+    SWIPE_RIGHT("SWIPE_RIGHT"),
+    /**
+     * Gestures duration in frame. 30 FPS base
+     */
+    SWIPE_UP("SWIPE_UP"),
+    /**
+     * Gestures duration in frame. 30 FPS base
+     */
+    SWIPE_DOWN("SWIPE_DOWN"),
+    /**
+     * Gestures duration in frame. 30 FPS base
+     */
+    CIRCLE("CIRCLE");
 
     private String name;
 

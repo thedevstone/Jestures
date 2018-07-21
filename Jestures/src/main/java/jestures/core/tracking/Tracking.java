@@ -16,6 +16,8 @@
 
 package jestures.core.tracking;
 
+import java.util.List;
+
 import jestures.core.codification.Codification;
 import jestures.core.codification.FrameLength;
 import jestures.sensor.Sensor;
@@ -69,6 +71,13 @@ public interface Tracking {
      *            the length
      */
     void setFrameLength(FrameLength length);
+
+    /**
+     * Get all user gestures.
+     * 
+     * @return the {@link List} of gestures
+     */
+    List<String> getAllUserGesture();
 
     /**
      * Get the frame length.

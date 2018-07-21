@@ -3,6 +3,7 @@
  */
 package jestures.core.serialization;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -15,6 +16,13 @@ import com.google.gson.JsonIOException;
  *
  */
 public interface Serializer {
+    /**
+     * Get all user gestures.
+     * 
+     * @return the {@link List} of gestures
+     */
+    List<String> getAllUserGesture();
+
     /**
      * Serialize the feature vector.
      *
@@ -59,6 +67,8 @@ public interface Serializer {
      * @param name
      *            the {@link String} username
      * @return <code>true</code> if can load the profile
+     * @throws FileNotFoundException
+     *             if File not found
      */
-    boolean loadAndSetUserProfile(String name);
+    boolean loadAndSetUserProfile(String name) throws FileNotFoundException;
 }

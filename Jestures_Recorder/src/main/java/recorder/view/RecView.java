@@ -24,6 +24,14 @@ public interface RecView extends View {
     void startFxThread();
 
     /**
+     * Create the user profile.
+     * 
+     * @param username
+     *            the String username
+     */
+    void createUserProfile(String username);
+
+    /**
      * Delete the selected elem from the listView.
      *
      * @param indexClicked

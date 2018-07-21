@@ -16,7 +16,11 @@
 
 package recorder.view;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
@@ -54,6 +58,7 @@ import recorder.controller.Recording;
  */
 @SuppressWarnings("restriction")
 public class RecorderScreenView extends AbstractRecorderScreenView implements RecView {
+    // private static final Logger LOG = Logger.getLogger(RecorderScreenView.class);
     private final Recording recorder;
     private FrameLength frameLength;
     // VIEW
@@ -157,7 +162,6 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     @Override
     public void setRecording(final boolean isRecording) {
         if (isRecording) {
-
             Platform.runLater(() -> {
                 ViewUtilities.showSnackBar((Pane) this.recorderPane.getCenter(), "Record is started", Duration.MEDIUM,
                         DimDialogs.SMALL, null);
@@ -211,10 +215,33 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     }
 
     // ###### TAB 1 ######
+    @Override
+    public void createUserProfile(final String username) {
+        if (!this.recorder.createUserProfile(username)) {
+            ViewUtilities.showNotificationPopup("Cannot create User", username + " already exists", Duration.MEDIUM,
+                    NotificationType.WARNING, null);
+        } else {
+            ViewUtilities.showNotificationPopup("User Created", username + " created!", Duration.MEDIUM,
+                    NotificationType.SUCCESS, null);
+        }
+    }
 
     @Override
     public void loadUserProfile(final String name) {
-        this.recorder.loadUserProfile(name);
+        final Set<String> set = new HashSet<>();
+        this.gestureComboBox.getItems().clear();
+        this.fillGestureCombo();
+        try {
+            this.recorder.loadUserProfile(name);
+            set.addAll(this.recorder.getAllUserGesture());
+            ViewUtilities.showSnackBar((Pane) this.recorderPane.getCenter(), "Database loaded!", Duration.MEDIUM,
+                    DimDialogs.SMALL, null);
+        } catch (final FileNotFoundException e) {
+            ViewUtilities.showNotificationPopup("Empty dataset", "Record some gesture", Duration.MEDIUM, // NOPMD
+                    NotificationType.WARNING, t -> e.printStackTrace());
+        }
+        this.gestureComboBox.getItems().addAll(set);
+        Collections.sort(this.gestureComboBox.getItems());
     }
 
     // ###### TAB 4 ######
@@ -239,27 +266,27 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
             this.recorder.addFeatureVector(this.getGesture(), indexClicked);
         } catch (final JsonIOException e) {
             ViewUtilities.showNotificationPopup("Json Exception", "Cannot serialize file", Duration.MEDIUM, // NOPMD
-                    NotificationType.WARNING, t -> e.printStackTrace());
+                    NotificationType.ERROR, t -> e.printStackTrace());
         } catch (final IOException e2) {
             ViewUtilities.showNotificationPopup("Io Exception", "Cannot serialize file", Duration.MEDIUM,
-                    NotificationType.WARNING, t -> e2.printStackTrace());
+                    NotificationType.ERROR, t -> e2.printStackTrace());
         }
         this.deleteFeatureVectorInLIstView(indexClicked);
     }
 
     @Override
     public void addAllElemInListView() {
-        this.listView.getItems().clear();
         try {
             this.recorder.addAllFeatureVectors(this.getGesture());
         } catch (final JsonIOException e) {
             ViewUtilities.showNotificationPopup("Json Exception", "Cannot serialize file", Duration.MEDIUM,
-                    NotificationType.WARNING, t -> e.printStackTrace());
+                    NotificationType.ERROR, t -> e.printStackTrace());
 
         } catch (final IOException e2) {
             ViewUtilities.showNotificationPopup("Io Exception", "Cannot serialize file", Duration.MEDIUM,
-                    NotificationType.WARNING, t -> e2.printStackTrace());
+                    NotificationType.ERROR, t -> e2.printStackTrace());
         }
+        this.clearListView();
 
     }
 

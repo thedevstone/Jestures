@@ -1,10 +1,14 @@
 package recorder.view;
 
+import java.util.Collections;
+import java.util.Locale;
+
 import org.kordamp.ikonli.material.Material;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.controls.JFXScrollPane;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTextField;
@@ -22,7 +26,6 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -44,6 +47,7 @@ import recorder.controller.Recording;
  */
 
 public abstract class AbstractRecorderScreenView implements RecView {
+    // private static final Logger LOG = Logger.getLogger(AbstractRecorderScreenView.class);
     private final Recording recorder;
 
     // CHART
@@ -51,13 +55,17 @@ public abstract class AbstractRecorderScreenView implements RecView {
     private LineChart<Number, Number> lineChartY; // NOPMD
     private XYChart.Series<Number, Number> xSeries;
     private XYChart.Series<Number, Number> ySeries;
+    private JFXTextField createUserTextField;
+    private JFXTextField createUserGesture;
+    private JFXPopup createUserPopup;
+    private JFXPopup addGesturePopup;
 
     // CANVAS
     private Canvas canvas;
     private GraphicsContext context;
 
     @FXML
-    private JFXTextField createUserTextField;
+    private JFXButton addGestureButton;
     @FXML
     private JFXButton createUserButton;
     @FXML
@@ -110,6 +118,7 @@ public abstract class AbstractRecorderScreenView implements RecView {
     @FXML
     public void initialize() { // NOPMD
         this.initButtons();
+        this.fillGestureCombo();
         this.initCombos();
         this.initGraphic();
         this.initCanvas();
@@ -117,10 +126,40 @@ public abstract class AbstractRecorderScreenView implements RecView {
         this.initTabPaneListener();
         this.initListView();
         this.initTreeView();
+        this.initPopup();
 
     }
 
     private void initTreeView() {
+
+    }
+
+    private void initPopup() {
+        // CREATE USER POPUP
+        this.createUserTextField = new JFXTextField("Insert UserName");
+        this.createUserPopup = new JFXPopup(this.createUserTextField);
+        this.createUserTextField.setId("createUserTextField");
+        this.createUserTextField.setOnAction(t -> {
+            this.loadUsers();
+            this.createUserProfile(this.createUserTextField.getText());
+        });
+
+        // ADD GESTURE POPUP
+        this.createUserGesture = new JFXTextField("Insert gesture name");
+        this.addGesturePopup = new JFXPopup(this.createUserGesture);
+        this.createUserGesture.setId("createUserTextField");
+        this.createUserGesture.setOnAction(t -> {
+            final String temp = this.createUserGesture.getText().trim().toUpperCase(Locale.ITALIAN);
+            if (this.gestureComboBox.getItems().contains(temp)) {
+                ViewUtilities.showNotificationPopup("Error adding gesture", temp + " already exists!", Duration.MEDIUM,
+                        NotificationType.ERROR, null);
+            } else {
+                this.gestureComboBox.getItems().add(temp);
+                ViewUtilities.showNotificationPopup("Gesture added", temp + " gesture added!", Duration.MEDIUM,
+                        NotificationType.SUCCESS, null);
+                Collections.sort(this.gestureComboBox.getItems());
+            }
+        });
 
     }
 
@@ -133,9 +172,11 @@ public abstract class AbstractRecorderScreenView implements RecView {
             if (this.recorder.state()) {
                 this.stopSensor();
                 this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY, IconDim.MEDIUM));
+                this.selectUserCombo.setDisable(false);
             } else {
                 this.startSensor();
                 this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY_OFF, IconDim.MEDIUM));
+                this.selectUserCombo.setDisable(true);
             }
         });
 
@@ -156,16 +197,17 @@ public abstract class AbstractRecorderScreenView implements RecView {
 
         // CREATE THE USER PROFILE
         this.createUserButton.setGraphic(ViewUtilities.iconSetter(Material.CREATE, IconDim.MEDIUM));
+        this.createUserButton.setTooltip(new Tooltip("Create a user"));
         this.createUserButton.setOnAction(t -> {
-            this.loadUsers();
-            if (!this.recorder.createUserProfile(this.createUserTextField.getText())) {
-                ViewUtilities.showNotificationPopup("Cannot create User", "User already exists", Duration.MEDIUM,
-                        NotificationType.WARNING, null);
-            } else {
-                ViewUtilities.showNotificationPopup("User Created", "", Duration.MEDIUM, NotificationType.SUCCESS,
-                        null);
-            }
+            this.createUserPopup.show(this.recorderPane);
         });
+        // ADD GESTURE
+        this.addGestureButton.setGraphic(ViewUtilities.iconSetter(Material.ADD_CIRCLE, IconDim.MEDIUM));
+        this.addGestureButton.setTooltip(new Tooltip("Add a new gesture"));
+        this.addGestureButton.setOnAction(t -> {
+            this.addGesturePopup.show(this.recorderPane);
+        });
+        this.addGestureButton.setDisable(true);
 
     }
 
@@ -227,6 +269,7 @@ public abstract class AbstractRecorderScreenView implements RecView {
 
         // GESTURE COMBOBOX
         this.gestureComboBox.setDisable(true);
+        JFXDepthManager.setDepth(this.gestureComboBox, 4);
         this.gestureComboBox.setOnAction(t -> {
             final int index = this.gestureComboBox.getSelectionModel().getSelectedIndex();
             final String selected = this.gestureComboBox.getSelectionModel().getSelectedItem();
@@ -234,33 +277,37 @@ public abstract class AbstractRecorderScreenView implements RecView {
             if (index != -1) {
                 this.selectGesture(selected);
                 this.startButton.setDisable(false);
-                ViewUtilities.showSnackBar((Pane) this.recorderPane.getCenter(),
-                        "Gesture '" + selected + "' selected!!", Duration.MEDIUM, DimDialogs.SMALL, null);
             } else {
                 ViewUtilities.showNotificationPopup("Cannot select gesture", "", Duration.MEDIUM,
                         NotificationType.ERROR, null);
             }
         });
-        this.gestureComboBox.getItems().add(DefaultGesture.SWIPE_RIGHT.getGestureName());
-        this.gestureComboBox.getItems().add(DefaultGesture.SWIPE_LEFT.getGestureName());
-        this.gestureComboBox.getItems().add(DefaultGesture.CIRCLE.getGestureName());
-        JFXDepthManager.setDepth(this.gestureComboBox, 4);
 
         // USER COMBOBOX
+        Collections.sort(this.selectUserCombo.getItems());
         this.selectUserCombo.setOnAction(t -> {
             final int index = this.selectUserCombo.getSelectionModel().getSelectedIndex();
             final String selected = this.selectUserCombo.getSelectionModel().getSelectedItem();
             if (index != -1) {
                 this.loadUserProfile(selected);
                 this.gestureComboBox.setDisable(false);
-                ViewUtilities.showSnackBar((Pane) this.recorderPane.getCenter(), "User '" + selected + "' selected!",
-                        Duration.MEDIUM, DimDialogs.SMALL, null);
+                this.addGestureButton.setDisable(false);
             } else {
                 ViewUtilities.showNotificationPopup("Cannot select user", "", Duration.MEDIUM, NotificationType.ERROR,
                         null);
             }
         });
+    }
 
+    /**
+     * Fill gesture with default combo.
+     *
+     */
+    public void fillGestureCombo() {
+        for (final DefaultGesture gesture : DefaultGesture.values()) {
+            this.gestureComboBox.getItems().add(gesture.getGestureName());
+        }
+        Collections.sort(this.gestureComboBox.getItems());
     }
 
     // ################################################ GETTER FOR INSTANCE CLASS #####################################

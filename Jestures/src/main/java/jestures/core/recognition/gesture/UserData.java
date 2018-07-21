@@ -32,6 +32,13 @@ public interface UserData {
     String getUserName();
 
     /**
+     * Get all user gestures.
+     *
+     * @return the {@link List} of gestures
+     */
+    List<String> getAllUserGestures();
+
+    /**
      * The Feature Vector to serialize.
      *
      * @param featureVector

@@ -31,39 +31,36 @@
 	 -fx-prompt-text-fill: black;
 	-fx-background-color: transparent;
 }
+
 #exercise-combo-box .text-input {
 	-fx-background-color: transparent;
 }
+
 #exercise-combo-box .list-cell {
+	-fx-background-color: transparent;
 	-fx-text-fill: black;
 	-fx-font-weight: 100;
 }
+
 #exercise-combo-box .combo-box-popup .list-view .list-cell {
-	-fx-background-radius: 10 10 10 30;
+	-fx-background-color: transparent ;
+	-fx-background-radius: 10 10 10 10;
+	
 }
-#exercise-combo-box .combo-box-popup .list-view .list-cell:odd:selected {
+
+#exercise-combo-box .combo-box-popup .list-view .list-cell:selected {
 	-fx-background-color: transparent;
+
 }
-#exercise-combo-box .combo-box-popup .list-view .list-cell:even:selected {
-	-fx-background-color: transparent;
+
+#exercise-combo-box .combo-box-popup .list-view .list-cell:hover {
+	-fx-background-color: rgba(255,255,255,0.9);
 }
-#exercise-combo-box .combo-box-popup .list-view .list-cell:odd {
-	-fx-background-color: transparent;
-}
-#exercise-combo-box .combo-box-popup .list-view .list-cell:even {
-	-fx-background-color: transparent;
-}
-#exercise-combo-box .combo-box-popup .list-view .list-cell:even:hover {
-	-fx-background-color: rgba(255,255,255,0.6);
-}
-#exercise-combo-box .combo-box-popup .list-view .list-cell:odd:hover {
-	-fx-background-color: rgba(255,255,255,0.6);
-}
+
 #exercise-combo-box .combo-box-popup .list-view {
 	-fx-background-color: rgba(255,255,255,0.95);
 	-fx-background-radius: 0 0 10 10;
 	-fx-opacity: 1;
-	-fx-min-width: 200;
     -fx-min-height: 50;
 }
 
@@ -120,6 +117,18 @@
 
 #userBorderPane {
 	-fx-background-color: white;
+}
+
+#createUserTextField {
+	-fx-accent: rgb(161, 213, 254);
+}
+
+
+/* POPUP LIST VIEW */
+
+.jfx-popup-container {
+	-fx-background-radius: 5 5 10 5;
+	-fx-background-color: rgba(255,255,255,0.95);
 }
 
 /*CLEAR BUTTON */
@@ -210,4 +219,7 @@
 	-fx-text-fill: white;
 	-fx-font-weight: 100;
 }
+
+
+
 

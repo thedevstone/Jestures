@@ -16,6 +16,7 @@
 
 package recorder.controller;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.google.gson.JsonIOException;
@@ -92,7 +93,9 @@ public interface Recording extends Tracking {
      * @param name
      *            the {@link String} username
      * @return <code>true</code> if is loaded
+     * @throws FileNotFoundException
+     *             if file not found
      */
-    boolean loadUserProfile(String name);
+    boolean loadUserProfile(String name) throws FileNotFoundException;
 
 }

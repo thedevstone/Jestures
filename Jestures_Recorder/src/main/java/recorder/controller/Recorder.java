@@ -15,6 +15,7 @@
  *******************************************************************************/
 package recorder.controller;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -116,6 +117,12 @@ public final class Recorder extends Tracker implements Recording {
     }
 
     // #################### USER MANAGER #####################
+
+    @Override
+    public List<String> getAllUserGesture() {
+        return this.userManager.getAllUserGesture();
+    }
+
     @Override
     public void addFeatureVector(final String gesture, final int index) throws IOException, JsonIOException {
         this.userManager.serializeFeatureVector(gesture, this.listOfFeatureVector.get(index));
@@ -133,7 +140,7 @@ public final class Recorder extends Tracker implements Recording {
     }
 
     @Override
-    public boolean loadUserProfile(final String name) {
+    public boolean loadUserProfile(final String name) throws FileNotFoundException {
         return this.userManager.loadAndSetUserProfile(name);
     }
 
@@ -149,4 +156,5 @@ public final class Recorder extends Tracker implements Recording {
             this.view.forEach(t -> t.setRecording(false));
         }
     }
+
 }

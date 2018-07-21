@@ -77,4 +77,10 @@ public final class Recognizer extends Tracker implements Recognition {
         return false;
     }
 
+    @Override
+    public List<String> getAllUserGesture() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }
