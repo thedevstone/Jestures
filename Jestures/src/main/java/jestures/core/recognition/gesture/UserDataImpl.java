@@ -24,7 +24,7 @@ public class UserDataImpl implements UserData, Serializable {
      */
     private static final long serialVersionUID = -5499772829046871767L;
     /**
-     * Key ==> String (different gesture name) Value ==> List different feature vectors. A feature vector is a list of
+     * Key == String (different gesture name) Value == List different feature vectors. A feature vector is a list of
      * {@link Vector2D}
      *
      */

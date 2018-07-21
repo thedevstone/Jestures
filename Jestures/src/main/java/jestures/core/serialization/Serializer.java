@@ -17,8 +17,15 @@ import com.google.gson.JsonIOException;
  */
 public interface Serializer {
     /**
+     * Get the actual username.
+     *
+     * @return the String username
+     */
+    String getUserName();
+
+    /**
      * Get all user gestures.
-     * 
+     *
      * @return the {@link List} of gestures
      */
     List<String> getAllUserGesture();
@@ -49,8 +56,7 @@ public interface Serializer {
      * @throws JsonIOException
      *             the {@link JsonIOException}
      */
-    void serializeAllFeatureVectors(String gestureName, List<List<Vector2D>> featureVector)
-            throws IOException, JsonIOException;
+    void serializeAllFeatureVectors(String gestureName, List<List<Vector2D>> featureVector) throws IOException;
 
     /**
      * Create user profile.
@@ -58,8 +64,11 @@ public interface Serializer {
      * @param name
      *            the {@link String} username
      * @return <code>true</code> if can create the profile
+     * @throws IOException
+     *             the {@link IOException}
+     *
      */
-    boolean createUserProfile(String name);
+    boolean createUserProfile(String name) throws IOException;
 
     /**
      * load user profile.
@@ -71,4 +80,5 @@ public interface Serializer {
      *             if File not found
      */
     boolean loadAndSetUserProfile(String name) throws FileNotFoundException;
+
 }

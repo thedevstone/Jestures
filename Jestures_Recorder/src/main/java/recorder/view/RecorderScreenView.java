@@ -24,7 +24,6 @@ import java.util.Set;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-import com.google.gson.JsonIOException;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
@@ -123,9 +122,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     public void notifyOnFrameChange(final int frame, final Vector2D derivative, final Vector2D path) {
         Platform.runLater(() -> {
             if (frame == 0) {
-                this.getContext().clearRect(0, 0, this.getCanvas().getWidth(), this.getCanvas().getHeight());
-                this.getxSeries().getData().clear();
-                this.getySeries().getData().clear();
+                this.clearCanvasAndChart();
             }
             this.getxSeries().getData().add(new XYChart.Data<Number, Number>(frame, (int) derivative.getX()));
             this.getySeries().getData().add(new XYChart.Data<Number, Number>(frame, (int) derivative.getY()));
@@ -195,6 +192,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
 
     @Override
     public void stopSensor() {
+        this.clearCanvasAndChart();
         this.recorder.stopSensor();
     }
 
@@ -217,12 +215,18 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     // ###### TAB 1 ######
     @Override
     public void createUserProfile(final String username) {
-        if (!this.recorder.createUserProfile(username)) {
-            ViewUtilities.showNotificationPopup("Cannot create User", username + " already exists", Duration.MEDIUM,
-                    NotificationType.WARNING, null);
-        } else {
-            ViewUtilities.showNotificationPopup("User Created", username + " created!", Duration.MEDIUM,
-                    NotificationType.SUCCESS, null);
+        try {
+            if (!this.recorder.createUserProfile(username)) {
+                ViewUtilities.showNotificationPopup("Cannot create User", username + " already exists", Duration.MEDIUM,
+                        NotificationType.WARNING, null);
+            } else {
+                ViewUtilities.showNotificationPopup("User Created", username + " created!", Duration.MEDIUM,
+                        NotificationType.SUCCESS, null);
+                this.loadUsers();
+            }
+        } catch (final IOException e) {
+            ViewUtilities.showNotificationPopup("Io Exception", "Cannot serialize file", Duration.MEDIUM,
+                    NotificationType.ERROR, t -> e.printStackTrace());
         }
     }
 
@@ -264,9 +268,6 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     public void addFeatureVector(final String gesture, final int indexClicked) {
         try {
             this.recorder.addFeatureVector(this.getGesture(), indexClicked);
-        } catch (final JsonIOException e) {
-            ViewUtilities.showNotificationPopup("Json Exception", "Cannot serialize file", Duration.MEDIUM, // NOPMD
-                    NotificationType.ERROR, t -> e.printStackTrace());
         } catch (final IOException e2) {
             ViewUtilities.showNotificationPopup("Io Exception", "Cannot serialize file", Duration.MEDIUM,
                     NotificationType.ERROR, t -> e2.printStackTrace());
@@ -278,16 +279,11 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     public void addAllElemInListView() {
         try {
             this.recorder.addAllFeatureVectors(this.getGesture());
-        } catch (final JsonIOException e) {
-            ViewUtilities.showNotificationPopup("Json Exception", "Cannot serialize file", Duration.MEDIUM,
-                    NotificationType.ERROR, t -> e.printStackTrace());
-
         } catch (final IOException e2) {
             ViewUtilities.showNotificationPopup("Io Exception", "Cannot serialize file", Duration.MEDIUM,
                     NotificationType.ERROR, t -> e2.printStackTrace());
         }
         this.clearListView();
-
     }
 
     // ############################################## INSTANCE METHODS ###################################
@@ -302,7 +298,12 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
                 ViewUtilities.showConfirmDialog(this.scrollPane, "Save",
                         "Save the feature vector N: " + indexClicked + "?", DimDialogs.MEDIUM, (final Event event) -> {
                             if (((JFXButton) event.getSource()).getText().equals("YES")) {
-                                this.addFeatureVector(this.getGesture(), indexClicked);
+                                try {
+                                    this.addFeatureVector(this.getGesture(), indexClicked);
+                                } catch (final Exception e) {
+                                    ViewUtilities.showNotificationPopup("Gesture Error", "Select Gesture!",
+                                            Duration.MEDIUM, NotificationType.ERROR, k -> e.printStackTrace());
+                                }
                             }
                         });
 
@@ -313,12 +314,18 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
         });
     }
 
+    private void clearCanvasAndChart() {
+        this.getContext().clearRect(0, 0, this.getCanvas().getWidth(), this.getCanvas().getHeight());
+        this.getxSeries().getData().clear();
+        this.getySeries().getData().clear();
+    }
+
     private String getGesture() {
         final int i = this.gestureComboBox.getSelectionModel().getSelectedIndex();
         if (i != -1) {
             return this.gestureComboBox.getSelectionModel().getSelectedItem();
         } else {
-            throw new IllegalStateException("No gesture selected");
+            throw new IllegalStateException();
         }
     }
 

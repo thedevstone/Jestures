@@ -61,7 +61,8 @@
 	-fx-background-color: rgba(255,255,255,0.95);
 	-fx-background-radius: 0 0 10 10;
 	-fx-opacity: 1;
-    -fx-min-height: 50;
+    -fx-min-height: 100;
+    -fx-min-width: 100;
 }
 
 

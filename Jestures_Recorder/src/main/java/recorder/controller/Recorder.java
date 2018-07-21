@@ -119,6 +119,11 @@ public final class Recorder extends Tracker implements Recording {
     // #################### USER MANAGER #####################
 
     @Override
+    public String getUserName() {
+        return this.userManager.getUserName();
+    }
+
+    @Override
     public List<String> getAllUserGesture() {
         return this.userManager.getAllUserGesture();
     }
@@ -135,7 +140,7 @@ public final class Recorder extends Tracker implements Recording {
     }
 
     @Override
-    public boolean createUserProfile(final String name) {
+    public boolean createUserProfile(final String name) throws FileNotFoundException, IOException {
         return this.userManager.createUserProfile(name);
     }
 

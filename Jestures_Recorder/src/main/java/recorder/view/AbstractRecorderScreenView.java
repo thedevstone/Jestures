@@ -140,7 +140,6 @@ public abstract class AbstractRecorderScreenView implements RecView {
         this.createUserPopup = new JFXPopup(this.createUserTextField);
         this.createUserTextField.setId("createUserTextField");
         this.createUserTextField.setOnAction(t -> {
-            this.loadUsers();
             this.createUserProfile(this.createUserTextField.getText());
         });
 
@@ -149,7 +148,7 @@ public abstract class AbstractRecorderScreenView implements RecView {
         this.addGesturePopup = new JFXPopup(this.createUserGesture);
         this.createUserGesture.setId("createUserTextField");
         this.createUserGesture.setOnAction(t -> {
-            final String temp = this.createUserGesture.getText().trim().toUpperCase(Locale.ITALIAN);
+            final String temp = this.createUserGesture.getText().replaceAll("\\s+", "_").toUpperCase(Locale.ITALIAN);
             if (this.gestureComboBox.getItems().contains(temp)) {
                 ViewUtilities.showNotificationPopup("Error adding gesture", temp + " already exists!", Duration.MEDIUM,
                         NotificationType.ERROR, null);
@@ -273,13 +272,9 @@ public abstract class AbstractRecorderScreenView implements RecView {
         this.gestureComboBox.setOnAction(t -> {
             final int index = this.gestureComboBox.getSelectionModel().getSelectedIndex();
             final String selected = this.gestureComboBox.getSelectionModel().getSelectedItem();
-
             if (index != -1) {
                 this.selectGesture(selected);
                 this.startButton.setDisable(false);
-            } else {
-                ViewUtilities.showNotificationPopup("Cannot select gesture", "", Duration.MEDIUM,
-                        NotificationType.ERROR, null);
             }
         });
 
@@ -292,9 +287,6 @@ public abstract class AbstractRecorderScreenView implements RecView {
                 this.loadUserProfile(selected);
                 this.gestureComboBox.setDisable(false);
                 this.addGestureButton.setDisable(false);
-            } else {
-                ViewUtilities.showNotificationPopup("Cannot select user", "", Duration.MEDIUM, NotificationType.ERROR,
-                        null);
             }
         });
     }

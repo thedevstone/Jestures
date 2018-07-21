@@ -74,10 +74,17 @@ public interface Tracking {
 
     /**
      * Get all user gestures.
-     * 
+     *
      * @return the {@link List} of gestures
      */
     List<String> getAllUserGesture();
+
+    /**
+     * Get the actual user.
+     * 
+     * @return the String username
+     */
+    String getUserName();
 
     /**
      * Get the frame length.

@@ -83,4 +83,10 @@ public final class Recognizer extends Tracker implements Recognition {
         return null;
     }
 
+    @Override
+    public String getUserName() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

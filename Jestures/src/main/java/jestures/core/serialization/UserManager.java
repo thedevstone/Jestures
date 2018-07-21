@@ -38,13 +38,32 @@ public class UserManager implements Serializer {
     }
 
     @Override
+    public String getUserName() {
+        return this.userData.getUserName();
+    }
+
+    @Override
     public List<String> getAllUserGesture() {
         return this.userData.getAllUserGestures();
     }
 
     @Override
-    public boolean createUserProfile(final String name) {
-        return FileManager.createUserFolders(name);
+    public boolean createUserProfile(final String name) throws IOException {
+        final boolean result = FileManager.createUserFolders(name);
+        this.userData = new UserDataImpl(name);
+        this.serializeUser();
+        return result;
+    }
+
+    @Override
+    public boolean loadAndSetUserProfile(final String name) throws FileNotFoundException {
+        UserManager.LOG.debug("User selected: " + name);
+        this.userData.setUserName(name);
+        this.deserializeUser(name);
+        if (this.userData == null) {
+            this.userData = new UserDataImpl(name);
+        }
+        return true;
     }
 
     @Override
@@ -60,17 +79,6 @@ public class UserManager implements Serializer {
         this.userData.addAllGestureFeatureVector(gestureName, featureVector);
         this.serializeUser();
 
-    }
-
-    @Override
-    public boolean loadAndSetUserProfile(final String name) throws FileNotFoundException {
-        UserManager.LOG.debug("User selected: " + name);
-        this.userData.setUserName(name);
-        this.deserializeUser(name);
-        if (this.userData == null) {
-            this.userData = new UserDataImpl(name);
-        }
-        return true;
     }
 
     private void deserializeUser(final String name) throws FileNotFoundException {

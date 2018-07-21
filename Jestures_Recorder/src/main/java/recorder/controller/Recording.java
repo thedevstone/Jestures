@@ -84,8 +84,11 @@ public interface Recording extends Tracking {
      * @param name
      *            the {@link String} username
      * @return <code>true</code> if can create the profile
+     * @throws IOException
+     *             if
+     * @throws FileNotFoundException
      */
-    boolean createUserProfile(String name);
+    boolean createUserProfile(String name) throws IOException;
 
     /**
      * Load the user.
