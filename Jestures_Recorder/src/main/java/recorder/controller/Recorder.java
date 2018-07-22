@@ -26,6 +26,8 @@ import java.util.Set;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+import com.google.gson.JsonSyntaxException;
+
 import jestures.core.serialization.Serializer;
 import jestures.core.serialization.UserManager;
 import jestures.core.tracking.Tracker;
@@ -132,7 +134,7 @@ public final class Recorder extends Tracker implements Recording {
     }
 
     @Override
-    public boolean loadUserProfile(final String name) throws FileNotFoundException, IOException {
+    public boolean loadUserProfile(final String name) throws FileNotFoundException, IOException, JsonSyntaxException {
         return this.userManager.loadOrCreateNewUser(name);
     }
 

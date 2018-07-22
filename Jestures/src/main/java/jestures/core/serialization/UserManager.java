@@ -15,6 +15,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import jestures.core.file.FileManager;
 import jestures.core.recognition.gesture.UserData;
@@ -59,7 +60,8 @@ public class UserManager implements Serializer {
     }
 
     @Override
-    public boolean loadOrCreateNewUser(final String name) throws FileNotFoundException, IOException {
+    public boolean loadOrCreateNewUser(final String name)
+            throws FileNotFoundException, IOException, JsonSyntaxException {
         UserManager.LOG.debug("User selected: " + name);
         // IF THE FILE IS GONE RECREATE USER
         try {
@@ -87,7 +89,7 @@ public class UserManager implements Serializer {
     }
 
     // ################################ SERIALIZE AND DESERIALIZE ####################
-    private void deserializeUser(final String name) throws FileNotFoundException, IOException {
+    private void deserializeUser(final String name) throws FileNotFoundException, IOException, JsonSyntaxException {
         // IF USER IS SO STUPID TO DELETE FOLDER WHILE RUNNING
         FileManager.createUserFolders(name);
         final Reader reader = new FileReader(FileManager.getUserDir(name) + "UserData.json");

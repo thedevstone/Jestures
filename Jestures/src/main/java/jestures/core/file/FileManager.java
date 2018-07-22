@@ -102,9 +102,6 @@ public final class FileManager {
     // ##################################### LOAD NATIVES ################################
     /**
      * Create the lib for native dll (Kinect).
-     *
-     * @throws IOException
-     *             the {@link IOException}
      */
     public static void createKinectNativeFolderLib() {
         try {

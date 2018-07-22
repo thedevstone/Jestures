@@ -23,11 +23,11 @@ import java.util.Set;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+import com.google.gson.JsonSyntaxException;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXScrollPane;
-import com.jfoenix.controls.JFXTabPane;
 import com.sun.javafx.application.PlatformImpl;
 
 import javafx.application.Platform;
@@ -37,13 +37,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import jestures.core.codification.FrameLength;
 import jestures.core.file.FileManager;
@@ -69,27 +67,22 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     private Scene scene; // NOPMD
 
     // ########### ALL TABS #############
-    @FXML
-    private JFXTabPane tabPane;
+
     @FXML
     private BorderPane recorderPane; // NOPMD
     @FXML
     private JFXButton startButton;
-    @FXML
-    private StackPane tabStackPane;
+
     @FXML
     private JFXComboBox<String> gestureComboBox;
-    @FXML
-    private VBox vbox;
-    @FXML
-    private ComboBox<FrameLength> frameLengthCombo;
+
     @FXML
     private JFXButton addGestureButton;
+    @FXML
+    private JFXScrollPane userScrollPane;
     // ########### TAB 1 #############
     @FXML
     private BorderPane userBorderPane; // NOPMD
-    @FXML
-    private JFXButton createUserButton;
     @FXML
     private JFXComboBox<String> selectUserCombo;
 
@@ -270,12 +263,18 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
 
     @Override
     public void loadUserProfile(final String name) {
+        System.out.println(name);
         try {
             this.recorder.loadUserProfile(name);
         } catch (final IOException e1) {
             ViewUtilities.showNotificationPopup("User Dataset not found", "Regenerating it", Duration.MEDIUM, // NOPMD
-                    NotificationType.WARNING, t -> e1.printStackTrace());
+                    NotificationType.ERROR, t -> e1.printStackTrace());
+        } catch (final JsonSyntaxException e2) {
+            ViewUtilities.showNotificationPopup("Json file changed by human!", "Please click to se exception",
+                    Duration.MEDIUM, // NOPMD
+                    NotificationType.ERROR, t -> e2.printStackTrace());
         }
+        ((Label) this.userScrollPane.getBottomBar().getChildren().get(0)).setText(name);
         // IF USER IS LOADED CORRECLY ENABLE BUTTONS
         this.gestureComboBox.setDisable(false);
         this.addGestureButton.setDisable(false);
