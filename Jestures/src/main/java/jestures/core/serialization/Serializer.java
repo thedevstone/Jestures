@@ -68,7 +68,7 @@ public interface Serializer {
      *             the {@link IOException}
      *
      */
-    boolean createUserProfile(String name) throws IOException;
+    boolean createUserProfile(String name) throws FileNotFoundException, IOException;
 
     /**
      * load user profile.

@@ -65,6 +65,8 @@ public abstract class AbstractRecorderScreenView implements RecView {
     private GraphicsContext context;
 
     @FXML
+    private BorderPane userBorderPane; // NOPMD
+    @FXML
     private JFXButton addGestureButton;
     @FXML
     private JFXButton createUserButton;
@@ -95,6 +97,8 @@ public abstract class AbstractRecorderScreenView implements RecView {
     @FXML
     private JFXComboBox<String> gestureComboBox;
     @FXML
+    private JFXScrollPane userScrollPane;
+    @FXML
     private JFXScrollPane scrollPane;
     @FXML
     private JFXListView<BorderPane> listView;
@@ -124,7 +128,7 @@ public abstract class AbstractRecorderScreenView implements RecView {
         this.initCanvas();
         this.initChart();
         this.initTabPaneListener();
-        this.initListView();
+        this.initScrollPane();
         this.initTreeView();
         this.initPopup();
 
@@ -250,12 +254,16 @@ public abstract class AbstractRecorderScreenView implements RecView {
         });
     }
 
-    private void initListView() {
+    private void initScrollPane() {
         // CHECKSTYLE:OFF Magicnumber AH DI MI TOCCA
-        ScrollPaneFactory.wrapListViewOnScrollPane(this.scrollPane, this.listView, "Feature Vectors",
+        ScrollPaneFactory.wrapNodeOnScrollPane(this.scrollPane, this.listView, "Feature Vectors",
                 "headerFeatureVector");
         this.listView.minHeightProperty().bind(this.listViewAnchorPane.heightProperty().subtract(200));
         // CHECKSTYLE:ON Magicnumber AH DI MI TOCCA
+        // CHECKSTYLE:OFF Magicnumber AH DI MI TOCCA
+        ScrollPaneFactory.wrapNodeOnScrollPane(this.userScrollPane, this.userBorderPane, "Select User",
+                "headerUserPane");
+
     }
 
     private void initCombos() {
@@ -287,6 +295,12 @@ public abstract class AbstractRecorderScreenView implements RecView {
                 this.loadUserProfile(selected);
                 this.gestureComboBox.setDisable(false);
                 this.addGestureButton.setDisable(false);
+            }
+        });
+        this.selectUserCombo.setOnMouseClicked(t -> {
+            if (t.getClickCount() == 2) {
+
+                System.out.println(t.getButton());
             }
         });
     }

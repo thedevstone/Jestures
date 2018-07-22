@@ -15,6 +15,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ScrollPane?>
+
 
 <BorderPane fx:id="recorderPane" minHeight="700.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <center>
@@ -24,22 +26,29 @@
               <tabs>
                   <Tab>
                     <content>
-                        <BorderPane id="userBorderPane" fx:id="userBorderPane">
-                           <bottom>
-                              <Canvas fx:id="userCanvas" height="200.0" width="200.0" BorderPane.alignment="CENTER" />
-                           </bottom>
-                           <center>
-                              <JFXTreeView fx:id="treeView" BorderPane.alignment="CENTER" />
-                           </center>
-                           <top>
-                              <HBox BorderPane.alignment="CENTER">
-                                 <children>
-                                    <JFXComboBox id="exercise-combo-box" fx:id="selectUserCombo" promptText="Select User" />
-                                    <JFXButton fx:id="createUserButton" />
-                                 </children>
-                              </HBox>
-                           </top>
-                        </BorderPane>
+                      <JFXScrollPane fx:id="userScrollPane">
+                         <children>  
+	                        <BorderPane id="userBorderPane" fx:id="userBorderPane">
+	                           <bottom>
+	                              <Canvas fx:id="userCanvas" height="200.0" width="200.0" BorderPane.alignment="CENTER" />
+	                           </bottom>
+	                           <center>
+	                              <JFXTreeView fx:id="treeView" BorderPane.alignment="CENTER" />
+	                           </center>
+	                           <top>
+	                              <HBox BorderPane.alignment="CENTER">
+	                                 <children>
+	                                    <JFXComboBox id="exercise-combo-box" fx:id="selectUserCombo" promptText="Select User" />
+	                                    <JFXButton fx:id="createUserButton" />
+	                                 </children>
+	                                 <padding>
+	                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+	                                 </padding>
+	                              </HBox>
+	                           </top>
+	                        </BorderPane>
+                          </children>
+                       </JFXScrollPane>
                     </content>
                   </Tab>
                 <Tab>

@@ -48,7 +48,7 @@ public class UserManager implements Serializer {
     }
 
     @Override
-    public boolean createUserProfile(final String name) throws IOException {
+    public boolean createUserProfile(final String name) throws FileNotFoundException, IOException {
         final boolean result = FileManager.createUserFolders(name);
         this.userData = new UserDataImpl(name);
         this.serializeUser();

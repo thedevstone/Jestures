@@ -5,8 +5,8 @@ import com.jfoenix.controls.JFXScrollPane;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
 /**
@@ -22,18 +22,18 @@ public final class ScrollPaneFactory {
      *
      * @param pane
      *            the {@link JFXScrollPane} pane
-     * @param list
-     *            the {@link JFXListView} listView
+     * @param node
+     *            the {@link Node}
      * @param titleString
      *            the {@link String} title
      * @param cssId
      *            the cssId
      */
     // CHECKSTYLE:OFF Magicnumber AH DI MI TOCCA
-    public static void wrapListViewOnScrollPane(final JFXScrollPane pane, final JFXListView<BorderPane> list,
-            final String titleString, final String cssId) {
+    public static void wrapNodeOnScrollPane(final JFXScrollPane pane, final Node node, final String titleString,
+            final String cssId) {
         // list.setMinHeight(1000); //ACTIVATE SCROLL
-        final StackPane container = new StackPane(list);
+        final StackPane container = new StackPane(node);
         container.setPadding(new Insets(-1));
         pane.setContent(container);
         final Label title = new Label(titleString);

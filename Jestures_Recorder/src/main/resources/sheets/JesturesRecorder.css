@@ -73,6 +73,12 @@
 	-fx-background-size: cover;
 }
 
+#headerUserPane {
+	-fx-background-image: url('/images/shooter.jpg');
+	-fx-background-repeat: no-repeat;
+	-fx-background-size: cover;
+}
+
 #player-listView-border {
 	-fx-min-width: 350;
 	-fx-max-height: 50;
