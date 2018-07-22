@@ -26,12 +26,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.log4j.Logger;
+
 /**
  * Class dedicated to File managing.
  */
 public final class FileManager {
 
     private static String libDir;
+    private static final Logger LOG = Logger.getLogger(FileManager.class);
 
     /**
      * Constructor.
@@ -39,13 +42,31 @@ public final class FileManager {
     private FileManager() {
         // TODO Auto-generated constructor stub
     }
+    // ##################################### FOLDER CREATION ################################
 
-    // ##################################### CREATE DIRECTORIES ################################
+    private static boolean createDirectory(final String folder) throws IOException {
+        if (!FileManager.checkIfFolderExists(folder)) {
+            Files.createDirectories(Paths.get(folder));
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private static boolean checkIfFolderExists(final String folder) {
+        return Files.exists(Paths.get(folder));
+    }
+
     /**
-     * Create the framework main directory.
+     *
+     * // ##################################### CREATE DIRECTORIES ################################ Create the framework
+     * main directory.
+     *
+     * @throws IOException
+     *             the {@link IOException}
      *
      */
-    public static void createFrameworkDirectory() {
+    public static void createFrameworkDirectory() throws IOException {
         if (FileManager.libDir == null) {
             FileManager.libDir = OsUtils.getHomeFolder() + OsUtils.getSeparator() + LibPaths.LIB_NAME.getDirName();
             FileManager.createDirectory(FileManager.libDir);
@@ -57,8 +78,10 @@ public final class FileManager {
      * @param folder
      *            the {@link String} path
      * @return <code>true</code> if the folder exists
+     * @throws IOException
+     *             the {@link IOException}
      */
-    public static boolean createLibSubFolder(final String folder) {
+    public static boolean createLibSubFolder(final String folder) throws IOException {
         final String tempPath = FileManager.libDir + OsUtils.getSeparator() + folder;
         return FileManager.createDirectory(tempPath);
     }
@@ -67,8 +90,10 @@ public final class FileManager {
      * @param folder
      *            the {@link String} path
      * @return <code>true</code> if the folder exists
+     * @throws IOException
+     *             the {@link IOException}
      */
-    public static boolean createUserFolders(final String folder) {
+    public static boolean createUserFolders(final String folder) throws IOException {
         final String tempPath = FileManager.libDir + OsUtils.getSeparator() + LibPaths.USER.getDirName()
                 + OsUtils.getSeparator() + folder.replaceAll("\\s+", "_");
         return FileManager.createDirectory(tempPath);
@@ -77,15 +102,18 @@ public final class FileManager {
     // ##################################### LOAD NATIVES ################################
     /**
      * Create the lib for native dll (Kinect).
+     *
+     * @throws IOException
+     *             the {@link IOException}
      */
     public static void createKinectNativeFolderLib() {
-        FileManager.createFrameworkDirectory();
-        FileManager.createLibSubFolder(LibPaths.NATIVE_DIR.getDirName());
         try {
+            FileManager.createFrameworkDirectory();
+            FileManager.createLibSubFolder(LibPaths.NATIVE_DIR.getDirName());
             FileManager.addDir(OsUtils.getHomeFolder() + OsUtils.getSeparator() + LibPaths.LIB_NAME.getDirName()
                     + OsUtils.getSeparator() + LibPaths.NATIVE_DIR.getDirName());
         } catch (final IOException e) {
-            System.out.println("Cannot load the files");
+            FileManager.LOG.error("Cannot load directory");
         }
     }
 
@@ -114,25 +142,6 @@ public final class FileManager {
         }
     }
 
-    // ##################################### FOLDER CREATION ################################
-
-    private static boolean createDirectory(final String folder) {
-        if (!FileManager.checkIfFolderExists(folder)) {
-            try {
-                Files.createDirectories(Paths.get(folder));
-                return true;
-            } catch (final Exception e) {
-                System.out.println("Cannot create lib directory");
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-
-    private static boolean checkIfFolderExists(final String folder) {
-        return Files.exists(Paths.get(folder));
-    }
     // ##################################### USEFUL METHODS ################################
 
     /**

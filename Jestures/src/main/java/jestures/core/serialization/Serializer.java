@@ -31,6 +31,31 @@ public interface Serializer {
     List<String> getAllUserGesture();
 
     /**
+     * Create user profile.
+     *
+     * @param name
+     *            the {@link String} username
+     * @return <code>true</code> if can create the profile
+     * @throws IOException
+     *             the {@link IOException} if can't create the file
+     *
+     */
+    boolean createUserProfile(String name) throws IOException;
+
+    /**
+     * load user profile.
+     *
+     * @param name
+     *            the {@link String} username
+     * @return <code>true</code> if can load the profile
+     * @throws FileNotFoundException
+     *             if File is gone
+     * @throws IOException
+     *             the {@link IOException} during file creation
+     */
+    boolean loadOrCreateNewUser(String name) throws FileNotFoundException, IOException;
+
+    /**
      * Serialize the feature vector.
      *
      * @param gestureName
@@ -40,7 +65,7 @@ public interface Serializer {
      * @throws IOException
      *             the {@link IOException}
      * @throws JsonIOException
-     *             the {@link JsonIOException}
+     *             the {@link JsonIOException} if can't serialize
      */
     void serializeFeatureVector(String gestureName, List<Vector2D> featureVector) throws IOException;
 
@@ -54,31 +79,8 @@ public interface Serializer {
      * @throws IOException
      *             the {@link IOException}
      * @throws JsonIOException
-     *             the {@link JsonIOException}
+     *             the {@link JsonIOException} if can't serialize
      */
     void serializeAllFeatureVectors(String gestureName, List<List<Vector2D>> featureVector) throws IOException;
-
-    /**
-     * Create user profile.
-     *
-     * @param name
-     *            the {@link String} username
-     * @return <code>true</code> if can create the profile
-     * @throws IOException
-     *             the {@link IOException}
-     *
-     */
-    boolean createUserProfile(String name) throws FileNotFoundException, IOException;
-
-    /**
-     * load user profile.
-     *
-     * @param name
-     *            the {@link String} username
-     * @return <code>true</code> if can load the profile
-     * @throws FileNotFoundException
-     *             if File not found
-     */
-    boolean loadAndSetUserProfile(String name) throws FileNotFoundException;
 
 }

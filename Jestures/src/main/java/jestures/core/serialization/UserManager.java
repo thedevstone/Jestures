@@ -48,20 +48,25 @@ public class UserManager implements Serializer {
     }
 
     @Override
-    public boolean createUserProfile(final String name) throws FileNotFoundException, IOException {
+    public boolean createUserProfile(final String name) throws IOException {
         final boolean result = FileManager.createUserFolders(name);
-        this.userData = new UserDataImpl(name);
-        this.serializeUser();
+        // SE C'E' GIA' NON SERIALIZZARLO
+        if (!result) {
+            this.userData = new UserDataImpl(name);
+            this.serializeUser();
+        }
         return result;
     }
 
     @Override
-    public boolean loadAndSetUserProfile(final String name) throws FileNotFoundException {
+    public boolean loadOrCreateNewUser(final String name) throws FileNotFoundException, IOException {
         UserManager.LOG.debug("User selected: " + name);
-        this.userData.setUserName(name);
-        this.deserializeUser(name);
-        if (this.userData == null) {
-            this.userData = new UserDataImpl(name);
+        // IF THE FILE IS GONE RECREATE USER
+        try {
+            this.deserializeUser(name);
+        } catch (final FileNotFoundException e) {
+            this.createUserProfile(name);
+            throw e;
         }
         return true;
     }
@@ -81,14 +86,21 @@ public class UserManager implements Serializer {
 
     }
 
-    private void deserializeUser(final String name) throws FileNotFoundException {
+    // ################################ SERIALIZE AND DESERIALIZE ####################
+    private void deserializeUser(final String name) throws FileNotFoundException, IOException {
+        // IF USER IS SO STUPID TO DELETE FOLDER WHILE RUNNING
+        FileManager.createUserFolders(name);
         final Reader reader = new FileReader(FileManager.getUserDir(name) + "UserData.json");
         this.userData = this.gson.fromJson(reader, UserDataImpl.class);
-
+        if (this.userData == null) {
+            this.createUserProfile(name);
+        }
+        reader.close();
     }
 
-    private void serializeUser() throws FileNotFoundException, IOException {
-        UserManager.LOG.debug(this.userData.toString());
+    private void serializeUser() throws IOException {
+        // IF USER IS SO STUPID TO DELETE FOLDER WHILE RUNNING, CHECK IF DIRECTORY IS DELETED
+        FileManager.createUserFolders(this.userData.getUserName());
         final Writer writer = new FileWriter(FileManager.getUserDir(this.userData.getUserName()) + "UserData.json",
                 false);
         this.gson.toJson(this.userData, writer);

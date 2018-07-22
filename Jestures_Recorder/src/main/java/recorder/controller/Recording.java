@@ -40,45 +40,6 @@ public interface Recording extends Tracking {
     void attacheUI(RecView view);
 
     /**
-     * Select the feature vector.
-     *
-     * @param gesture
-     *            the {@link String} gesture
-     * @param index
-     *            the index in the list
-     * @throws IOException
-     *             the exception
-     * @throws JsonIOException
-     *             the {@link JsonIOException}
-     */
-    void addFeatureVector(String gesture, int index) throws IOException, JsonIOException;
-
-    /**
-     * Add all templates.
-     *
-     * @param gesture
-     *            the String gesture
-     * @throws IOException
-     *             the exception
-     * @throws JsonIOException
-     *             the {@link JsonIOException}
-     */
-    void addAllFeatureVectors(String gesture) throws IOException, JsonIOException;
-
-    /**
-     * Delete the feature vector in the list.
-     *
-     * @param index
-     *            the index in the list.
-     */
-    void deleteFeatureVector(int index);
-
-    /**
-     * Clear the featureVector.
-     */
-    void clearFeatureVectors();
-
-    /**
      * Create user profile.
      *
      * @param name
@@ -98,7 +59,48 @@ public interface Recording extends Tracking {
      * @return <code>true</code> if is loaded
      * @throws FileNotFoundException
      *             if file not found
+     * @throws IOException
+     *             the {@link IOException} if can't create user folder
      */
-    boolean loadUserProfile(String name) throws FileNotFoundException;
+    boolean loadUserProfile(String name) throws FileNotFoundException, IOException;
+
+    /**
+     * Select the feature vector.
+     *
+     * @param gesture
+     *            the {@link String} gesture
+     * @param index
+     *            the index in the list
+     * @throws IOException
+     *             the exception
+     * @throws JsonIOException
+     *             the {@link JsonIOException}
+     */
+    void addFeatureVector(String gesture, int index) throws IOException;
+
+    /**
+     * Add all templates.
+     *
+     * @param gesture
+     *            the String gesture
+     * @throws IOException
+     *             the exception
+     * @throws JsonIOException
+     *             the {@link JsonIOException}
+     */
+    void addAllFeatureVectors(String gesture) throws IOException;
+
+    /**
+     * Delete the feature vector in the list.
+     *
+     * @param index
+     *            the index in the list.
+     */
+    void deleteFeatureVector(int index);
+
+    /**
+     * Clear the featureVector.
+     */
+    void clearFeatureVectors();
 
 }

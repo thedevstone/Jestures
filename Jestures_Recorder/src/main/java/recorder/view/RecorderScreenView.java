@@ -16,7 +16,6 @@
 
 package recorder.view;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
@@ -28,6 +27,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXScrollPane;
+import com.jfoenix.controls.JFXTabPane;
 import com.sun.javafx.application.PlatformImpl;
 
 import javafx.application.Platform;
@@ -37,13 +37,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import jestures.core.codification.FrameLength;
 import jestures.core.file.FileManager;
+import jestures.core.recognition.gesture.DefaultGesture;
 import jestures.core.view.enums.DialogsType.DimDialogs;
 import jestures.core.view.enums.NotificationType;
 import jestures.core.view.enums.NotificationType.Duration;
@@ -64,12 +68,36 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     private Stage stage; // NOPMD
     private Scene scene; // NOPMD
 
+    // ########### ALL TABS #############
+    @FXML
+    private JFXTabPane tabPane;
+    @FXML
+    private BorderPane recorderPane; // NOPMD
+    @FXML
+    private JFXButton startButton;
+    @FXML
+    private StackPane tabStackPane;
     @FXML
     private JFXComboBox<String> gestureComboBox;
     @FXML
-    private JFXComboBox<String> selectUserCombo;
+    private VBox vbox;
     @FXML
-    private BorderPane recorderPane; // NOPMD
+    private ComboBox<FrameLength> frameLengthCombo;
+    @FXML
+    private JFXButton addGestureButton;
+    // ########### TAB 1 #############
+    @FXML
+    private BorderPane userBorderPane; // NOPMD
+    @FXML
+    private JFXButton createUserButton;
+    @FXML
+    private JFXComboBox<String> selectUserCombo;
+
+    // ########### TAB 2 #############
+
+    // ########### TAB 3 #############
+
+    // ########### TAB 4 #############
     @FXML
     private JFXScrollPane scrollPane;
     @FXML
@@ -82,6 +110,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     public RecorderScreenView(final Recording recorder) {
         super(recorder);
         this.recorder = recorder;
+        // CREATE AND SET THE CONTROLLER. INIT THE BORDER PANE
         Platform.runLater(() -> {
             final FXMLLoader loader = new FXMLLoader();
             loader.setController(this);
@@ -97,17 +126,19 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     @Override
     @FXML
     public void initialize() { // NOPMD
+        // INIT FIRST ABSTRACT CLASS
         super.initialize();
-
+        // CREATION OF STAGE SCENE AND PANE
         this.stage = new Stage();
         this.scene = new Scene(this.recorderPane);
         this.stage.setScene(this.scene);
-
+        // SETTING EXIT ACTIONS
         this.stage.setOnCloseRequest(e -> {
             this.stopSensor();
             Platform.exit();
             System.exit(0);
         });
+        // CHARGE THE CSS
         this.chargeSceneSheets(FXMLScreens.HOME);
         this.stage.show();
 
@@ -118,6 +149,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     }
 
     // ############################################## FROM TRACKER (RECORDER) ###################################
+    // INTERFACE METHODS FROM VIEW
     @Override
     public void notifyOnFrameChange(final int frame, final Vector2D derivative, final Vector2D path) {
         Platform.runLater(() -> {
@@ -176,6 +208,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     // #################################### ALL TABS #############################################
     @Override
     public void selectGesture(final String gesture) {
+        this.startButton.setDisable(false);
         System.out.println(gesture);
     }
 
@@ -187,6 +220,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
 
     @Override
     public void startSensor() {
+        this.selectUserCombo.setDisable(false);
         this.recorder.startSensor();
     }
 
@@ -194,6 +228,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     public void stopSensor() {
         this.clearCanvasAndChart();
         this.recorder.stopSensor();
+        this.selectUserCombo.setDisable(true);
     }
 
     @Override
@@ -222,30 +257,40 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
             } else {
                 ViewUtilities.showNotificationPopup("User Created", username + " created!", Duration.MEDIUM,
                         NotificationType.SUCCESS, null);
+                // IF USER IS LOADED CORRECLY ENABLE BUTTONS
+                this.gestureComboBox.setDisable(false);
+                this.addGestureButton.setDisable(false);
                 this.loadUsers();
             }
         } catch (final IOException e) {
-            ViewUtilities.showNotificationPopup("Io Exception", "Cannot serialize file", Duration.MEDIUM,
-                    NotificationType.ERROR, t -> e.printStackTrace());
+            ViewUtilities.showNotificationPopup("Io Exception", "Cannot create user file. \nClick for info",
+                    Duration.LONG, NotificationType.ERROR, t -> e.printStackTrace());
         }
     }
 
     @Override
     public void loadUserProfile(final String name) {
-        final Set<String> set = new HashSet<>();
-        this.gestureComboBox.getItems().clear();
-        this.fillGestureCombo();
         try {
             this.recorder.loadUserProfile(name);
-            set.addAll(this.recorder.getAllUserGesture());
-            ViewUtilities.showSnackBar((Pane) this.recorderPane.getCenter(), "Database loaded!", Duration.MEDIUM,
-                    DimDialogs.SMALL, null);
-        } catch (final FileNotFoundException e) {
-            ViewUtilities.showNotificationPopup("Empty dataset", "Record some gesture", Duration.MEDIUM, // NOPMD
-                    NotificationType.WARNING, t -> e.printStackTrace());
+        } catch (final IOException e1) {
+            ViewUtilities.showNotificationPopup("User Dataset not found", "Regenerating it", Duration.MEDIUM, // NOPMD
+                    NotificationType.WARNING, t -> e1.printStackTrace());
         }
+        // IF USER IS LOADED CORRECLY ENABLE BUTTONS
+        this.gestureComboBox.setDisable(false);
+        this.addGestureButton.setDisable(false);
+        // SAVE COPY OF GESTURES LOAD USER WITH GESTURE AND UPDATE THE GESTURES
+        final Set<String> set = new HashSet<>();
+        // DELETE GESTURES
+        this.gestureComboBox.getItems().clear();
+        System.out.println(this.recorder.getAllUserGesture());
+        // LOAD USER GESTURES
+        set.addAll(this.recorder.getAllUserGesture());
+        set.addAll(DefaultGesture.getAllDefaultGestures());
         this.gestureComboBox.getItems().addAll(set);
         Collections.sort(this.gestureComboBox.getItems());
+        ViewUtilities.showSnackBar((Pane) this.recorderPane.getCenter(), "Database loaded and Gesture updated!",
+                Duration.MEDIUM, DimDialogs.SMALL, null);
     }
 
     // ###### TAB 4 ######
@@ -314,7 +359,8 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
         });
     }
 
-    private void clearCanvasAndChart() {
+    // 2 THREAD, UI AND KINECT
+    private synchronized void clearCanvasAndChart() {
         this.getContext().clearRect(0, 0, this.getCanvas().getWidth(), this.getCanvas().getHeight());
         this.getxSeries().getData().clear();
         this.getySeries().getData().clear();

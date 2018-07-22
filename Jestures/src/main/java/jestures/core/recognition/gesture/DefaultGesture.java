@@ -1,5 +1,9 @@
 package jestures.core.recognition.gesture;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Default gestures.
  *
@@ -42,6 +46,20 @@ public enum DefaultGesture {
      */
     public String getGestureName() {
         return this.name;
+    }
+
+    /**
+     * Fill gesture with default combo.
+     *
+     * @return {@link List} of {@link String}
+     */
+    public static List<String> getAllDefaultGestures() {
+        final List<String> lista = new ArrayList<>();
+        for (final DefaultGesture gesture : DefaultGesture.values()) {
+            lista.add(gesture.getGestureName());
+        }
+        Collections.sort(lista);
+        return lista;
     }
 
 }

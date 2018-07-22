@@ -64,10 +64,26 @@ public abstract class AbstractRecorderScreenView implements RecView {
     private Canvas canvas;
     private GraphicsContext context;
 
+    // ########### ALL TABS #############
     @FXML
-    private BorderPane userBorderPane; // NOPMD
+    private JFXTabPane tabPane;
+    @FXML
+    private BorderPane recorderPane; // NOPMD
+    @FXML
+    private JFXButton startButton;
+    @FXML
+    private StackPane tabStackPane;
+    @FXML
+    private JFXComboBox<String> gestureComboBox;
+    @FXML
+    private VBox vbox;
+    @FXML
+    private ComboBox<FrameLength> frameLengthCombo;
     @FXML
     private JFXButton addGestureButton;
+    // ########### TAB 1 #############
+    @FXML
+    private BorderPane userBorderPane; // NOPMD
     @FXML
     private JFXButton createUserButton;
     @FXML
@@ -77,33 +93,25 @@ public abstract class AbstractRecorderScreenView implements RecView {
     @FXML
     private JFXTreeView<String> treeView;
     @FXML
-    private JFXButton addAllListViewButton;
-    @FXML
-    private JFXButton clearListViewButton;
-    @FXML
-    private AnchorPane listViewAnchorPane;
-    @FXML
-    private JFXTabPane tabPane;
-    @FXML
-    private BorderPane recorderPane; // NOPMD
-    @FXML
-    private JFXButton startButton;
-    @FXML
-    private VBox vbox;
+    private JFXScrollPane userScrollPane;
+
+    // ########### TAB 2 #############
+
     @FXML
     private StackPane canvasStackPane;
-    @FXML
-    private ComboBox<FrameLength> frameLengthCombo;
-    @FXML
-    private JFXComboBox<String> gestureComboBox;
-    @FXML
-    private JFXScrollPane userScrollPane;
+    // ########### TAB 3 #############
+
+    // ########### TAB 4 #############
     @FXML
     private JFXScrollPane scrollPane;
     @FXML
     private JFXListView<BorderPane> listView;
     @FXML
-    private StackPane tabStackPane;
+    private JFXButton addAllListViewButton;
+    @FXML
+    private JFXButton clearListViewButton;
+    @FXML
+    private AnchorPane listViewAnchorPane;
 
     /**
      * The constructor.
@@ -131,7 +139,6 @@ public abstract class AbstractRecorderScreenView implements RecView {
         this.initScrollPane();
         this.initTreeView();
         this.initPopup();
-
     }
 
     private void initTreeView() {
@@ -174,12 +181,12 @@ public abstract class AbstractRecorderScreenView implements RecView {
         this.startButton.setOnAction(e -> {
             if (this.recorder.state()) {
                 this.stopSensor();
+                this.startButton.setTooltip(new Tooltip("Start the sensor"));
                 this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY, IconDim.MEDIUM));
-                this.selectUserCombo.setDisable(false);
             } else {
                 this.startSensor();
+                this.startButton.setTooltip(new Tooltip("Start the sensor"));
                 this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY_OFF, IconDim.MEDIUM));
-                this.selectUserCombo.setDisable(true);
             }
         });
 
@@ -259,10 +266,9 @@ public abstract class AbstractRecorderScreenView implements RecView {
         ScrollPaneFactory.wrapNodeOnScrollPane(this.scrollPane, this.listView, "Feature Vectors",
                 "headerFeatureVector");
         this.listView.minHeightProperty().bind(this.listViewAnchorPane.heightProperty().subtract(200));
-        // CHECKSTYLE:ON Magicnumber AH DI MI TOCCA
-        // CHECKSTYLE:OFF Magicnumber AH DI MI TOCCA
         ScrollPaneFactory.wrapNodeOnScrollPane(this.userScrollPane, this.userBorderPane, "Select User",
                 "headerUserPane");
+        // CHECKSTYLE:ON Magicnumber AH DI MI TOCCA
 
     }
 
@@ -282,7 +288,6 @@ public abstract class AbstractRecorderScreenView implements RecView {
             final String selected = this.gestureComboBox.getSelectionModel().getSelectedItem();
             if (index != -1) {
                 this.selectGesture(selected);
-                this.startButton.setDisable(false);
             }
         });
 
@@ -293,14 +298,6 @@ public abstract class AbstractRecorderScreenView implements RecView {
             final String selected = this.selectUserCombo.getSelectionModel().getSelectedItem();
             if (index != -1) {
                 this.loadUserProfile(selected);
-                this.gestureComboBox.setDisable(false);
-                this.addGestureButton.setDisable(false);
-            }
-        });
-        this.selectUserCombo.setOnMouseClicked(t -> {
-            if (t.getClickCount() == 2) {
-
-                System.out.println(t.getButton());
             }
         });
     }
@@ -310,10 +307,7 @@ public abstract class AbstractRecorderScreenView implements RecView {
      *
      */
     public void fillGestureCombo() {
-        for (final DefaultGesture gesture : DefaultGesture.values()) {
-            this.gestureComboBox.getItems().add(gesture.getGestureName());
-        }
-        Collections.sort(this.gestureComboBox.getItems());
+        this.gestureComboBox.getItems().addAll(DefaultGesture.getAllDefaultGestures());
     }
 
     // ################################################ GETTER FOR INSTANCE CLASS #####################################
