@@ -19,10 +19,64 @@
 	-fx-fill-width: true;
 }
 
+
 #start-button {
 	
 	-fx-background-radius: 40;
 	-fx-padding: 0 0 0 3;
+}
+
+#userBox {
+	-fx-background-color: #01579B;
+}
+
+.scroll-bar:vertical {
+    -fx-opacity: 0;
+}
+
+#userScrollPane {
+	-fx-background-color: blue;
+	-fx-hbar-policy: never ;
+}
+
+/*USER */
+
+#treeView {
+	
+}
+
+#userStackPane{
+	
+}
+
+#userBorderPane {
+	-fx-background-color: white;
+}
+
+#createUserTextField {
+	-fx-accent: rgb(161, 213, 254);
+	-fx-background-radius: 30;
+}
+
+#userButton {
+	-fx-background-radius: 100;
+	-fx-background-color: #03A9F4;
+}
+#userHBox {
+	-fx-background-color: white;
+	-fx-background-radius: 30 30 30 30;
+}
+/* POPUP */
+#stackPanePopup {
+	-fx-background-color: white;
+	-fx-min-height: 30;
+	-fx-min-width: 30;
+	-fx-padding: 10;
+	-fx-background-radius: 10;
+}
+.jfx-popup-container {
+	-fx-background-radius: 10;
+	-fx-background-color: rgba(255,255,255,0.95);
 }
 
 /*COMBO BOX */
@@ -120,23 +174,9 @@
 	-fx-opacity: 1;
 }
 
-/* USER */
-
-#userBorderPane {
-	-fx-background-color: white;
-}
-
-#createUserTextField {
-	-fx-accent: rgb(161, 213, 254);
-}
 
 
-/* POPUP LIST VIEW */
 
-.jfx-popup-container {
-	-fx-background-radius: 5 5 10 5;
-	-fx-background-color: rgba(255,255,255,0.95);
-}
 
 /*CLEAR BUTTON */
 

@@ -17,29 +17,40 @@
 
 <BorderPane fx:id="recorderPane" minHeight="700.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <StackPane fx:id="tabStackPane" BorderPane.alignment="CENTER">
+      <StackPane id="tabStackPane" fx:id="tabStackPane" BorderPane.alignment="CENTER">
          <children>
             <JFXTabPane id="tab-pane" fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
                   <Tab>
                     <content>
-                      <JFXScrollPane fx:id="userScrollPane">
+                      <JFXScrollPane id="userScrollPane" fx:id="userScrollPane">
                          <children>  
 	                        <BorderPane id="userBorderPane" fx:id="userBorderPane">
-	                           <center>
-      	                              <JFXTreeView fx:id="treeView" />
-	                           </center>
 	                           <top>
-	                              <HBox BorderPane.alignment="CENTER">
-	                                 <children>
-	                                    <JFXComboBox id="exercise-combo-box" fx:id="selectUserCombo" promptText="Select User" />
-	                                    <JFXButton fx:id="createUserButton" />
-	                                 </children>
-	                                 <padding>
-	                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-	                                 </padding>
-	                              </HBox>
+                                    <StackPane fx:id="userStackPane" BorderPane.alignment="CENTER">
+                                       <children>
+      	                              <HBox id="userHBox" fx:id="userHBox" alignment="CENTER" maxHeight="40.0" maxWidth="175.0" spacing="10.0" StackPane.alignment="CENTER">
+      	                                 <children>
+      	                                    <JFXComboBox id="exercise-combo-box" fx:id="selectUserCombo" focusColor="#405aa800" promptText="Select User" translateX="10.0" unFocusColor="#4d4d4d00">
+                                                   <HBox.margin>
+                                                      <Insets />
+                                                   </HBox.margin>
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                </JFXComboBox>
+      	                                    <JFXButton id="userButton" fx:id="createUserButton" buttonType="RAISED" prefHeight="40.0" prefWidth="40.0" ripplerFill="#6989e178" translateX="5.0" />
+      	                                 </children>
+      	                              </HBox>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </StackPane>
 	                           </top>
+                                 <bottom>
+      	                              <JFXTreeView fx:id="treeView" BorderPane.alignment="CENTER" />
+                                 </bottom>
 	                        </BorderPane>
                           </children>
                        </JFXScrollPane>
@@ -78,7 +89,7 @@
    <bottom>
       <JFXToolbar fx:id="toolbar" minHeight="50.0" BorderPane.alignment="CENTER">
          <left>
-            <JFXComboBox id="exercise-combo-box" fx:id="frameLengthCombo" minWidth="150.0" promptText="Frame Length" BorderPane.alignment="CENTER" />
+            <JFXComboBox id="exercise-combo-box" fx:id="frameLengthCombo" focusColor="#405aa800" minWidth="150.0" promptText="Frame Length" unFocusColor="#4d4d4d00" BorderPane.alignment="CENTER" />
          </left>
          <right>
             <JFXButton id="start-button" fx:id="startButton" />
@@ -89,7 +100,7 @@
          <center>
             <HBox alignment="CENTER" BorderPane.alignment="CENTER">
                <children>
-                  <JFXComboBox id="exercise-combo-box" fx:id="gestureComboBox" promptText="SELECT GESTURE" />
+                  <JFXComboBox id="exercise-combo-box" fx:id="gestureComboBox" focusColor="#405aa800" promptText="SELECT GESTURE" unFocusColor="#4d4d4d00" />
                   <JFXButton fx:id="addGestureButton" />
                </children>
             </HBox>

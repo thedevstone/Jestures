@@ -16,8 +16,13 @@
 
 package jestures.core.view.utils;
 
+import java.awt.TextField;
+
+import com.jfoenix.controls.JFXTextField;
+
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.layout.StackPane;
 
 /**
  * Factory for recording view.
@@ -29,18 +34,29 @@ public final class RecordingFactory {
 
     /**
      * Create the charts.
-     * 
+     *
      * @return the {@link LineChart}
      */
     public static LineChart<Number, Number> createDerivativeLineChart() {
         final NumberAxis x2Axis = new NumberAxis("Space", -100, 100, 1);
         final NumberAxis x1Axis = new NumberAxis("Time", 0, 90, 1);
         final LineChart<Number, Number> lineChart = new LineChart<>(x1Axis, x2Axis);
-        lineChart.getYAxis()
-                 .setAutoRanging(false);
-        lineChart.getYAxis()
-                 .setAutoRanging(false);
+        lineChart.getYAxis().setAutoRanging(false);
+        lineChart.getYAxis().setAutoRanging(false);
         lineChart.setAnimated(false);
         return lineChart;
+    }
+
+    /**
+     * Create the stackpane for popup.
+     *
+     * @param textField
+     *            the {@link TextField}
+     * @return the {@link StackPane}
+     */
+    public static StackPane createPopupContent(final JFXTextField textField) {
+        final StackPane stackPane = new StackPane(textField);
+        stackPane.setId("stackPanePopup");
+        return stackPane;
     }
 }

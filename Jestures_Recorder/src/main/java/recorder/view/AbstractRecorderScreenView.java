@@ -71,6 +71,7 @@ public abstract class AbstractRecorderScreenView implements RecView {
     private GraphicsContext userCanvasContext;
 
     // ########### ALL TABS #############
+    private StackPane popupStackPane;
     @FXML
     private JFXTabPane tabPane;
     @FXML
@@ -89,9 +90,10 @@ public abstract class AbstractRecorderScreenView implements RecView {
     private JFXButton addGestureButton;
 
     // ########### TAB 1 #############
-
     @FXML
-    private StackPane userCanvasStackPane;
+    private HBox userHBox;
+    @FXML
+    private StackPane userStackPane;
     @FXML
     private BorderPane userBorderPane; // NOPMD
     @FXML
@@ -152,17 +154,19 @@ public abstract class AbstractRecorderScreenView implements RecView {
     }
 
     private void initPopup() {
+        this.createUserTextField = new JFXTextField();
         // CREATE USER POPUP
-        this.createUserTextField = new JFXTextField("Insert UserName");
-        this.createUserPopup = new JFXPopup(this.createUserTextField);
+        this.popupStackPane = RecordingFactory.createPopupContent(this.createUserTextField);
+        this.createUserPopup = new JFXPopup(this.popupStackPane);
         this.createUserTextField.setId("createUserTextField");
         this.createUserTextField.setOnAction(t -> {
             this.createUserProfile(this.createUserTextField.getText());
         });
 
         // ADD GESTURE POPUP
-        this.createUserGesture = new JFXTextField("Insert gesture name");
-        this.addGesturePopup = new JFXPopup(this.createUserGesture);
+        this.createUserGesture = new JFXTextField();
+        this.popupStackPane = RecordingFactory.createPopupContent(this.createUserGesture);
+        this.addGesturePopup = new JFXPopup(this.popupStackPane);
         this.createUserGesture.setId("createUserTextField");
         this.createUserGesture.setOnAction(t -> {
             final String temp = this.createUserGesture.getText().replaceAll("\\s+", "_").toUpperCase(Locale.ITALIAN);
@@ -221,13 +225,13 @@ public abstract class AbstractRecorderScreenView implements RecView {
         this.createUserButton.setGraphic(ViewUtilities.iconSetter(Material.CREATE, IconDim.MEDIUM));
         this.createUserButton.setTooltip(new Tooltip("Create a user"));
         this.createUserButton.setOnAction(t -> {
-            this.createUserPopup.show(this.recorderPane);
+            this.createUserPopup.show(this.createUserButton);
         });
         // ADD GESTURE
         this.addGestureButton.setGraphic(ViewUtilities.iconSetter(Material.ADD_CIRCLE, IconDim.MEDIUM));
         this.addGestureButton.setTooltip(new Tooltip("Add a new gesture"));
         this.addGestureButton.setOnAction(t -> {
-            this.addGesturePopup.show(this.recorderPane);
+            this.addGesturePopup.show(this.addGestureButton);
         });
         this.addGestureButton.setDisable(true);
 
@@ -287,8 +291,11 @@ public abstract class AbstractRecorderScreenView implements RecView {
         this.listView.minHeightProperty().bind(this.listViewAnchorPane.heightProperty().subtract(200));
         ScrollPaneFactory.wrapNodeOnScrollPane(this.userScrollPane, this.userBorderPane, "Select User",
                 "headerUserPane");
+        this.treeView.maxHeightProperty().bind(this.tabStackPane.heightProperty().subtract(300));
+        this.treeView.minHeightProperty().bind(this.tabStackPane.heightProperty().subtract(300));
+        JFXDepthManager.setDepth(this.userHBox, 1);
+        JFXDepthManager.setDepth(this.createUserButton, 2);
         // CHECKSTYLE:ON Magicnumber AH DI MI TOCCA
-
     }
 
     private void initCombos() {
@@ -302,21 +309,16 @@ public abstract class AbstractRecorderScreenView implements RecView {
         // GESTURE COMBOBOX
         this.gestureComboBox.setDisable(true);
         JFXDepthManager.setDepth(this.gestureComboBox, 4);
-        this.gestureComboBox.setOnAction(t -> {
-            final int index = this.gestureComboBox.getSelectionModel().getSelectedIndex();
-            final String selected = this.gestureComboBox.getSelectionModel().getSelectedItem();
-            if (index != -1) {
-                this.selectGesture(selected);
+        this.gestureComboBox.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
+            if (newValue != null) {
+                this.selectGesture(newValue);
             }
         });
-
         // USER COMBOBOX
         Collections.sort(this.selectUserCombo.getItems());
-        this.selectUserCombo.setOnAction(t -> {
-            final int index = this.selectUserCombo.getSelectionModel().getSelectedIndex();
-            final String selected = this.selectUserCombo.getSelectionModel().getSelectedItem();
-            if (index != -1) {
-                this.loadUserProfile(selected);
+        this.selectUserCombo.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
+            if (newValue != null) {
+                this.loadUserProfile(newValue);
             }
         });
     }
