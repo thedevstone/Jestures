@@ -8,15 +8,12 @@
 <?import com.jfoenix.controls.JFXToolbar?>
 <?import com.jfoenix.controls.JFXTreeView?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.ScrollPane?>
-
 
 <BorderPane fx:id="recorderPane" minHeight="700.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <center>
@@ -29,11 +26,8 @@
                       <JFXScrollPane fx:id="userScrollPane">
                          <children>  
 	                        <BorderPane id="userBorderPane" fx:id="userBorderPane">
-	                           <bottom>
-	                              <Canvas fx:id="userCanvas" height="200.0" width="200.0" BorderPane.alignment="CENTER" />
-	                           </bottom>
 	                           <center>
-	                              <JFXTreeView fx:id="treeView" BorderPane.alignment="CENTER" />
+      	                              <JFXTreeView fx:id="treeView" />
 	                           </center>
 	                           <top>
 	                              <HBox BorderPane.alignment="CENTER">
@@ -53,7 +47,7 @@
                   </Tab>
                 <Tab>
                      <content>
-                        <StackPane id="canvas-pane" fx:id="canvasStackPane" prefHeight="150.0" prefWidth="200.0" />
+                        <StackPane id="canvas-pane" fx:id="liveCanvasStackPane" prefHeight="150.0" prefWidth="200.0" />
                      </content>
                 </Tab>
                 <Tab>

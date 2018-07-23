@@ -39,6 +39,42 @@ public interface UserData {
     List<String> getAllUserGestures();
 
     /**
+     * Get all template (feature vectors) for the selected gesture.
+     *
+     * @param gestureName
+     *            the {@link String} gesture name
+     * @return the {@link List} of feature vectors
+     */
+    List<List<Vector2D>> getGestureDataset(String gestureName);
+
+    /**
+     * Get a copy all feature vectors for all gestures.
+     * <p>
+     * Useful for template match
+     *
+     * @return the {@link Map} of all gestures data
+     */
+    Map<String, List<List<Vector2D>>> getAllGesturesData();
+
+    /**
+     * Delete all the gesture's dataset.
+     * 
+     * @param gestureName
+     *            the gesture name
+     */
+    void deleteGestureDataset(String gestureName);
+
+    /**
+     * Delete a single feature vector given a gesture and an index in the dataset.
+     *
+     * @param gestureName
+     *            the String gesture name
+     * @param index
+     *            the index in the dataset
+     */
+    void deleteGestureFeatureVector(String gestureName, int index);
+
+    /**
      * The Feature Vector to serialize.
      *
      * @param featureVector
@@ -57,22 +93,4 @@ public interface UserData {
      *            the {@link String} gesture name
      */
     void addAllGestureFeatureVector(String gestureName, List<List<Vector2D>> gestureFeatureVectors);
-
-    /**
-     * Get all template (feature vectors) for the selected gesture.
-     *
-     * @param gestureName
-     *            the {@link String} gesture name
-     * @return the {@link List} of feature vectors
-     */
-    List<List<Vector2D>> getGestureFeatureVectors(String gestureName);
-
-    /**
-     * Get a copy all feature vectors for all gestures.
-     * <p>
-     * Useful for template match
-     *
-     * @return the {@link Map} of all gestures data
-     */
-    Map<String, List<List<Vector2D>>> getAllGesturesData();
 }

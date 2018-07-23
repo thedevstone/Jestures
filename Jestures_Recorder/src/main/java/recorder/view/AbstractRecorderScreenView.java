@@ -23,6 +23,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.TreeItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -59,10 +60,15 @@ public abstract class AbstractRecorderScreenView implements RecView {
     private JFXTextField createUserGesture;
     private JFXPopup createUserPopup;
     private JFXPopup addGesturePopup;
+    private JFXPopup cnavasPopup;
 
-    // CANVAS
-    private Canvas canvas;
-    private GraphicsContext context;
+    // LIVE CANVAS
+    private Canvas liveCanvas;
+    private GraphicsContext liveCanvasContext;
+    // USER CANVAS
+
+    private Canvas userCanvas;
+    private GraphicsContext userCanvasContext;
 
     // ########### ALL TABS #############
     @FXML
@@ -81,15 +87,18 @@ public abstract class AbstractRecorderScreenView implements RecView {
     private ComboBox<FrameLength> frameLengthCombo;
     @FXML
     private JFXButton addGestureButton;
+
     // ########### TAB 1 #############
+
+    @FXML
+    private StackPane userCanvasStackPane;
     @FXML
     private BorderPane userBorderPane; // NOPMD
     @FXML
     private JFXButton createUserButton;
     @FXML
     private JFXComboBox<String> selectUserCombo;
-    @FXML
-    private Canvas userCanvas;
+
     @FXML
     private JFXTreeView<String> treeView;
     @FXML
@@ -98,7 +107,7 @@ public abstract class AbstractRecorderScreenView implements RecView {
     // ########### TAB 2 #############
 
     @FXML
-    private StackPane canvasStackPane;
+    private StackPane liveCanvasStackPane;
     // ########### TAB 3 #############
 
     // ########### TAB 4 #############
@@ -133,16 +142,13 @@ public abstract class AbstractRecorderScreenView implements RecView {
         this.fillGestureCombo();
         this.initCombos();
         this.initGraphic();
-        this.initCanvas();
+        this.initLiveCanvas();
+        this.initUserCanvas();
         this.initChart();
         this.initTabPaneListener();
         this.initScrollPane();
         this.initTreeView();
         this.initPopup();
-    }
-
-    private void initTreeView() {
-
     }
 
     private void initPopup() {
@@ -169,6 +175,12 @@ public abstract class AbstractRecorderScreenView implements RecView {
                         NotificationType.SUCCESS, null);
                 Collections.sort(this.gestureComboBox.getItems());
             }
+        });
+
+        // CANVAS POPUP
+        this.cnavasPopup = new JFXPopup(new StackPane(this.getUserCanvas()));
+        this.getUserCanvas().setOnMouseClicked(t -> {
+            this.cnavasPopup.hide();
         });
 
     }
@@ -221,12 +233,19 @@ public abstract class AbstractRecorderScreenView implements RecView {
 
     }
 
-    private void initCanvas() {
-        this.canvas = new Canvas(this.recorderPane.getMinWidth(), this.recorderPane.getMinHeight());
-        this.canvas.widthProperty().bind(this.recorderPane.widthProperty());
-        this.canvas.heightProperty().bind(this.recorderPane.heightProperty());
-        this.context = this.canvas.getGraphicsContext2D();
-        this.canvasStackPane.getChildren().setAll(this.canvas);
+    private void initLiveCanvas() {
+        this.liveCanvas = new Canvas(this.recorderPane.getMinWidth(), this.recorderPane.getMinHeight());
+        this.liveCanvas.widthProperty().bind(this.recorderPane.widthProperty());
+        this.liveCanvas.heightProperty().bind(this.recorderPane.heightProperty());
+        this.liveCanvasContext = this.liveCanvas.getGraphicsContext2D();
+        this.liveCanvasStackPane.getChildren().setAll(this.liveCanvas);
+    }
+
+    private void initUserCanvas() {
+        this.userCanvas = new Canvas(this.recorderPane.getMinWidth(), this.recorderPane.getMinHeight());
+        this.userCanvas.widthProperty().bind(this.recorderPane.widthProperty());
+        this.userCanvas.heightProperty().bind(this.recorderPane.heightProperty());
+        this.userCanvasContext = this.userCanvas.getGraphicsContext2D();
     }
 
     private void initChart() {
@@ -302,6 +321,28 @@ public abstract class AbstractRecorderScreenView implements RecView {
         });
     }
 
+    private void initTreeView() {
+        final TreeItem<String> root = new TreeItem<String>("Empty User");
+        root.setGraphic(ViewUtilities.iconSetter(Material.PERSON, IconDim.SMALL));
+        this.treeView.setRoot(root);
+        this.treeView.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
+            if (newValue != null && this.treeView.getTreeItemLevel(newValue) == 2) {
+                this.drawSavedGestureOnCanvas(newValue.getParent(),
+                        newValue.getParent().getChildren().indexOf(newValue));
+            }
+        });
+    }
+
+    /**
+     * Draw saved gestures on canvas.
+     *
+     * @param parent
+     *            the {@link TreeItem} parent
+     * @param indexOf
+     *            the feature vevector index for the selected gesture
+     */
+    public abstract void drawSavedGestureOnCanvas(TreeItem<String> parent, int indexOf);
+
     /**
      * Fill gesture with default combo.
      *
@@ -334,17 +375,43 @@ public abstract class AbstractRecorderScreenView implements RecView {
      *
      * @return the {@link Canvas}.
      */
-    public Canvas getCanvas() {
-        return this.canvas;
+    public Canvas getLiveCanvas() {
+        return this.liveCanvas;
     }
 
     /**
-     * Get the {@link GraphicsContext}.
+     * Get the live {@link GraphicsContext}.
      *
      * @return the {@link GraphicsContext}
      */
-    public GraphicsContext getContext() {
-        return this.context;
+    public GraphicsContext getLiveContext() {
+        return this.liveCanvasContext;
     }
 
+    /**
+     * Get the userCanvas.
+     *
+     * @return the {@link Canvas}
+     */
+    public Canvas getUserCanvas() {
+        return this.userCanvas;
+    }
+
+    /**
+     * Get the user {@link GraphicsContext}.
+     *
+     * @return the {@link GraphicsContext}
+     */
+    public GraphicsContext getUserCanvasContext() {
+        return this.userCanvasContext;
+    }
+
+    /**
+     * Get the canvas popup.
+     *
+     * @return the {@link JFXPopup}
+     */
+    public JFXPopup getCnavasPopup() {
+        return this.cnavasPopup;
+    }
 }

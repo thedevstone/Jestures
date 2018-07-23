@@ -55,7 +55,17 @@ public class UserDataImpl implements UserData, Serializable {
 
     @Override
     public List<String> getAllUserGestures() {
-        return new ArrayList<>(this.gestures.keySet());
+        return Collections.unmodifiableList(new ArrayList<>(this.gestures.keySet()));
+    }
+
+    @Override
+    public List<List<Vector2D>> getGestureDataset(final String gestureName) {
+        return Collections.unmodifiableList(this.gestures.get(gestureName));
+    }
+
+    @Override
+    public Map<String, List<List<Vector2D>>> getAllGesturesData() {
+        return Collections.unmodifiableMap(this.gestures);
     }
 
     @Override
@@ -80,13 +90,13 @@ public class UserDataImpl implements UserData, Serializable {
     }
 
     @Override
-    public List<List<Vector2D>> getGestureFeatureVectors(final String gestureName) {
-        return this.gestures.get(gestureName);
+    public void deleteGestureDataset(final String gestureName) {
+        this.gestures.remove(gestureName);
     }
 
     @Override
-    public Map<String, List<List<Vector2D>>> getAllGesturesData() {
-        return Collections.unmodifiableMap(this.gestures);
+    public void deleteGestureFeatureVector(final String gestureName, final int index) {
+        this.gestures.get(gestureName).remove(index);
     }
 
     @Override

@@ -18,6 +18,9 @@ package recorder.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
+
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import com.google.gson.JsonIOException;
 
@@ -38,6 +41,15 @@ public interface Recording extends Tracking {
      *            the {@link RecView}
      */
     void attacheUI(RecView view);
+
+    /**
+     * Get all template (feature vectors) for the selected gesture.
+     *
+     * @param gestureName
+     *            the {@link String} gesture name
+     * @return the {@link List} of feature vectors
+     */
+    List<List<Vector2D>> getGestureDataset(String gestureName);
 
     /**
      * Create user profile.
@@ -96,11 +108,29 @@ public interface Recording extends Tracking {
      * @param index
      *            the index in the list.
      */
-    void deleteFeatureVector(int index);
+    void deleteRecordedFeatureVector(int index);
 
     /**
      * Clear the featureVector.
      */
-    void clearFeatureVectors();
+    void clearRecordedDataset();
+
+    /**
+     * Delete all the gesture's dataset.
+     *
+     * @param gestureName
+     *            the gesture name
+     */
+    void deleteGestureDataset(String gestureName);
+
+    /**
+     * Delete a single feature vector given a gesture and an index in the dataset.
+     *
+     * @param gestureName
+     *            the String gesture name
+     * @param index
+     *            the index in the dataset
+     */
+    void deleteGestureFeatureVector(String gestureName, int index);
 
 }

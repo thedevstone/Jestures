@@ -19,15 +19,18 @@ package recorder.view;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.kordamp.ikonli.material.Material;
 
 import com.google.gson.JsonSyntaxException;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXScrollPane;
+import com.jfoenix.controls.JFXTreeView;
 import com.sun.javafx.application.PlatformImpl;
 
 import javafx.application.Platform;
@@ -38,6 +41,7 @@ import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
+import javafx.scene.control.TreeItem;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
@@ -47,6 +51,7 @@ import jestures.core.codification.FrameLength;
 import jestures.core.file.FileManager;
 import jestures.core.recognition.gesture.DefaultGesture;
 import jestures.core.view.enums.DialogsType.DimDialogs;
+import jestures.core.view.enums.IconDim;
 import jestures.core.view.enums.NotificationType;
 import jestures.core.view.enums.NotificationType.Duration;
 import jestures.core.view.utils.ListViewFactory;
@@ -62,9 +67,13 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     // private static final Logger LOG = Logger.getLogger(RecorderScreenView.class);
     private final Recording recorder;
     private FrameLength frameLength;
+
     // VIEW
     private Stage stage; // NOPMD
     private Scene scene; // NOPMD
+
+    // TREE VIEW
+    private TreeItem<String> root;
 
     // ########### ALL TABS #############
 
@@ -81,6 +90,8 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     @FXML
     private JFXScrollPane userScrollPane;
     // ########### TAB 1 #############
+    @FXML
+    private JFXTreeView<String> treeView;
     @FXML
     private BorderPane userBorderPane; // NOPMD
     @FXML
@@ -121,6 +132,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     public void initialize() { // NOPMD
         // INIT FIRST ABSTRACT CLASS
         super.initialize();
+
         // CREATION OF STAGE SCENE AND PANE
         this.stage = new Stage();
         this.scene = new Scene(this.recorderPane);
@@ -152,17 +164,16 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
             this.getxSeries().getData().add(new XYChart.Data<Number, Number>(frame, (int) derivative.getX()));
             this.getySeries().getData().add(new XYChart.Data<Number, Number>(frame, (int) derivative.getY()));
 
-            this.getContext().fillOval(-path.getX() + this.getCanvas().getWidth() / 2,
-                    path.getY() + this.getCanvas().getHeight() / 2, 10, 10);
+            this.getLiveContext().fillOval(-path.getX() + this.getLiveCanvas().getWidth() / 2,
+                    path.getY() + this.getLiveCanvas().getHeight() / 2, 10, 10);
         });
-
     }
 
     @Override
     public void notifyOnFeatureVectorEvent() {
         Platform.runLater(() -> {
             this.addFeatureVectorToListView(this.listView.getItems().size(),
-                    this.getCanvas().snapshot(new SnapshotParameters(), null));
+                    this.getLiveCanvas().snapshot(new SnapshotParameters(), null));
         });
     }
 
@@ -213,7 +224,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
 
     @Override
     public void startSensor() {
-        this.selectUserCombo.setDisable(false);
+        this.selectUserCombo.setDisable(true);
         this.recorder.startSensor();
     }
 
@@ -221,7 +232,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     public void stopSensor() {
         this.clearCanvasAndChart();
         this.recorder.stopSensor();
-        this.selectUserCombo.setDisable(true);
+        this.selectUserCombo.setDisable(false);
     }
 
     @Override
@@ -263,7 +274,6 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
 
     @Override
     public void loadUserProfile(final String name) {
-        System.out.println(name);
         try {
             this.recorder.loadUserProfile(name);
         } catch (final IOException e1) {
@@ -290,13 +300,32 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
         Collections.sort(this.gestureComboBox.getItems());
         ViewUtilities.showSnackBar((Pane) this.recorderPane.getCenter(), "Database loaded and Gesture updated!",
                 Duration.MEDIUM, DimDialogs.SMALL, null);
+
+        // REGENERATE TREVIEW FOR USER
+        this.root = new TreeItem<String>(name);
+        this.treeView.setRoot(this.root);
+        this.createGestureTreeView();
+    }
+
+    // ################# TREE VIEW ###################
+    // CANVAS GESTURE
+    @Override
+    public void drawSavedGestureOnCanvas(final TreeItem<String> gestureItem, final int templateIndex) {
+        final List<Vector2D> template = this.recorder.getGestureDataset(gestureItem.getValue()).get(templateIndex);
+        this.getUserCanvasContext().clearRect(0, 0, this.getLiveCanvas().getWidth(), this.getLiveCanvas().getHeight());
+        for (final Vector2D path : template) {
+            this.getUserCanvasContext().fillOval(-path.getX() + this.getLiveCanvas().getWidth() / 2,
+                    path.getY() + this.getLiveCanvas().getHeight() / 2, 10, 10);
+        }
+        this.getCnavasPopup().show(this.recorderPane);
+
     }
 
     // ###### TAB 4 ######
     @Override
     public void deleteFeatureVectorInLIstView(final int indexClicked) {
         this.listView.getItems().remove(indexClicked);
-        this.recorder.deleteFeatureVector(indexClicked);
+        this.recorder.deleteRecordedFeatureVector(indexClicked);
         this.scrollPane.setContent(this.listView);
 
     }
@@ -304,7 +333,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     @Override
     public void clearListView() {
         this.listView.getItems().clear();
-        this.recorder.clearFeatureVectors();
+        this.recorder.clearRecordedDataset();
         this.scrollPane.setContent(this.listView);
     }
 
@@ -360,7 +389,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
 
     // 2 THREAD, UI AND KINECT
     private synchronized void clearCanvasAndChart() {
-        this.getContext().clearRect(0, 0, this.getCanvas().getWidth(), this.getCanvas().getHeight());
+        this.getLiveContext().clearRect(0, 0, this.getLiveCanvas().getWidth(), this.getLiveCanvas().getHeight());
         this.getxSeries().getData().clear();
         this.getySeries().getData().clear();
     }
@@ -372,6 +401,34 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
         } else {
             throw new IllegalStateException();
         }
+    }
+
+    private void createGestureTreeView() {
+        final List<String> userGestures = this.recorder.getAllUserGesture();
+        for (int i = 0; i < userGestures.size(); i++) {
+            this.makeGestureBranch(userGestures.get(i), this.root);
+        }
+    }
+
+    // CREO UN TREEELEM PER OGNI GESTURE
+    private TreeItem<String> makeGestureBranch(final String gestureName, final TreeItem<String> parent) {
+        final TreeItem<String> item = new TreeItem<>(gestureName);
+        item.setGraphic(ViewUtilities.iconSetter(Material.GESTURE, IconDim.SMALL));
+        // RICORSIVA CREO TUTTO L'ALBERO
+        final List<List<Vector2D>> gestureDataset = this.recorder.getGestureDataset(gestureName);
+        for (int i = 0; i < gestureDataset.size(); i++) {
+            this.makeTemplateBranch("Template: " + i + 1, item);
+        }
+        parent.getChildren().add(item);
+        return item;
+    }
+
+    // CREO UN TREEELEM PER OGNI TEMPLATE
+    private TreeItem<String> makeTemplateBranch(final String gestureName, final TreeItem<String> parent) {
+        final TreeItem<String> item = new TreeItem<>(gestureName);
+        item.setGraphic(ViewUtilities.iconSetter(Material.SHOW_CHART, IconDim.SMALL));
+        parent.getChildren().add(item);
+        return item;
     }
 
 }

@@ -28,7 +28,16 @@ public interface Serializer {
      *
      * @return the {@link List} of gestures
      */
-    List<String> getAllUserGesture();
+    List<String> getAllUserGestures();
+
+    /**
+     * Get all template (feature vectors) for the selected gesture.
+     *
+     * @param gestureName
+     *            the {@link String} gesture name
+     * @return the {@link List} of feature vectors
+     */
+    List<List<Vector2D>> getGestureDataset(String gestureName);
 
     /**
      * Create user profile.
@@ -67,7 +76,7 @@ public interface Serializer {
      * @throws JsonIOException
      *             the {@link JsonIOException} if can't serialize
      */
-    void serializeFeatureVector(String gestureName, List<Vector2D> featureVector) throws IOException;
+    void addFeatureVectorAndSerialize(String gestureName, List<Vector2D> featureVector) throws IOException;
 
     /**
      * Serialize all gesture feature vector.
@@ -81,6 +90,24 @@ public interface Serializer {
      * @throws JsonIOException
      *             the {@link JsonIOException} if can't serialize
      */
-    void serializeAllFeatureVectors(String gestureName, List<List<Vector2D>> featureVector) throws IOException;
+    void addAllFeatureVectorsAndSerialize(String gestureName, List<List<Vector2D>> featureVector) throws IOException;
+
+    /**
+     * Delete all the gesture's dataset.
+     *
+     * @param gestureName
+     *            the gesture name
+     */
+    void deleteGestureDataset(String gestureName);
+
+    /**
+     * Delete a single feature vector given a gesture and an index in the dataset.
+     *
+     * @param gestureName
+     *            the String gesture name
+     * @param index
+     *            the index in the dataset
+     */
+    void deleteGestureFeatureVector(String gestureName, int index);
 
 }

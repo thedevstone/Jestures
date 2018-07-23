@@ -104,15 +104,15 @@ public final class Recorder extends Tracker implements Recording {
         }
     }
 
-    // ############## FEATURE VECTOR ##############
+    // ############## RECORDED DATASET ##############
 
     @Override
-    public void deleteFeatureVector(final int index) {
+    public void deleteRecordedFeatureVector(final int index) {
         this.listOfFeatureVector.remove(index);
     }
 
     @Override
-    public void clearFeatureVectors() {
+    public void clearRecordedDataset() {
         this.listOfFeatureVector.clear();
     }
 
@@ -125,7 +125,12 @@ public final class Recorder extends Tracker implements Recording {
 
     @Override
     public List<String> getAllUserGesture() {
-        return this.userManager.getAllUserGesture();
+        return this.userManager.getAllUserGestures();
+    }
+
+    @Override
+    public List<List<Vector2D>> getGestureDataset(final String gestureName) {
+        return this.userManager.getGestureDataset(gestureName);
     }
 
     @Override
@@ -140,13 +145,23 @@ public final class Recorder extends Tracker implements Recording {
 
     @Override
     public void addFeatureVector(final String gesture, final int index) throws IOException {
-        this.userManager.serializeFeatureVector(gesture, this.listOfFeatureVector.get(index));
+        this.userManager.addFeatureVectorAndSerialize(gesture, this.listOfFeatureVector.get(index));
 
     }
 
     @Override
     public void addAllFeatureVectors(final String gesture) throws IOException {
-        this.userManager.serializeAllFeatureVectors(gesture, this.listOfFeatureVector);
+        this.userManager.addAllFeatureVectorsAndSerialize(gesture, this.listOfFeatureVector);
+    }
+
+    @Override
+    public void deleteGestureDataset(final String gestureName) {
+        this.userManager.deleteGestureDataset(gestureName);
+    }
+
+    @Override
+    public void deleteGestureFeatureVector(final String gestureName, final int index) {
+        this.userManager.deleteGestureFeatureVector(gestureName, index);
     }
 
     // ############################################## INSTANCE METHODS ###################################

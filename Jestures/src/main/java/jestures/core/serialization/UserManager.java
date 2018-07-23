@@ -44,8 +44,13 @@ public class UserManager implements Serializer {
     }
 
     @Override
-    public List<String> getAllUserGesture() {
+    public List<String> getAllUserGestures() {
         return this.userData.getAllUserGestures();
+    }
+
+    @Override
+    public List<List<Vector2D>> getGestureDataset(final String gestureName) {
+        return this.userData.getGestureDataset(gestureName);
     }
 
     @Override
@@ -74,14 +79,25 @@ public class UserManager implements Serializer {
     }
 
     @Override
-    public void serializeFeatureVector(final String gestureName, final List<Vector2D> featureVector)
+    public void addFeatureVectorAndSerialize(final String gestureName, final List<Vector2D> featureVector)
             throws IOException {
         this.userData.addGestureFeatureVector(gestureName, featureVector);
         this.serializeUser();
     }
 
     @Override
-    public void serializeAllFeatureVectors(final String gestureName, final List<List<Vector2D>> featureVector)
+    public void deleteGestureDataset(final String gestureName) {
+        this.userData.deleteGestureDataset(gestureName);
+    }
+
+    @Override
+    public void deleteGestureFeatureVector(final String gestureName, final int index) {
+        this.userData.deleteGestureFeatureVector(gestureName, index);
+
+    }
+
+    @Override
+    public void addAllFeatureVectorsAndSerialize(final String gestureName, final List<List<Vector2D>> featureVector)
             throws IOException {
         this.userData.addAllGestureFeatureVector(gestureName, featureVector);
         this.serializeUser();
