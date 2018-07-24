@@ -268,6 +268,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
                 // IF USER IS LOADED CORRECLY ENABLE BUTTONS
                 this.gestureHBox.setDisable(false);
                 this.refreshUsers();
+                this.selectUserCombo.getSelectionModel().select(username);
             }
         } catch (final IOException e) {
             ViewUtilities.showNotificationPopup("Io Exception", "Cannot create user file. \nClick for info",
