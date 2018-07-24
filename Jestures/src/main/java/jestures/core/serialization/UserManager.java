@@ -34,8 +34,9 @@ public class UserManager implements Serializer {
      * The constructor for the {@link UserManager} class.
      */
     public UserManager() {
-        this.userData = new UserDataImpl("default user");
+        this.userData = null;
         this.gson = new Gson();
+        UserManager.LOG.getClass();
     }
 
     @Override
@@ -55,24 +56,25 @@ public class UserManager implements Serializer {
 
     @Override
     public boolean createUserProfile(final String name) throws IOException {
-        final boolean result = FileManager.createUserFolders(name);
-        // SE C'E' GIA' NON SERIALIZZARLO
-        if (!result) {
+        final boolean userNotExists = FileManager.createUserFolders(name);
+        // SE C'E' GIA' NON CREARLO
+        if (userNotExists) {
             this.userData = new UserDataImpl(name);
             this.serializeUser();
         }
-        return result;
+        return userNotExists;
     }
 
     @Override
     public boolean loadOrCreateNewUser(final String name)
             throws FileNotFoundException, IOException, JsonSyntaxException {
-        UserManager.LOG.debug("User selected: " + name);
-        // IF THE FILE IS GONE RECREATE USER
         try {
             this.deserializeUser(name);
         } catch (final FileNotFoundException e) {
-            this.createUserProfile(name);
+            if (!this.createUserProfile(name)) { // SE MANCA LA CARTELLA COMPLETA CREA DI NUOVO L'UTENTE
+                this.userData = new UserDataImpl(name); // SE MANCA IL FILE MA NON LA CARTELLA CREA SOLO IL FILE
+                this.serializeUser();
+            }
             throw e;
         }
         return true;
@@ -90,7 +92,6 @@ public class UserManager implements Serializer {
             throws IOException {
         this.userData.addAllGestureFeatureVector(gestureName, featureVector);
         this.serializeUser();
-        this.deserializeUser(this.getUserName());
     }
 
     @Override
@@ -108,12 +109,8 @@ public class UserManager implements Serializer {
     // ################################ SERIALIZE AND DESERIALIZE ####################
     private void deserializeUser(final String name) throws FileNotFoundException, IOException, JsonSyntaxException {
         // IF USER IS SO STUPID TO DELETE FOLDER WHILE RUNNING
-        FileManager.createUserFolders(name);
         final Reader reader = new FileReader(FileManager.getUserDir(name) + "UserData.json");
         this.userData = this.gson.fromJson(reader, UserDataImpl.class);
-        if (this.userData == null) {
-            this.createUserProfile(name);
-        }
         reader.close();
     }
 

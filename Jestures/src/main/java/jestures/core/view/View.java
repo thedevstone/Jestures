@@ -65,7 +65,7 @@ public interface View {
     /**
      * Load the Users.
      */
-    void loadUsers();
+    void refreshUsers();
 
     /**
      * Load the userProfile.

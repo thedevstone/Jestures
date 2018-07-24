@@ -185,19 +185,6 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     // ############################################## FROM RECORDER ###################################
 
     @Override
-    public void loadUsers() {
-        Platform.runLater(() -> {
-            try {
-                this.selectUserCombo.getItems().clear();
-                FileManager.getAllUserFolder().stream().forEachOrdered(t -> this.selectUserCombo.getItems().add(t));
-            } catch (final IOException e) {
-                ViewUtilities.showNotificationPopup("Exception", "Cannot read user data", Duration.MEDIUM,
-                        NotificationType.WARNING, null);
-            }
-        });
-    }
-
-    @Override
     public void setRecording(final boolean isRecording) {
         if (isRecording) {
             Platform.runLater(() -> {
@@ -255,6 +242,19 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
         return this.frameLength;
     }
 
+    @Override
+    public void refreshUsers() {
+        Platform.runLater(() -> {
+            try {
+                this.selectUserCombo.getItems().clear();
+                FileManager.getAllUserFolder().stream().forEachOrdered(t -> this.selectUserCombo.getItems().add(t));
+            } catch (final IOException e) {
+                ViewUtilities.showNotificationPopup("Exception", "Cannot read user data", Duration.MEDIUM,
+                        NotificationType.WARNING, null);
+            }
+        });
+    }
+
     // ###### TAB 1 ######
     @Override
     public void createUserProfile(final String username) {
@@ -267,8 +267,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
                         NotificationType.SUCCESS, null);
                 // IF USER IS LOADED CORRECLY ENABLE BUTTONS
                 this.gestureHBox.setDisable(false);
-                this.loadUsers();
-                this.selectUserCombo.getSelectionModel().select(username);
+                this.refreshUsers();
             }
         } catch (final IOException e) {
             ViewUtilities.showNotificationPopup("Io Exception", "Cannot create user file. \nClick for info",
@@ -449,7 +448,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
         // RICORSIVA CREO TUTTO L'ALBERO
         final List<List<Vector2D>> gestureDataset = this.recorder.getGestureDataset(gestureName);
         for (int i = 0; i < gestureDataset.size(); i++) {
-            this.makeTemplateBranch("Template: " + i + 1, item);
+            this.makeTemplateBranch("Template: " + (i + 1), item);
         }
         parent.getChildren().add(item);
         return item;

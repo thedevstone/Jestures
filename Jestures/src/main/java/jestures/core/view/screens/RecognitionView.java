@@ -206,7 +206,7 @@ public class RecognitionView extends AbstractView {
     }
 
     @Override
-    public void loadUsers() {
+    public void refreshUsers() {
         // TODO Auto-generated method stub
 
     }
