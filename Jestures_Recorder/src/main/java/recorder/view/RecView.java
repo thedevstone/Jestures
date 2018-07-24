@@ -24,8 +24,15 @@ public interface RecView extends View {
     void startFxThread();
 
     /**
-     * Create the user profile.
+     * Delete the user profile.
+     *
      * 
+     */
+    void deleteSelectedUserProfile();
+
+    /**
+     * Create the user profile.
+     *
      * @param username
      *            the String username
      */

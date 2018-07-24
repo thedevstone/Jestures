@@ -55,8 +55,13 @@ public class UserManager implements Serializer {
     }
 
     @Override
+    public void deleteUserProfile() throws IOException {
+        FileManager.deleteUserFolder(this.userData.getUserName());
+    }
+
+    @Override
     public boolean createUserProfile(final String name) throws IOException {
-        final boolean userNotExists = FileManager.createUserFolders(name);
+        final boolean userNotExists = FileManager.createUserFolder(name);
         // SE C'E' GIA' NON CREARLO
         if (userNotExists) {
             this.userData = new UserDataImpl(name);
@@ -116,7 +121,7 @@ public class UserManager implements Serializer {
 
     private void serializeUser() throws IOException {
         // IF USER IS SO STUPID TO DELETE FOLDER WHILE RUNNING, CHECK IF DIRECTORY IS DELETED
-        FileManager.createUserFolders(this.userData.getUserName());
+        FileManager.createUserFolder(this.userData.getUserName());
         final Writer writer = new FileWriter(FileManager.getUserDir(this.userData.getUserName()) + "UserData.json",
                 false);
         this.gson.toJson(this.userData, writer);

@@ -271,9 +271,28 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
                 this.selectUserCombo.getSelectionModel().select(username);
             }
         } catch (final IOException e) {
-            ViewUtilities.showNotificationPopup("Io Exception", "Cannot create user file. \nClick for info",
+            ViewUtilities.showNotificationPopup("Io  Exception", "Cannot create user file. \nClick for info",
                     Duration.LONG, NotificationType.ERROR, t -> e.printStackTrace());
         }
+    }
+
+    @Override
+    public void deleteSelectedUserProfile() {
+        ViewUtilities.showConfirmDialog(this.userScrollPane, "Delete User",
+                "Delete user " + this.recorder.getUserName() + "?", DimDialogs.MEDIUM, (final Event event) -> {
+                    if (((JFXButton) event.getSource()).getText().equals("YES")) {
+                        try {
+
+                            this.recorder.deleteUserProfile();
+                            this.selectUserCombo.getItems().remove(this.recorder.getUserName());
+                            this.selectUserCombo.getSelectionModel().select(0);
+                        } catch (final IOException e) {
+                            ViewUtilities.showNotificationPopup("Io Exception",
+                                    "Cannot delete user file. \nClick for info", Duration.LONG, NotificationType.ERROR,
+                                    t -> e.printStackTrace());
+                        }
+                    }
+                });
     }
 
     @Override
@@ -295,7 +314,6 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
         final Set<String> set = new HashSet<>();
         // DELETE GESTURES
         this.gestureComboBox.getItems().clear();
-        System.out.println(this.recorder.getAllUserGesture());
         // LOAD USER GESTURES
         set.addAll(this.recorder.getAllUserGesture());
         set.addAll(DefaultGesture.getAllDefaultGestures());

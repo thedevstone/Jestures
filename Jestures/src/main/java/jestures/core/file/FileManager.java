@@ -57,6 +57,20 @@ public final class FileManager {
         return Files.exists(Paths.get(folder));
     }
 
+    private static void removeDirectory(final File dir) {
+        if (dir.isDirectory()) {
+            final File[] files = dir.listFiles();
+            if (files != null && files.length > 0) {
+                for (final File aFile : files) {
+                    FileManager.removeDirectory(aFile);
+                }
+            }
+            dir.delete();
+        } else {
+            dir.delete();
+        }
+    }
+
     /**
      *
      * // ##################################### CREATE DIRECTORIES ################################ Create the framework
@@ -93,10 +107,23 @@ public final class FileManager {
      * @throws IOException
      *             the {@link IOException}
      */
-    public static boolean createUserFolders(final String folder) throws IOException {
+    public static boolean createUserFolder(final String folder) throws IOException {
         final String tempPath = FileManager.libDir + OsUtils.getSeparator() + LibPaths.USER.getDirName()
                 + OsUtils.getSeparator() + folder.replaceAll("\\s+", "_");
         return FileManager.createDirectory(tempPath);
+    }
+
+    /**
+     * @param folder
+     *            the {@link String} path
+     *
+     * @throws IOException
+     *             the {@link IOException}
+     */
+    public static void deleteUserFolder(final String folder) throws IOException {
+        final String tempPath = FileManager.libDir + OsUtils.getSeparator() + LibPaths.USER.getDirName()
+                + OsUtils.getSeparator() + folder;
+        FileManager.removeDirectory(new File(tempPath));
     }
 
     // ##################################### LOAD NATIVES ################################

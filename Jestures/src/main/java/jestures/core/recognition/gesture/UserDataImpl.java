@@ -41,7 +41,6 @@ public class UserDataImpl implements UserData, Serializable {
      */
     public UserDataImpl(final String name) {
         this.gestures = new HashMap<>();
-        this.userName = "null";
         this.userName = name;
         UserDataImpl.LOG.getClass();
     }

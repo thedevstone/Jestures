@@ -24,6 +24,7 @@ import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -237,6 +238,12 @@ public abstract class AbstractRecorderScreenView implements RecView {
         this.createUserButton.setOnAction(t -> {
             this.createUserPopup.show(this.createUserButton);
         });
+        this.createUserButton.setOnMouseClicked(t -> {
+            if (t.getButton().equals(MouseButton.SECONDARY)
+                    && this.selectUserCombo.getSelectionModel().getSelectedIndex() != -1) {
+                this.deleteSelectedUserProfile();
+            }
+        });
         // ADD GESTURE
         this.addGestureButton.setGraphic(ViewUtilities.iconSetter(Material.ADD_CIRCLE, IconDim.MEDIUM));
         this.addGestureButton.setTooltip(new Tooltip("Add a new gesture"));
@@ -292,7 +299,7 @@ public abstract class AbstractRecorderScreenView implements RecView {
 
     private void initTabPaneListener() {
         this.tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (this.tabPane.getTabs().get(2).equals(newValue) && !oldValue.equals(newValue)) {
+            if (this.tabPane.getTabs().get(3).equals(newValue) && !oldValue.equals(newValue)) {
                 ViewUtilities.showDialog(this.tabStackPane, "Select Feature Vector",
                         "left-click > select \n right-click > delete", DimDialogs.MEDIUM, null);
             }

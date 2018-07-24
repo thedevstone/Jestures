@@ -52,6 +52,14 @@ public interface Recording extends Tracking {
     List<List<Vector2D>> getGestureDataset(String gestureName);
 
     /**
+     * Delete the user profile.
+     *
+     * @throws IOException
+     *             the {@link IOException}
+     */
+    void deleteUserProfile() throws IOException;
+
+    /**
      * Create user profile.
      *
      * @param name

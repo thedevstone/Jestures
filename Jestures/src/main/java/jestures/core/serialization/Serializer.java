@@ -40,6 +40,14 @@ public interface Serializer {
     List<List<Vector2D>> getGestureDataset(String gestureName);
 
     /**
+     * Delete user profile.
+     *
+     * @throws IOException
+     *             the {@link IOException}
+     */
+    void deleteUserProfile() throws IOException;
+
+    /**
      * Create user profile.
      *
      * @param name

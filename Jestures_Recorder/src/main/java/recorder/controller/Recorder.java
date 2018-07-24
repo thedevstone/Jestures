@@ -134,6 +134,11 @@ public final class Recorder extends Tracker implements Recording {
     }
 
     @Override
+    public void deleteUserProfile() throws IOException {
+        this.userManager.deleteUserProfile();
+    }
+
+    @Override
     public boolean createUserProfile(final String name) throws IOException {
         return this.userManager.createUserProfile(name);
     }
