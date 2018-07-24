@@ -61,17 +61,19 @@ public abstract class AbstractRecorderScreenView implements RecView {
     private JFXPopup createUserPopup;
     private JFXPopup addGesturePopup;
     private JFXPopup cnavasPopup;
+    private StackPane popupStackPane;
 
     // LIVE CANVAS
     private Canvas liveCanvas;
     private GraphicsContext liveCanvasContext;
-    // USER CANVAS
 
+    // USER CANVAS
     private Canvas userCanvas;
     private GraphicsContext userCanvasContext;
 
     // ########### ALL TABS #############
-    private StackPane popupStackPane;
+    @FXML
+    private HBox gestureHBox;
     @FXML
     private JFXTabPane tabPane;
     @FXML
@@ -88,6 +90,8 @@ public abstract class AbstractRecorderScreenView implements RecView {
     private ComboBox<FrameLength> frameLengthCombo;
     @FXML
     private JFXButton addGestureButton;
+    @FXML
+    private JFXButton removeGestureButton;
 
     // ########### TAB 1 #############
     @FXML
@@ -151,6 +155,12 @@ public abstract class AbstractRecorderScreenView implements RecView {
         this.initScrollPane();
         this.initTreeView();
         this.initPopup();
+        this.setDisabled();
+    }
+
+    private void setDisabled() {
+        this.startButton.setDisable(true);
+        this.gestureHBox.setDisable(true);
     }
 
     private void initPopup() {
@@ -175,6 +185,7 @@ public abstract class AbstractRecorderScreenView implements RecView {
                         NotificationType.ERROR, null);
             } else {
                 this.gestureComboBox.getItems().add(temp);
+                this.gestureComboBox.getSelectionModel().select(temp);
                 ViewUtilities.showNotificationPopup("Gesture added", temp + " gesture added!", Duration.MEDIUM,
                         NotificationType.SUCCESS, null);
                 Collections.sort(this.gestureComboBox.getItems());
@@ -190,8 +201,6 @@ public abstract class AbstractRecorderScreenView implements RecView {
     }
 
     private void initButtons() {
-        // DISABLE THE START TILL USER SELECT PROFILE AND GESTURE
-        this.startButton.setDisable(true);
 
         // START AND STOP
         this.startButton.setOnAction(e -> {
@@ -233,7 +242,12 @@ public abstract class AbstractRecorderScreenView implements RecView {
         this.addGestureButton.setOnAction(t -> {
             this.addGesturePopup.show(this.addGestureButton);
         });
-        this.addGestureButton.setDisable(true);
+        // REMOVE GESTURE
+        this.removeGestureButton.setGraphic(ViewUtilities.iconSetter(Material.REMOVE_CIRCLE, IconDim.MEDIUM));
+        this.removeGestureButton.setTooltip(new Tooltip("Remove selected gesture"));
+        this.removeGestureButton.setOnAction(t -> {
+            this.deleteGesture();
+        });
 
     }
 
@@ -307,7 +321,6 @@ public abstract class AbstractRecorderScreenView implements RecView {
         JFXDepthManager.setDepth(this.frameLengthCombo, 4);
 
         // GESTURE COMBOBOX
-        this.gestureComboBox.setDisable(true);
         JFXDepthManager.setDepth(this.gestureComboBox, 4);
         this.gestureComboBox.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
             if (newValue != null) {
@@ -344,6 +357,11 @@ public abstract class AbstractRecorderScreenView implements RecView {
      *            the feature vevector index for the selected gesture
      */
     public abstract void drawSavedGestureOnCanvas(TreeItem<String> parent, int indexOf);
+
+    /**
+     * Delete the gesture.
+     */
+    public abstract void deleteGesture();
 
     /**
      * Fill gesture with default combo.

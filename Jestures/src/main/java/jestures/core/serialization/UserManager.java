@@ -86,21 +86,22 @@ public class UserManager implements Serializer {
     }
 
     @Override
-    public void deleteGestureDataset(final String gestureName) {
+    public void addAllFeatureVectorsAndSerialize(final String gestureName, final List<List<Vector2D>> featureVector)
+            throws IOException {
+        this.userData.addAllGestureFeatureVector(gestureName, featureVector);
+        this.serializeUser();
+        this.deserializeUser(this.getUserName());
+    }
+
+    @Override
+    public void deleteGestureDataset(final String gestureName) throws IOException {
         this.userData.deleteGestureDataset(gestureName);
+        this.serializeUser();
     }
 
     @Override
     public void deleteGestureFeatureVector(final String gestureName, final int index) {
         this.userData.deleteGestureFeatureVector(gestureName, index);
-
-    }
-
-    @Override
-    public void addAllFeatureVectorsAndSerialize(final String gestureName, final List<List<Vector2D>> featureVector)
-            throws IOException {
-        this.userData.addAllGestureFeatureVector(gestureName, featureVector);
-        this.serializeUser();
 
     }
 

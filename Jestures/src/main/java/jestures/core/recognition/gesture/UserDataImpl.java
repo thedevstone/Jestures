@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.apache.log4j.Logger;
 
 import jestures.core.codification.DerivativeCodifier;
 
@@ -30,6 +31,7 @@ public class UserDataImpl implements UserData, Serializable {
      */
     private String userName;
     private final Map<String, List<List<Vector2D>>> gestures;
+    private static final Logger LOG = Logger.getLogger(UserDataImpl.class);
 
     /**
      * The constructor for the {@link UserDataImpl} class.
@@ -41,6 +43,7 @@ public class UserDataImpl implements UserData, Serializable {
         this.gestures = new HashMap<>();
         this.userName = "null";
         this.userName = name;
+        UserDataImpl.LOG.getClass();
     }
 
     @Override
@@ -86,7 +89,6 @@ public class UserDataImpl implements UserData, Serializable {
         } else {
             this.gestures.put(gestureName, gestureFeatureVectors);
         }
-
     }
 
     @Override

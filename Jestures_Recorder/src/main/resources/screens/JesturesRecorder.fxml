@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="recorderPane" minHeight="700.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="recorderPane" minHeight="800.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <StackPane id="tabStackPane" fx:id="tabStackPane" BorderPane.alignment="CENTER">
          <children>
@@ -92,16 +92,17 @@
             <JFXComboBox id="exercise-combo-box" fx:id="frameLengthCombo" focusColor="#405aa800" minWidth="150.0" promptText="Frame Length" unFocusColor="#4d4d4d00" BorderPane.alignment="CENTER" />
          </left>
          <right>
-            <JFXButton id="start-button" fx:id="startButton" />
+            <JFXButton id="start-button" fx:id="startButton" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" />
          </right>
          <padding>
             <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
          </padding>
          <center>
-            <HBox alignment="CENTER" BorderPane.alignment="CENTER">
+            <HBox fx:id="gestureHBox" alignment="CENTER" maxWidth="200.0" BorderPane.alignment="CENTER">
                <children>
                   <JFXComboBox id="exercise-combo-box" fx:id="gestureComboBox" focusColor="#405aa800" promptText="SELECT GESTURE" unFocusColor="#4d4d4d00" />
                   <JFXButton fx:id="addGestureButton" />
+                  <JFXButton fx:id="removeGestureButton" />
                </children>
             </HBox>
          </center>

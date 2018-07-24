@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.apache.log4j.Logger;
 import org.kordamp.ikonli.material.Material;
 
 import com.google.gson.JsonSyntaxException;
@@ -45,6 +46,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import jestures.core.codification.FrameLength;
@@ -64,7 +66,7 @@ import recorder.controller.Recording;
  */
 @SuppressWarnings("restriction")
 public class RecorderScreenView extends AbstractRecorderScreenView implements RecView {
-    // private static final Logger LOG = Logger.getLogger(RecorderScreenView.class);
+    private static final Logger LOG = Logger.getLogger(RecorderScreenView.class);
     private final Recording recorder;
     private FrameLength frameLength;
 
@@ -73,10 +75,12 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     private Scene scene; // NOPMD
 
     // TREE VIEW
-    private TreeItem<String> root;
+    private TreeItem<String> root; // NOPMD
 
     // ########### ALL TABS #############
 
+    @FXML
+    private HBox gestureHBox;
     @FXML
     private BorderPane recorderPane; // NOPMD
     @FXML
@@ -86,7 +90,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     private JFXComboBox<String> gestureComboBox;
 
     @FXML
-    private JFXButton addGestureButton;
+    private JFXButton addGestureButton; // NOPMD
     @FXML
     private JFXScrollPane userScrollPane;
     // ########### TAB 1 #############
@@ -125,6 +129,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
                 e1.printStackTrace();
             }
         });
+        RecorderScreenView.LOG.getClass();
     }
 
     @Override
@@ -213,7 +218,6 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     @Override
     public void selectGesture(final String gesture) {
         this.startButton.setDisable(false);
-        System.out.println(gesture);
     }
 
     @Override
@@ -262,9 +266,9 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
                 ViewUtilities.showNotificationPopup("User Created", username + " created!", Duration.MEDIUM,
                         NotificationType.SUCCESS, null);
                 // IF USER IS LOADED CORRECLY ENABLE BUTTONS
-                this.gestureComboBox.setDisable(false);
-                this.addGestureButton.setDisable(false);
+                this.gestureHBox.setDisable(false);
                 this.loadUsers();
+                this.selectUserCombo.getSelectionModel().select(username);
             }
         } catch (final IOException e) {
             ViewUtilities.showNotificationPopup("Io Exception", "Cannot create user file. \nClick for info",
@@ -286,8 +290,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
         }
         ((Label) this.userScrollPane.getBottomBar().getChildren().get(0)).setText(name);
         // IF USER IS LOADED CORRECLY ENABLE BUTTONS
-        this.gestureComboBox.setDisable(false);
-        this.addGestureButton.setDisable(false);
+        this.gestureHBox.setDisable(false);
         // SAVE COPY OF GESTURES LOAD USER WITH GESTURE AND UPDATE THE GESTURES
         final Set<String> set = new HashSet<>();
         // DELETE GESTURES
@@ -301,10 +304,31 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
         ViewUtilities.showSnackBar((Pane) this.recorderPane.getCenter(), "Database loaded and Gesture updated!",
                 Duration.MEDIUM, DimDialogs.SMALL, null);
 
-        // REGENERATE TREVIEW FOR USER
-        this.root = new TreeItem<String>(name);
-        this.treeView.setRoot(this.root);
-        this.createGestureTreeView();
+        this.createGestureTreeView(this.recorder.getUserName());
+    }
+
+    /**
+     * Delete the gesture.
+     *
+     */
+    @Override
+    public void deleteGesture() {
+        final String gesture = this.gestureComboBox.getSelectionModel().getSelectedItem();
+        if (gesture != null) {
+            try {
+                this.recorder.deleteGestureDataset(gesture);
+                this.gestureComboBox.getItems().remove(gesture);
+                // REFRESH TREEVIEW
+                this.createGestureTreeView(this.recorder.getUserName());
+            } catch (final IOException e1) {
+                ViewUtilities.showNotificationPopup("Error deleting gesture", "Cannot delete" + gesture + " gesture",
+                        Duration.MEDIUM, NotificationType.ERROR, null);
+            }
+        } else {
+            ViewUtilities.showNotificationPopup("Gesture not selected", "Select a gesture!", Duration.MEDIUM,
+                    NotificationType.WARNING, null);
+        }
+
     }
 
     // ################# TREE VIEW ###################
@@ -341,6 +365,8 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     public void addFeatureVector(final String gesture, final int indexClicked) {
         try {
             this.recorder.addFeatureVector(this.getGesture(), indexClicked);
+            // REFRESH TREEVIEW
+            this.createGestureTreeView(this.recorder.getUserName());
         } catch (final IOException e2) {
             ViewUtilities.showNotificationPopup("Io Exception", "Cannot serialize file", Duration.MEDIUM,
                     NotificationType.ERROR, t -> e2.printStackTrace());
@@ -352,6 +378,8 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     public void addAllElemInListView() {
         try {
             this.recorder.addAllFeatureVectors(this.getGesture());
+            // REFRESH TREEVIEW
+            this.createGestureTreeView(this.recorder.getUserName());
         } catch (final IOException e2) {
             ViewUtilities.showNotificationPopup("Io Exception", "Cannot serialize file", Duration.MEDIUM,
                     NotificationType.ERROR, t -> e2.printStackTrace());
@@ -403,7 +431,11 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
         }
     }
 
-    private void createGestureTreeView() {
+    private void createGestureTreeView(final String root) {
+        // REGENERATE TREVIEW FOR USER
+        this.root = new TreeItem<String>(root);
+        this.root.setExpanded(true);
+        this.treeView.setRoot(this.root);
         final List<String> userGestures = this.recorder.getAllUserGesture();
         for (int i = 0; i < userGestures.size(); i++) {
             this.makeGestureBranch(userGestures.get(i), this.root);

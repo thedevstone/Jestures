@@ -120,8 +120,10 @@ public interface Recording extends Tracking {
      *
      * @param gestureName
      *            the gesture name
+     * @throws IOException
+     *             the {@link IOException}
      */
-    void deleteGestureDataset(String gestureName);
+    void deleteGestureDataset(String gestureName) throws IOException;
 
     /**
      * Delete a single feature vector given a gesture and an index in the dataset.

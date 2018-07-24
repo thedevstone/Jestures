@@ -155,7 +155,7 @@ public final class Recorder extends Tracker implements Recording {
     }
 
     @Override
-    public void deleteGestureDataset(final String gestureName) {
+    public void deleteGestureDataset(final String gestureName) throws IOException {
         this.userManager.deleteGestureDataset(gestureName);
     }
 
