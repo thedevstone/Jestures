@@ -87,7 +87,7 @@ public class UserDataImpl implements UserData, Serializable {
         if (this.gestures.containsKey(gestureName)) {
             this.gestures.get(gestureName).addAll(gestureFeatureVectors);
         } else {
-            this.gestures.put(gestureName, gestureFeatureVectors);
+            this.gestures.put(gestureName, new ArrayList<List<Vector2D>>(gestureFeatureVectors));
         }
     }
 

@@ -72,6 +72,7 @@ public abstract class AbstractRecorderScreenView implements RecView {
     private GraphicsContext userCanvasContext;
 
     // ########### ALL TABS #############
+
     @FXML
     private HBox gestureHBox;
     @FXML
