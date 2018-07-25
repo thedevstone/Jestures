@@ -101,8 +101,8 @@
             <HBox fx:id="gestureHBox" alignment="CENTER" maxWidth="200.0" BorderPane.alignment="CENTER">
                <children>
                   <JFXComboBox id="exercise-combo-box" fx:id="gestureComboBox" focusColor="#405aa800" promptText="SELECT GESTURE" unFocusColor="#4d4d4d00" />
-                  <JFXButton fx:id="addGestureButton" />
-                  <JFXButton fx:id="removeGestureButton" />
+                  <JFXButton fx:id="addGestureButton" buttonType="RAISED" />
+                  <JFXButton fx:id="removeGestureButton" buttonType="RAISED" />
                </children>
             </HBox>
          </center>

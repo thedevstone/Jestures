@@ -62,7 +62,7 @@ public abstract class AbstractRecorderScreenView implements RecView {
     private JFXPopup createUserPopup;
     private JFXPopup addGesturePopup;
     private JFXPopup cnavasPopup;
-    private StackPane popupStackPane;
+    private StackPane popupStackPane; // NOPMD
 
     // LIVE CANVAS
     private Canvas liveCanvas;
@@ -79,7 +79,7 @@ public abstract class AbstractRecorderScreenView implements RecView {
     @FXML
     private JFXTabPane tabPane;
     @FXML
-    private BorderPane recorderPane; // NOPMD
+    private BorderPane recorderPane;
     @FXML
     private JFXButton startButton;
     @FXML
@@ -98,8 +98,6 @@ public abstract class AbstractRecorderScreenView implements RecView {
     // ########### TAB 1 #############
     @FXML
     private HBox userHBox;
-    @FXML
-    private StackPane userStackPane;
     @FXML
     private BorderPane userBorderPane; // NOPMD
     @FXML
@@ -247,12 +245,14 @@ public abstract class AbstractRecorderScreenView implements RecView {
         // ADD GESTURE
         this.addGestureButton.setGraphic(ViewUtilities.iconSetter(Material.ADD_CIRCLE, IconDim.MEDIUM));
         this.addGestureButton.setTooltip(new Tooltip("Add a new gesture"));
+        JFXDepthManager.setDepth(this.addGestureButton, 4);
         this.addGestureButton.setOnAction(t -> {
             this.addGesturePopup.show(this.addGestureButton);
         });
         // REMOVE GESTURE
         this.removeGestureButton.setGraphic(ViewUtilities.iconSetter(Material.REMOVE_CIRCLE, IconDim.MEDIUM));
         this.removeGestureButton.setTooltip(new Tooltip("Remove selected gesture"));
+        JFXDepthManager.setDepth(this.removeGestureButton, 4);
         this.removeGestureButton.setOnAction(t -> {
             this.deleteGesture();
         });
