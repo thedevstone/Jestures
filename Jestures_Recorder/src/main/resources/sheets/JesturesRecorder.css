@@ -47,11 +47,6 @@
 	
 }
 
-
-#userStackPane{
-	
-}
-
 #userBorderPane {
 	-fx-background-color: white;
 }
@@ -68,6 +63,15 @@
 #userHBox {
 	-fx-background-color: white;
 	-fx-background-radius: 30 30 30 30;
+}
+
+/*GESTURE */
+
+#gestureHBox {
+	-fx-padding: 5 10;
+	-fx-background-color: #01579B;
+	-fx-background-radius: 50;
+	
 }
 /* POPUP */
 #stackPanePopup {

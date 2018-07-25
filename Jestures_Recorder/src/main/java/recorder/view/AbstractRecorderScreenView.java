@@ -48,7 +48,7 @@ import recorder.controller.Recording;
  *
  */
 
-public abstract class AbstractRecorderScreenView implements RecView {
+public abstract class AbstractRecorderScreenView implements RecView, RecViewObserver {
     // private static final Logger LOG = Logger.getLogger(AbstractRecorderScreenView.class);
     private final Recording recorder;
 
@@ -227,7 +227,7 @@ public abstract class AbstractRecorderScreenView implements RecView {
         this.addAllListViewButton.setTooltip(new Tooltip("Add all templates"));
         JFXDepthManager.setDepth(this.addAllListViewButton, 4);
         this.addAllListViewButton.setOnAction(t -> {
-            this.addAllElemInListView();
+            this.addAllElemInListViewToDataset();
         });
 
         // CREATE THE USER PROFILE
@@ -321,6 +321,7 @@ public abstract class AbstractRecorderScreenView implements RecView {
     }
 
     private void initCombos() {
+        JFXDepthManager.setDepth(this.gestureHBox, 1);
         this.frameLengthCombo.setOnAction(t -> this.setFrameLength(this.frameLengthCombo.getValue()));
         this.frameLengthCombo.getItems().add(FrameLength.ONE_SECOND);
         this.frameLengthCombo.getItems().add(FrameLength.TWO_SECONDS);
@@ -365,11 +366,6 @@ public abstract class AbstractRecorderScreenView implements RecView {
      *            the feature vevector index for the selected gesture
      */
     public abstract void drawSavedGestureOnCanvas(TreeItem<String> parent, int indexOf);
-
-    /**
-     * Delete the gesture.
-     */
-    public abstract void deleteGesture();
 
     /**
      * Fill gesture with default combo.

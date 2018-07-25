@@ -47,11 +47,6 @@ public abstract class AbstractView implements View {
     }
 
     @Override
-    public Tracking getTracker() {
-        return this.tracker;
-    }
-
-    @Override
     public abstract void notifyOnFrameChange(int frame, Vector2D derivative, Vector2D path);
 
     @Override

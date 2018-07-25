@@ -26,6 +26,7 @@ import com.google.gson.JsonIOException;
 
 import jestures.core.tracking.Tracking;
 import recorder.view.RecView;
+import recorder.view.RecViewObserver;
 
 /**
  * Inteface for tracking.
@@ -40,7 +41,7 @@ public interface Recording extends Tracking {
      * @param view
      *            the {@link RecView}
      */
-    void attacheUI(RecView view);
+    void attacheUI(RecViewObserver view);
 
     /**
      * Get all template (feature vectors) for the selected gesture.

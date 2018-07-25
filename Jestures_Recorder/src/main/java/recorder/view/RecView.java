@@ -1,32 +1,17 @@
 package recorder.view;
 
-import javax.swing.plaf.TreeUI;
-
 import jestures.core.view.View;
 
 /**
  *
  *
  */
-public interface RecView extends View {
-
-    /**
-     * Set Recording.
-     *
-     * @param isRecording
-     *            {@link TreeUI} if is recording
-     */
-    void setRecording(boolean isRecording);
-
-    /**
-     * Starts the fx thread.
-     */
-    void startFxThread();
+public interface RecView extends View, RecViewObserver {
 
     /**
      * Delete the user profile.
      *
-     * 
+     *
      */
     void deleteSelectedUserProfile();
 
@@ -59,12 +44,12 @@ public interface RecView extends View {
      * @param indexClicked
      *            the index
      */
-    void addFeatureVector(String gesture, int indexClicked);
+    void addFeatureVectorToDataset(String gesture, int indexClicked);
 
     /**
      * Add all feature vector elements present in listview.
      */
-    void addAllElemInListView();
+    void addAllElemInListViewToDataset();
 
     /**
      * Select the gesture.
@@ -73,5 +58,10 @@ public interface RecView extends View {
      *            the gesture
      */
     void selectGesture(String gesture);
+
+    /**
+     * Delete the gesture.
+     */
+    void deleteGesture();
 
 }

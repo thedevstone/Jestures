@@ -55,7 +55,7 @@ import jestures.core.view.utils.ViewUtilities;
  */
 @SuppressWarnings("restriction")
 public class RecognitionView extends AbstractView {
-
+    private final Tracking tracker;
     // VIEW
     private Stage stage; // NOPMD
     private Scene scene; // NOPMD
@@ -88,6 +88,7 @@ public class RecognitionView extends AbstractView {
      */
     public RecognitionView(final Tracking tracker) {
         super(tracker);
+        this.tracker = tracker;
 
         Platform.runLater(() -> {
             final FXMLLoader loader = new FXMLLoader();
@@ -123,7 +124,7 @@ public class RecognitionView extends AbstractView {
 
     private void initButtons() {
         this.startButton.setOnAction(e -> {
-            if (this.getTracker().state()) {
+            if (this.tracker.state()) {
                 this.stopSensor();
                 this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY, IconDim.MEDIUM));
             } else {

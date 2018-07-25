@@ -32,7 +32,6 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXScrollPane;
 import com.jfoenix.controls.JFXTreeView;
-import com.sun.javafx.application.PlatformImpl;
 
 import javafx.application.Platform;
 import javafx.event.Event;
@@ -64,7 +63,6 @@ import recorder.controller.Recording;
  *
  *
  */
-@SuppressWarnings("restriction")
 public class RecorderScreenView extends AbstractRecorderScreenView implements RecView {
     private static final Logger LOG = Logger.getLogger(RecorderScreenView.class);
     private final Recording recorder;
@@ -78,17 +76,14 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     private TreeItem<String> root; // NOPMD
 
     // ########### ALL TABS #############
-
     @FXML
     private HBox gestureHBox;
     @FXML
     private BorderPane recorderPane; // NOPMD
     @FXML
     private JFXButton startButton;
-
     @FXML
     private JFXComboBox<String> gestureComboBox;
-
     @FXML
     private JFXButton addGestureButton; // NOPMD
     @FXML
@@ -135,9 +130,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     @Override
     @FXML
     public void initialize() { // NOPMD
-        // INIT FIRST ABSTRACT CLASS
         super.initialize();
-
         // CREATION OF STAGE SCENE AND PANE
         this.stage = new Stage();
         this.scene = new Scene(this.recorderPane);
@@ -158,8 +151,9 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
         this.scene.getStylesheets().add(RecorderScreenView.class.getResource(screen.getCssPath()).toString());
     }
 
-    // ############################################## FROM TRACKER (RECORDER) ###################################
-    // INTERFACE METHODS FROM VIEW
+    // ############################################## FROM TRACKER (VIEW OBSERVER) ###################################
+    // KINECT
+    // ######## TAB 2 AND 3 #########
     @Override
     public void notifyOnFrameChange(final int frame, final Vector2D derivative, final Vector2D path) {
         Platform.runLater(() -> {
@@ -182,7 +176,32 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
         });
     }
 
-    // ############################################## FROM RECORDER ###################################
+    // TRACKER
+    @Override
+    public void refreshUsers() {
+        Platform.runLater(() -> {
+            try {
+                this.selectUserCombo.getItems().clear();
+                FileManager.getAllUserFolder().stream().forEachOrdered(t -> this.selectUserCombo.getItems().add(t));
+            } catch (final IOException e) {
+                ViewUtilities.showNotificationPopup("Exception", "Cannot read user data", Duration.MEDIUM,
+                        NotificationType.WARNING, null);
+            }
+        });
+    }
+
+    @Override
+    public void setFrameLength(final FrameLength length) {
+        this.frameLength = length;
+        this.recorder.setFrameLength(length);
+    }
+
+    @Override
+    public FrameLength getFrameLength() {
+        return this.frameLength;
+    }
+
+    // ###################################### FROM RECORDER (REC VIEW OBSERVER) ##################################
 
     @Override
     public void setRecording(final boolean isRecording) {
@@ -199,20 +218,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
         }
     }
 
-    // ############################################## TO RECORDER ###################################
-
-    // #################################### ALL TABS #############################################
-    @Override
-    public void selectGesture(final String gesture) {
-        this.startButton.setDisable(false);
-    }
-
-    @Override
-    public void setFrameLength(final FrameLength length) {
-        this.frameLength = length;
-        this.recorder.setFrameLength(length);
-    }
-
+    // ############################################## TO TRACKER ###################################
     @Override
     public void startSensor() {
         this.selectUserCombo.setDisable(true);
@@ -227,34 +233,11 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     }
 
     @Override
-    public Recording getTracker() {
-        return this.recorder;
+    public void selectGesture(final String gesture) {
+        this.startButton.setDisable(false);
     }
 
-    @Override
-    public void startFxThread() {
-        PlatformImpl.startup(() -> {
-        });
-    }
-
-    @Override
-    public FrameLength getFrameLength() {
-        return this.frameLength;
-    }
-
-    @Override
-    public void refreshUsers() {
-        Platform.runLater(() -> {
-            try {
-                this.selectUserCombo.getItems().clear();
-                FileManager.getAllUserFolder().stream().forEachOrdered(t -> this.selectUserCombo.getItems().add(t));
-            } catch (final IOException e) {
-                ViewUtilities.showNotificationPopup("Exception", "Cannot read user data", Duration.MEDIUM,
-                        NotificationType.WARNING, null);
-            }
-        });
-    }
-
+    // ############################################## TO RECORDER ###################################
     // ###### TAB 1 ######
     @Override
     public void createUserProfile(final String username) {
@@ -369,7 +352,6 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
         this.listView.getItems().remove(indexClicked);
         this.recorder.deleteRecordedFeatureVector(indexClicked);
         this.scrollPane.setContent(this.listView);
-
     }
 
     @Override
@@ -380,7 +362,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     }
 
     @Override
-    public void addFeatureVector(final String gesture, final int indexClicked) {
+    public void addFeatureVectorToDataset(final String gesture, final int indexClicked) {
         try {
             this.recorder.addFeatureVector(this.getGesture(), indexClicked);
             // REFRESH TREEVIEW
@@ -393,7 +375,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     }
 
     @Override
-    public void addAllElemInListView() {
+    public void addAllElemInListViewToDataset() {
         try {
             this.recorder.addAllFeatureVectors(this.getGesture());
             // REFRESH TREEVIEW
@@ -418,7 +400,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
                         "Save the feature vector N: " + indexClicked + "?", DimDialogs.MEDIUM, (final Event event) -> {
                             if (((JFXButton) event.getSource()).getText().equals("YES")) {
                                 try {
-                                    this.addFeatureVector(this.getGesture(), indexClicked);
+                                    this.addFeatureVectorToDataset(this.getGesture(), indexClicked);
                                 } catch (final Exception e) {
                                     ViewUtilities.showNotificationPopup("Gesture Error", "Select Gesture!",
                                             Duration.MEDIUM, NotificationType.ERROR, k -> e.printStackTrace());
