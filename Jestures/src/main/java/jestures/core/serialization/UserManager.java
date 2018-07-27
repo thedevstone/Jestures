@@ -9,7 +9,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.apache.log4j.Logger;
@@ -42,6 +45,22 @@ public class UserManager implements Serializer {
     @Override
     public String getUserName() {
         return this.userData.getUserName();
+    }
+
+    @Override
+    public Map<String, List<Vector2D[]>> getDatasetForRecognition() {
+        final Map<String, List<List<Vector2D>>> tempMap = this.userData.getAllGesturesData();
+        final Map<String, List<Vector2D[]>> mappaOut = new HashMap<>();
+        for (final String elem : tempMap.keySet()) {
+            final List<Vector2D[]> newGestureDataset = new ArrayList<>();
+            for (final List<Vector2D> gestureDataset : tempMap.get(elem)) {
+                final Vector2D[] newGesture = new Vector2D[gestureDataset.size()];
+                gestureDataset.toArray(newGesture);
+                newGestureDataset.add(newGesture);
+            }
+            mappaOut.put(elem, newGestureDataset);
+        }
+        return mappaOut;
     }
 
     @Override

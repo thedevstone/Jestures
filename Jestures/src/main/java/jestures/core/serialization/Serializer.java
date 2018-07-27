@@ -6,6 +6,7 @@ package jestures.core.serialization;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
@@ -29,6 +30,15 @@ public interface Serializer {
      * @return the {@link List} of gestures
      */
     List<String> getAllUserGestures();
+
+    /**
+     * Get a copy all feature vectors for all gestures.
+     * <p>
+     * Useful for template match
+     *
+     * @return the {@link Map} of all gestures data
+     */
+    Map<String, List<Vector2D[]>> getDatasetForRecognition();
 
     /**
      * Get all template (feature vectors) for the selected gesture.

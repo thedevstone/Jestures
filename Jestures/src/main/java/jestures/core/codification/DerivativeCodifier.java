@@ -69,7 +69,8 @@ public class DerivativeCodifier implements Codifier {
             this.recognizer.notifyOnFeatureVectorEvent(new ArrayList<Vector2D>(this.featureVector));
             this.resetFrame();
         } else {
-            this.recognizer.notifyOnFrameChange(this.frame, this.derivative, this.startingVector.subtract(newVector));
+            this.recognizer.notifyOnFrameChange(this.frame, this.featureVector, this.derivative,
+                    this.startingVector.subtract(newVector));
             this.frame++;
         }
     }

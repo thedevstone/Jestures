@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
@@ -91,7 +92,8 @@ public final class Recorder extends Tracker implements Recording {
 
     // ############################################## FROM CODIFIER ###################################
     @Override
-    public void notifyOnFrameChange(final int frame, final Vector2D derivative, final Vector2D distanceVector) {
+    public void notifyOnFrameChange(final int frame, final Queue<Vector2D> featureVector, final Vector2D derivative,
+            final Vector2D distanceVector) {
         this.view.forEach(t -> t.notifyOnFrameChange(frame, derivative, distanceVector));
 
     }

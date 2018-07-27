@@ -38,11 +38,13 @@ public interface TrackingObserver {
      *
      * @param frame
      *            the frame
+     * @param featureVector
+     *            the actual feature vector
      * @param derivative
      *            the derivative vector
      * @param distanceVector
      *            the distance vector from starting frame
      */
-    void notifyOnFrameChange(int frame, Vector2D derivative, Vector2D distanceVector);
+    void notifyOnFrameChange(int frame, Queue<Vector2D> featureVector, Vector2D derivative, Vector2D distanceVector);
 
 }

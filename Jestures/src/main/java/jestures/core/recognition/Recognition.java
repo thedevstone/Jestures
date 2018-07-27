@@ -46,4 +46,12 @@ public interface Recognition extends Tracking {
      */
     List<List<Vector2D>> getGestureDataset(String gestureName);
 
+    /**
+     * Set the rate of recognition. After the frame number the recognizer is updated with a new feature vector.
+     *
+     * @param frameNumber
+     *            the update rate
+     */
+    void setUpdateRate(int frameNumber);
+
 }
