@@ -10,7 +10,7 @@ import jestures.core.recognition.Recognition;
 import jestures.core.recognition.Recognizer;
 import jestures.core.tracking.JointListener;
 import jestures.core.view.View;
-import jestures.core.view.screens.RecognitionView;
+import jestures.core.view.screens.RecognitionScreenView;
 import jestures.sensor.IllegalSensorStateException;
 import jestures.sensor.Joint;
 import jestures.sensor.Sensor;
@@ -44,7 +44,7 @@ public class Demo {
         final Sensor sensor = new Kinect(Joint.RIGHT_HAND, KinectSensors.SKELETON_ONLY, KinectVersion.KINECT1);
         final Recognition recognizer = Recognizer.getInstance();
         recognizer.attacheSensor(sensor);
-        final View view = new RecognitionView(recognizer);
+        final View view = new RecognitionScreenView(recognizer);
         recognizer.attacheUI(view);
         recognizer.setOnJointTracked(new JointListener() {
 

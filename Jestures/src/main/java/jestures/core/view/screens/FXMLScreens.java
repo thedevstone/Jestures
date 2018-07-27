@@ -24,12 +24,12 @@ import javafx.fxml.FXML;
  * Enumerator of the .fxml resources for the view.
  *
  */
-enum FXMLScreens {
+public enum FXMLScreens {
 
     /**
      * Menu {@link FXMLScreens} and {@link CSS}.
      */
-    HOME("/screens/ScreenRecorder.fxml", "/sheets/ScreenRecorder.css");
+    HOME("/screens/JesturesScreen.fxml", "/sheets/JesturesScreen.css");
 
     private final String resourcePath;
     private final String cssPath;

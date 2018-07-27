@@ -1,5 +1,7 @@
 package jestures.core.recognition;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -7,9 +9,14 @@ import java.util.Set;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+import com.google.gson.JsonSyntaxException;
+
+import jestures.core.serialization.Serializer;
+import jestures.core.serialization.UserManager;
 import jestures.core.tracking.Tracker;
 import jestures.core.tracking.Tracking;
 import jestures.core.view.ViewObserver;
+import jestures.core.view.screens.RecognitionScreenView;
 
 /**
  *
@@ -18,12 +25,15 @@ import jestures.core.view.ViewObserver;
 public final class Recognizer extends Tracker implements Recognition {
     private final Set<ViewObserver> view;
     private static Recognition instance;
+    private final Serializer userManager;
 
     /**
      *
      */
     private Recognizer() {
         this.view = new HashSet<>();
+        this.userManager = new UserManager();
+        RecognitionScreenView.startFxThread();
     }
 
     /**
@@ -43,7 +53,7 @@ public final class Recognizer extends Tracker implements Recognition {
     @Override
     public void attacheUI(final ViewObserver view) {
         this.view.add(view);
-        this.view.forEach(t -> t.setFrameLength(this.getFrameLength()));
+        this.view.forEach(t -> t.refreshUsers());
     }
 
     // ############################################## FROM SENSOR ###################################
@@ -72,21 +82,23 @@ public final class Recognizer extends Tracker implements Recognition {
     }
 
     @Override
-    public boolean loadUserProfile(final String name) {
-        // TODO Auto-generated method stub
-        return false;
+    public boolean loadUserProfile(final String name) throws FileNotFoundException, IOException, JsonSyntaxException {
+        return this.userManager.loadOrCreateNewUser(name);
+    }
+
+    @Override
+    public List<List<Vector2D>> getGestureDataset(final String gestureName) {
+        return this.userManager.getGestureDataset(gestureName);
     }
 
     @Override
     public List<String> getAllUserGesture() {
-        // TODO Auto-generated method stub
-        return null;
+        return this.userManager.getAllUserGestures();
     }
 
     @Override
     public String getUserName() {
-        // TODO Auto-generated method stub
-        return null;
+        return this.userManager.getUserName();
     }
 
 }

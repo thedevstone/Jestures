@@ -32,7 +32,7 @@ import jestures.core.serialization.Serializer;
 import jestures.core.serialization.UserManager;
 import jestures.core.tracking.Tracker;
 import jestures.core.tracking.Tracking;
-import jestures.core.view.screens.RecognitionView;
+import jestures.core.view.screens.RecognitionScreenView;
 import recorder.view.RecViewObserver;
 
 /**
@@ -52,7 +52,7 @@ public final class Recorder extends Tracker implements Recording {
         this.listOfFeatureVector = new ArrayList<>();
         this.userManager = new UserManager();
         this.view = new HashSet<>();
-        RecognitionView.startFxThread();
+        RecognitionScreenView.startFxThread();
     }
 
     /**

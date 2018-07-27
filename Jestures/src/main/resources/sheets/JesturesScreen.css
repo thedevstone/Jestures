@@ -1,0 +1,280 @@
+/*TABS*/
+#toolbar {
+	-fx-background-color: #01579B;
+	-fx-alignment: center;
+	-fx-fill-width: true;
+}
+
+#canvas-pane {
+	-fx-background-color: #E8EAF6;
+}
+
+#chart-pane {
+	-fx-background-color: #E8EAF6;
+}
+
+.tab-header-background {
+	-fx-background-color: #01579B;
+	-fx-alignment: center;
+	-fx-fill-width: true;
+}
+
+
+#start-button {
+	
+	-fx-background-radius: 40;
+	-fx-padding: 0 0 0 3;
+}
+
+#userBox {
+	-fx-background-color: #01579B;
+}
+
+.scroll-bar:vertical {
+    -fx-opacity: 0;
+}
+
+#userScrollPane {
+	-fx-background-color: blue;
+	-fx-hbar-policy: never ;
+}
+
+/*USER */
+
+#treeView .tree-cell:selected {
+	-fx-text-fill: black;
+    -fx-background-color: transparent ;
+	
+}
+
+#userBorderPane {
+	-fx-background-color: white;
+}
+
+#createUserTextField {
+	-fx-accent: rgb(161, 213, 254);
+	-fx-background-radius: 30;
+}
+
+#userButton {
+	-fx-background-radius: 100;
+	-fx-background-color: #03A9F4;
+}
+#userHBox {
+	-fx-background-color: white;
+	-fx-background-radius: 30 30 30 30;
+}
+
+/*GESTURE */
+
+#gestureHBox {
+	-fx-padding: 5 10;
+	-fx-background-color: #01579B;
+	-fx-background-radius: 50;
+	
+}
+/* POPUP */
+#stackPanePopup {
+	-fx-background-color: white;
+	-fx-min-height: 30;
+	-fx-min-width: 30;
+	-fx-padding: 10;
+	-fx-background-radius: 10;
+}
+.jfx-popup-container {
+	-fx-background-radius: 10;
+	-fx-background-color: rgba(255,255,255,0.95);
+}
+
+/*COMBO BOX */
+
+#exercise-combo-box {
+	 -fx-prompt-text-fill: black;
+	-fx-background-color: transparent;
+}
+
+#exercise-combo-box .text-input {
+	-fx-background-color: transparent;
+}
+
+#exercise-combo-box .list-cell {
+	-fx-background-color: transparent;
+	-fx-text-fill: black;
+	-fx-font-weight: 100;
+}
+
+#exercise-combo-box .combo-box-popup .list-view .list-cell {
+	-fx-background-color: transparent ;
+	-fx-background-radius: 10 10 10 10;
+	
+}
+
+#exercise-combo-box .combo-box-popup .list-view .list-cell:selected {
+	-fx-background-color: transparent;
+
+}
+
+#exercise-combo-box .combo-box-popup .list-view .list-cell:hover {
+	-fx-background-color: rgba(255,255,255,0.9);
+}
+
+#exercise-combo-box .combo-box-popup .list-view {
+	-fx-background-color: rgba(255,255,255,0.95);
+	-fx-background-radius: 0 0 10 10;
+	-fx-opacity: 1;
+    -fx-max-height: 150;
+    /*-fx-pref-height: 150;*/
+    -fx-min-width: 100;
+}
+
+
+/* FEATURE VECTOR TAB */
+#headerFeatureVector {
+	-fx-background-image: url('/images/SignIn-background.jpg');
+	-fx-background-repeat: no-repeat;
+	-fx-background-size: cover;
+}
+
+#headerUserPane {
+	-fx-background-image: url('/images/shooter.jpg');
+	-fx-background-repeat: no-repeat;
+	-fx-background-size: cover;
+}
+
+#player-listView-border {
+	-fx-min-width: 350;
+	-fx-max-height: 50;
+	-fx-background-color: white;
+}
+#player-listView-label {
+	-fx-padding: 20;
+	-fx-font-size: 20;
+}
+#imageViewProfile {
+	-fx-border-color: black;
+}
+
+
+#list-view-feature .list-cell {
+	-fx-background-radius: 10 10 10 30;
+}
+#list-view .list-cell:odd:selected {
+	-fx-background-color: transparent;
+}
+#list-view-feature .list-cell:even:selected {
+	-fx-background-color: transparent;
+}
+#list-view-feature .list-cell:odd {
+	-fx-background-color: transparent;
+}
+#list-view-feature .list-cell:even {
+	-fx-background-color: transparent;
+}
+#list-view-feature .list-cell:even:hover {
+	-fx-background-color: rgba(255,255,255,0.6);
+}
+#list-view-feature .list-cell:odd:hover {
+	-fx-background-color: rgba(255,255,255,0.6);
+}
+#list-view-feature {
+	-fx-background-color: rgba(255,255,255,0.95);
+	-fx-background-radius: 0 0 10 10;
+	-fx-opacity: 1;
+}
+
+
+
+
+
+/*CLEAR BUTTON */
+
+#clearButton {
+	-fx-background-radius: 40;
+	-fx-background-color: transparent;
+	-fx-min-height: 50;
+	-fx-min-width: 50;
+
+}
+
+ #featureVectorScrollPane {
+	-fx-background-color: white; 	
+}
+
+#featureVectorStackPane {
+	-fx-background-color: white;	
+}
+
+#list-view-feature {
+	-fx-background-color: white;	
+}
+
+/*DIALOG */
+
+.dialogContentBackground {
+	-fx-background-color: #448AFF;
+}
+
+.dialogBackground {
+	-fx-background-color: rgba(0,0,0,0.5); 
+}
+
+.confirmDialogContentBackground {
+	-fx-background-color: white;	
+}
+
+.confirmDialogBackground {
+	-fx-background-color: rgba(0,0,0,0.5); 
+}
+
+
+.dialogTextSmall {
+	-fx-fill: white ;
+	-fx-font-size: 15;
+	-fx-font-family: 'Baskerville'; 
+}
+.dialogTextMedium {
+	-fx-fill: white;
+	-fx-font-size: 20;
+	-fx-font-family: 'Baskerville'; 
+}
+.dialogTextBig {
+	-fx-fill: white;
+	-fx-font-size: 25; 
+	-fx-font-family: 'Baskerville'; 
+}
+
+
+
+.confirmDialogTextSmall {
+	-fx-fill: black;
+	-fx-font-size: 15;
+	-fx-font-family: 'Baskerville'; 
+}
+.confirmDialogTextMedium {
+	-fx-fill: black;
+	-fx-font-size: 20;
+	-fx-font-family: 'Baskerville'; 
+}
+.confirmDialogTextBig {
+	-fx-fill: black;
+	-fx-font-size: 25; 
+	-fx-font-family: 'Baskerville'; 
+}
+
+/*SNACKBAR */
+.jfx-snackbar-content {
+	-fx-background-color: rgba(0, 0, 0, 0.4);
+	-fx-background-radius: 20;
+	-fx-translate-y: -20;
+}
+
+.jfx-snackbar-toast {
+	-fx-font-size: 13; 
+	-fx-font-family: 'Baskerville'; 
+	-fx-text-fill: white;
+	-fx-font-weight: 100;
+}
+
+
+
+

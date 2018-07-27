@@ -26,7 +26,7 @@ import jestures.core.codification.Codification;
 import jestures.core.codification.Codifier;
 import jestures.core.codification.DerivativeCodifier;
 import jestures.core.codification.FrameLength;
-import jestures.core.view.screens.RecognitionView;
+import jestures.core.view.screens.RecognitionScreenView;
 import jestures.sensor.IllegalSensorStateException;
 import jestures.sensor.Sensor;
 import jestures.sensor.SensorException;
@@ -60,7 +60,7 @@ public abstract class Tracker implements TrackingObserver, SensorObserver, Track
         this.codifier.attacheCoreRecognizer(this);
 
         this.jointListener = new HashSet<>();
-        RecognitionView.startFxThread();
+        RecognitionScreenView.startFxThread();
 
     }
 

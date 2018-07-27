@@ -11,7 +11,7 @@ import jestures.core.tracking.Tracking;
 /**
  * The @link{AbstractView} class.
  */
-public abstract class AbstractView implements View {
+public abstract class AbstractView implements View, ViewObserver {
     private final Tracking tracker;
     private FrameLength frameLength;
 
