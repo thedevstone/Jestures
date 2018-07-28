@@ -30,13 +30,17 @@ import smile.math.distance.DynamicTimeWarping;
  */
 public final class Recognizer extends Tracker implements Recognition {
     private static final Logger LOG = Logger.getLogger(Recognizer.class);
-    private static final double DTW_RADIUS = 0.2;
-    private final Set<ViewObserver> view;
-    private static Recognition instance;
     private final Serializer userManager;
-    private int updateRate = 0;
+    private static Recognition instance;
+    private final Set<ViewObserver> view;
     private Map<String, List<Vector2D[]>> userDataset;
+
+    // RECOGNITION
     private final DynamicTimeWarping<Vector2D> dtw;
+    private int updateRate;
+    private final double dtwRadius;
+    private final double minDTWThreashold;
+    private final double maxDTWThreashold;
 
     /**
      *
@@ -46,7 +50,12 @@ public final class Recognizer extends Tracker implements Recognition {
         this.view = new HashSet<>();
         this.userManager = new UserManager();
         this.userDataset = null;
-        this.dtw = new DynamicTimeWarping<Vector2D>((a, b) -> a.distance(b), Recognizer.DTW_RADIUS);
+        // RECOGNITION
+        this.dtwRadius = 0.5;
+        this.updateRate = 10;
+        this.minDTWThreashold = 300;
+        this.maxDTWThreashold = 800;
+        this.dtw = new DynamicTimeWarping<Vector2D>((a, b) -> a.distance(b), this.dtwRadius);
         RecognitionScreenView.startFxThread();
     }
 
@@ -107,7 +116,7 @@ public final class Recognizer extends Tracker implements Recognition {
                                                    .min((a, b) -> Double.compare(a.getValue(), b.getValue()))
                                                    .get();
 
-        if (min.getValue() < 800 && min.getValue() > 300) {
+        if (min.getValue() < this.maxDTWThreashold && min.getValue() > this.minDTWThreashold) {
             Recognizer.LOG.info(min);
         }
 
@@ -150,6 +159,24 @@ public final class Recognizer extends Tracker implements Recognition {
     @Override
     public void setUpdateRate(final int frameNumber) {
         this.updateRate = frameNumber;
+    }
+
+    @Override
+    public void setDTWRadius(final double radius) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void setMinDTWTreshold(final double minThreashold) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void setMaxDTWThreashold(final double maxThreashold) {
+        // TODO Auto-generated method stub
+
     }
 
 }

@@ -9,6 +9,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import jestures.core.tracking.Tracking;
 import jestures.core.view.View;
 import jestures.core.view.ViewObserver;
+import smile.math.distance.DynamicTimeWarping;
 
 /**
  * Interface for recognition.
@@ -48,10 +49,42 @@ public interface Recognition extends Tracking {
 
     /**
      * Set the rate of recognition. After the frame number the recognizer is updated with a new feature vector.
+     * <p>
+     * Fast recognition rate can cause an high cpu load. Slow recognition rate can cause gesture degradation
      *
-     * @param frameNumber
+     * @param rate
      *            the update rate
      */
-    void setUpdateRate(int frameNumber);
+    void setUpdateRate(int rate);
+
+    /**
+     * Set the {@link DynamicTimeWarping} radius.
+     *
+     * @param radius
+     *            the window width of Sakoe-Chiba band in terms of percentage of sequence length.
+     */
+    void setDTWRadius(double radius);
+
+    /**
+     * Set the threshold for gesture minimum acceptance.
+     * <p>
+     * Only gestures, that have a feature vector distance (by DTW) lower than minThreashold, are accepted.
+     *
+     *
+     * @param minThreashold
+     *            represents the minimum distance above which a feature vector is accepted
+     */
+    void setMinDTWTreshold(double minThreashold);
+
+    /**
+     * Set the threshold for gesture maximum acceptance.
+     * <p>
+     * Only gestures, that have a feature vector distance (by DTW) greater than minThreashold, are accepted.
+     *
+     *
+     * @param maxThreashold
+     *            represents the maximum distance above which a feature vector is accepted
+     */
+    void setMaxDTWThreashold(double maxThreashold);
 
 }
