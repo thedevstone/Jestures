@@ -28,7 +28,7 @@ import jestures.core.tracking.TrackingObserver;
  * The @link{DerivativeCodifier} class.
  */
 public class DerivativeCodifier implements Codifier {
-    private final Queue<Vector2D> featureVector;
+    private Queue<Vector2D> featureVector;
     private Vector2D oldVector;
     private Vector2D derivative; // NOPMD
     private Vector2D startingVector;
@@ -44,7 +44,7 @@ public class DerivativeCodifier implements Codifier {
      *            the gesture's duration in frame
      */
     public DerivativeCodifier(final FrameLength frames) {
-        this.featureVector = EvictingQueue.create(FrameLength.THREE_SECONDS.getFrameNumber());
+        this.featureVector = EvictingQueue.create(frames.getFrameNumber());
         this.oldVector = new Vector2D(0, 0);
         this.frame = 0;
         this.frameLength = frames;
@@ -88,12 +88,12 @@ public class DerivativeCodifier implements Codifier {
     @Override
     public synchronized void resetFrame() {
         this.frame = 0;
-        this.featureVector.clear();
     }
 
     @Override
     public synchronized void setFrameLength(final FrameLength length) {
         this.frameLength = length;
+        this.featureVector = EvictingQueue.create(length.getFrameNumber());
     }
 
 }

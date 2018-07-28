@@ -1,5 +1,6 @@
 package jestures.core.view;
 
+import jestures.core.codification.FrameLength;
 import jestures.core.tracking.Tracking;
 
 /**
@@ -25,5 +26,13 @@ public interface View extends ViewObserver {
      *            the String name
      */
     void loadUserProfile(String name);
+
+    /**
+     * Set the frame Length.
+     *
+     * @param length
+     *            the {@link FrameLength}
+     */
+    void setFrameLength(FrameLength length);
 
 }

@@ -30,7 +30,7 @@ import smile.math.distance.DynamicTimeWarping;
  */
 public final class Recognizer extends Tracker implements Recognition {
     private static final Logger LOG = Logger.getLogger(Recognizer.class);
-    private static final double DTW_RADIUS = 0.5;
+    private static final double DTW_RADIUS = 0.2;
     private final Set<ViewObserver> view;
     private static Recognition instance;
     private final Serializer userManager;
@@ -42,7 +42,7 @@ public final class Recognizer extends Tracker implements Recognition {
      *
      */
     private Recognizer() {
-        this.setUpdateRate(30);
+        this.setUpdateRate(10);
         this.view = new HashSet<>();
         this.userManager = new UserManager();
         this.userDataset = null;
@@ -88,7 +88,7 @@ public final class Recognizer extends Tracker implements Recognition {
         super.notifyOnFrameChange(frame, featureVector, derivative, distanceVector);
         this.view.forEach(t -> t.notifyOnFrameChange(frame, derivative, distanceVector));
         // QUI SI INNESTA IL RICONOSCIMENTO
-        if (frame != 0 && frame % this.updateRate == 0) {
+        if ((frame + 1) % this.updateRate == 0) {
             final Vector2D[] arrayFeatureVector = new Vector2D[featureVector.size()];
             featureVector.toArray(arrayFeatureVector);
             this.recognize(arrayFeatureVector);
@@ -106,9 +106,11 @@ public final class Recognizer extends Tracker implements Recognition {
                                                    .stream()
                                                    .min((a, b) -> Double.compare(a.getValue(), b.getValue()))
                                                    .get();
-        if (min.getValue() < 500) {
+
+        if (min.getValue() < 800 && min.getValue() > 300) {
             Recognizer.LOG.info(min);
         }
+
     }
 
     private void printArray(final Vector2D[] array) {

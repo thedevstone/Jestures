@@ -33,14 +33,6 @@ public interface ViewObserver {
     void notifyOnFeatureVectorEvent();
 
     /**
-     * Set the frame Length.
-     *
-     * @param length
-     *            the {@link FrameLength}
-     */
-    void setFrameLength(FrameLength length);
-
-    /**
      * Get the {@link FrameLength} for tracking.
      *
      * @return the {@link FrameLength}

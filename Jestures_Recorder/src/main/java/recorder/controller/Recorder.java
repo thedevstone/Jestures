@@ -75,7 +75,6 @@ public final class Recorder extends Tracker implements Recording {
     @Override
     public void attacheUI(final RecViewObserver view) {
         this.view.add(view);
-        this.view.forEach(t -> t.setFrameLength(this.getFrameLength()));
         this.view.forEach(t -> t.refreshUsers());
     }
 

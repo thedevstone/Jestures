@@ -48,7 +48,7 @@ public abstract class Tracker implements TrackingObserver, SensorObserver, Track
      *
      */
     public Tracker() {
-        this(Codification.DERIVATIVE, FrameLength.TWO_SECONDS);
+        this(Codification.DERIVATIVE, FrameLength.FPS_30);
     }
 
     private Tracker(final Codification codificationType, final FrameLength gestureLenght) {

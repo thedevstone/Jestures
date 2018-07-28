@@ -59,7 +59,6 @@ import jestures.core.view.utils.ViewUtilities;
 public class RecognitionScreenView extends AbstractRecognitionScreenView implements View {
     private static final Logger LOG = Logger.getLogger(RecognitionScreenView.class);
     private final Recognition recognizer;
-    private FrameLength frameLength;
 
     // VIEW
     private Stage stage; // NOPMD
@@ -172,14 +171,8 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView impleme
     }
 
     @Override
-    public void setFrameLength(final FrameLength length) {
-        this.frameLength = length;
-        this.recognizer.setFrameLength(length);
-    }
-
-    @Override
     public FrameLength getFrameLength() {
-        return this.frameLength;
+        return this.recognizer.getFrameLength();
     }
 
     // ###################################### FROM RECORDER (REC VIEW OBSERVER) ##################################
@@ -196,6 +189,12 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView impleme
         this.clearCanvasAndChart();
         this.recognizer.stopSensor();
         this.selectUserCombo.setDisable(false);
+    }
+
+    @Override
+    public void setFrameLength(final FrameLength length) {
+        this.recognizer.setFrameLength(length);
+        this.setChart(length.getFrameNumber(), length.getFrameNumber());
     }
 
     // ############################################## TO RECORDER ###################################

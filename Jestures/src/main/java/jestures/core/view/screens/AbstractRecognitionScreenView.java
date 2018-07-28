@@ -28,8 +28,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import jestures.core.codification.FrameLength;
 import jestures.core.recognition.Recognition;
-import jestures.core.view.enums.DialogsType.DimDialogs;
 import jestures.core.view.AbstractView;
+import jestures.core.view.enums.DialogsType.DimDialogs;
 import jestures.core.view.enums.IconDim;
 import jestures.core.view.utils.RecordingFactory;
 import jestures.core.view.utils.ScrollPaneFactory;
@@ -171,17 +171,8 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
     }
 
     private void initChart() {
-        this.xSeries = new XYChart.Series<>();
-        this.ySeries = new XYChart.Series<>();
-        this.lineChartX = RecordingFactory.createDerivativeLineChart();
-        this.lineChartY = RecordingFactory.createDerivativeLineChart();
-        this.lineChartX.getData().add(this.xSeries);
-        this.lineChartY.getData().add(this.ySeries);
-        this.lineChartX.setTitle("Derivative: X");
-        this.lineChartY.setTitle("Derivative: Y");
-        HBox.setHgrow(this.lineChartX, Priority.ALWAYS);
-        HBox.setHgrow(this.lineChartY, Priority.ALWAYS);
-        this.vbox.getChildren().addAll(this.lineChartX, this.lineChartY);
+        this.setChart(this.recognizer.getFrameLength().getFrameNumber(),
+                this.recognizer.getFrameLength().getFrameNumber());
     }
 
     private void initGraphic() {
@@ -190,7 +181,6 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
         this.tabPane.getTabs().get(2).setGraphic(ViewUtilities.iconSetter(Material.MULTILINE_CHART, IconDim.MEDIUM));
         this.tabPane.getTabs().get(3).setGraphic(ViewUtilities.iconSetter(Material.VIEW_LIST, IconDim.MEDIUM));
         this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY, IconDim.MEDIUM));
-
     }
 
     private void initTabPaneListener() {
@@ -214,9 +204,9 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
 
     private void initCombos() {
         this.frameLengthCombo.setOnAction(t -> this.setFrameLength(this.frameLengthCombo.getValue()));
-        this.frameLengthCombo.getItems().add(FrameLength.ONE_SECOND);
-        this.frameLengthCombo.getItems().add(FrameLength.TWO_SECONDS);
-        this.frameLengthCombo.getItems().add(FrameLength.THREE_SECONDS);
+        this.frameLengthCombo.getItems().add(FrameLength.FPS_30);
+        this.frameLengthCombo.getItems().add(FrameLength.FPS_20);
+        this.frameLengthCombo.getItems().add(FrameLength.FPS_10);
         this.frameLengthCombo.getSelectionModel().select(this.getFrameLength());
         JFXDepthManager.setDepth(this.frameLengthCombo, 4);
 
@@ -239,6 +229,28 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
                         newValue.getParent().getChildren().indexOf(newValue));
             }
         });
+    }
+
+    /**
+     * Set the chart with the selected length.
+     *
+     * @param xFrames
+     *            the x frame length
+     * @param yFrames
+     *            the y frame length
+     */
+    public void setChart(final int xFrames, final int yFrames) {
+        this.xSeries = new XYChart.Series<>();
+        this.ySeries = new XYChart.Series<>();
+        this.lineChartX = RecordingFactory.createDerivativeLineChart(xFrames);
+        this.lineChartY = RecordingFactory.createDerivativeLineChart(yFrames);
+        this.lineChartX.getData().add(this.xSeries);
+        this.lineChartY.getData().add(this.ySeries);
+        this.lineChartX.setTitle("Derivative: X");
+        this.lineChartY.setTitle("Derivative: Y");
+        HBox.setHgrow(this.lineChartX, Priority.ALWAYS);
+        HBox.setHgrow(this.lineChartY, Priority.ALWAYS);
+        this.vbox.getChildren().setAll(this.lineChartX, this.lineChartY);
     }
 
     /**

@@ -275,17 +275,7 @@ public abstract class AbstractRecorderScreenView implements RecView, RecViewObse
     }
 
     private void initChart() {
-        this.xSeries = new XYChart.Series<>();
-        this.ySeries = new XYChart.Series<>();
-        this.lineChartX = RecordingFactory.createDerivativeLineChart();
-        this.lineChartY = RecordingFactory.createDerivativeLineChart();
-        this.lineChartX.getData().add(this.xSeries);
-        this.lineChartY.getData().add(this.ySeries);
-        this.lineChartX.setTitle("Derivative: X");
-        this.lineChartY.setTitle("Derivative: Y");
-        HBox.setHgrow(this.lineChartX, Priority.ALWAYS);
-        HBox.setHgrow(this.lineChartY, Priority.ALWAYS);
-        this.vbox.getChildren().addAll(this.lineChartX, this.lineChartY);
+        this.setChart(this.recorder.getFrameLength().getFrameNumber(), this.recorder.getFrameLength().getFrameNumber());
     }
 
     private void initGraphic() {
@@ -323,9 +313,9 @@ public abstract class AbstractRecorderScreenView implements RecView, RecViewObse
     private void initCombos() {
         JFXDepthManager.setDepth(this.gestureHBox, 1);
         this.frameLengthCombo.setOnAction(t -> this.setFrameLength(this.frameLengthCombo.getValue()));
-        this.frameLengthCombo.getItems().add(FrameLength.ONE_SECOND);
-        this.frameLengthCombo.getItems().add(FrameLength.TWO_SECONDS);
-        this.frameLengthCombo.getItems().add(FrameLength.THREE_SECONDS);
+        this.frameLengthCombo.getItems().add(FrameLength.FPS_30);
+        this.frameLengthCombo.getItems().add(FrameLength.FPS_20);
+        this.frameLengthCombo.getItems().add(FrameLength.FPS_10);
         this.frameLengthCombo.getSelectionModel().select(this.getFrameLength());
         JFXDepthManager.setDepth(this.frameLengthCombo, 4);
 
@@ -355,6 +345,28 @@ public abstract class AbstractRecorderScreenView implements RecView, RecViewObse
                         newValue.getParent().getChildren().indexOf(newValue));
             }
         });
+    }
+
+    /**
+     * Set the chart with the selected length.
+     *
+     * @param xFrames
+     *            the x frame length
+     * @param yFrames
+     *            the y frame length
+     */
+    public void setChart(final int xFrames, final int yFrames) {
+        this.xSeries = new XYChart.Series<>();
+        this.ySeries = new XYChart.Series<>();
+        this.lineChartX = RecordingFactory.createDerivativeLineChart(xFrames);
+        this.lineChartY = RecordingFactory.createDerivativeLineChart(yFrames);
+        this.lineChartX.getData().add(this.xSeries);
+        this.lineChartY.getData().add(this.ySeries);
+        this.lineChartX.setTitle("Derivative: X");
+        this.lineChartY.setTitle("Derivative: Y");
+        HBox.setHgrow(this.lineChartX, Priority.ALWAYS);
+        HBox.setHgrow(this.lineChartY, Priority.ALWAYS);
+        this.vbox.getChildren().setAll(this.lineChartX, this.lineChartY);
     }
 
     /**

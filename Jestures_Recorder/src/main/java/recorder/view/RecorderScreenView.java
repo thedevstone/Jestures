@@ -66,7 +66,6 @@ import recorder.controller.Recording;
 public class RecorderScreenView extends AbstractRecorderScreenView implements RecView {
     private static final Logger LOG = Logger.getLogger(RecorderScreenView.class);
     private final Recording recorder;
-    private FrameLength frameLength;
 
     // VIEW
     private Stage stage; // NOPMD
@@ -191,14 +190,8 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     }
 
     @Override
-    public void setFrameLength(final FrameLength length) {
-        this.frameLength = length;
-        this.recorder.setFrameLength(length);
-    }
-
-    @Override
     public FrameLength getFrameLength() {
-        return this.frameLength;
+        return this.recorder.getFrameLength();
     }
 
     // ###################################### FROM RECORDER (REC VIEW OBSERVER) ##################################
@@ -230,6 +223,12 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
         this.clearCanvasAndChart();
         this.recorder.stopSensor();
         this.selectUserCombo.setDisable(false);
+    }
+
+    @Override
+    public void setFrameLength(final FrameLength length) {
+        this.recorder.setFrameLength(length);
+        this.setChart(length.getFrameNumber(), length.getFrameNumber());
     }
 
     @Override
