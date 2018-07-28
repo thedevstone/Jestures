@@ -26,6 +26,7 @@ import org.kordamp.ikonli.material.Material;
 import com.google.gson.JsonSyntaxException;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXScrollPane;
 import com.jfoenix.controls.JFXTreeView;
 import com.sun.javafx.application.PlatformImpl;
@@ -59,6 +60,7 @@ import jestures.core.view.utils.ViewUtilities;
 public class RecognitionScreenView extends AbstractRecognitionScreenView implements View {
     private static final Logger LOG = Logger.getLogger(RecognitionScreenView.class);
     private final Recognition recognizer;
+    private int frameLength;
 
     // VIEW
     private Stage stage; // NOPMD
@@ -68,7 +70,8 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView impleme
     private TreeItem<String> root; // NOPMD
 
     // ########### ALL TABS #############
-
+    @FXML
+    private JFXProgressBar progressBar;
     @FXML
     private BorderPane recorderPane; // NOPMD
     @FXML
@@ -96,6 +99,7 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView impleme
     public RecognitionScreenView(final Recognition recognizer) {
         super(recognizer);
         this.recognizer = recognizer;
+        this.frameLength = recognizer.getFrameLength().getFrameNumber();
         // CREATE AND SET THE CONTROLLER. INIT THE BORDER PANE
         Platform.runLater(() -> {
             final FXMLLoader loader = new FXMLLoader();
@@ -148,6 +152,7 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView impleme
 
             this.getLiveContext().fillOval(-path.getX() + this.getLiveCanvas().getWidth() / 2,
                     path.getY() + this.getLiveCanvas().getHeight() / 2, 10, 10);
+            this.progressBar.setProgress(frame / (this.frameLength + 0.0));
         });
     }
 
@@ -195,6 +200,7 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView impleme
     public void setFrameLength(final FrameLength length) {
         this.recognizer.setFrameLength(length);
         this.setChart(length.getFrameNumber(), length.getFrameNumber());
+        this.frameLength = length.getFrameNumber();
     }
 
     // ############################################## TO RECORDER ###################################

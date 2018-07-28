@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXProgressBar?>
 <?import com.jfoenix.controls.JFXScrollPane?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXToolbar?>
@@ -86,16 +87,21 @@
       </StackPane>
    </center>
    <bottom>
-      <JFXToolbar fx:id="toolbar" minHeight="50.0" BorderPane.alignment="CENTER">
-         <right>
-            <JFXButton id="start-button" fx:id="startButton" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" />
-         </right>
-         <padding>
-            <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-         <left>
-            <JFXComboBox id="exercise-combo-box" fx:id="frameLengthCombo" focusColor="#405aa800" minWidth="150.0" promptText="Frame Length" unFocusColor="#4d4d4d00" BorderPane.alignment="CENTER" />
-         </left>
-      </JFXToolbar>
+      <VBox BorderPane.alignment="CENTER">
+         <children>
+            <JFXProgressBar id="progressBar" fx:id="progressBar" />
+            <JFXToolbar fx:id="toolbar" minHeight="50.0">
+               <right>
+                  <JFXButton id="start-button" fx:id="startButton" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" />
+               </right>
+               <padding>
+                  <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <left>
+                  <JFXComboBox id="exercise-combo-box" fx:id="frameLengthCombo" focusColor="#405aa800" minWidth="150.0" promptText="Frame Length" unFocusColor="#4d4d4d00" BorderPane.alignment="CENTER" />
+               </left>
+            </JFXToolbar>
+         </children>
+      </VBox>
    </bottom>
 </BorderPane>

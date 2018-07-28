@@ -35,9 +35,21 @@
 }
 
 #userScrollPane {
-	-fx-background-color: blue;
 	-fx-hbar-policy: never ;
 }
+
+/*PROGRESS BAR */
+#progressBar .track {
+	-fx-background-color: #01579B;
+	-fx-min-height: 5;
+}
+
+#progressBar .bar {
+	-fx-background-color: #FFEB3B;
+	-fx-background-radius: 10;
+
+}
+
 
 /*USER */
 

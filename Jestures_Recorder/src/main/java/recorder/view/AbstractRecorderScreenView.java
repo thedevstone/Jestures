@@ -9,6 +9,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPopup;
+import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXScrollPane;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTextField;
@@ -74,6 +75,8 @@ public abstract class AbstractRecorderScreenView implements RecView, RecViewObse
 
     // ########### ALL TABS #############
 
+    @FXML
+    private JFXProgressBar progressBar;
     @FXML
     private HBox gestureHBox;
     @FXML
@@ -156,6 +159,7 @@ public abstract class AbstractRecorderScreenView implements RecView, RecViewObse
         this.initTreeView();
         this.initPopup();
         this.setDisabled();
+        this.initProgressBar();
     }
 
     private void setDisabled() {
@@ -276,6 +280,10 @@ public abstract class AbstractRecorderScreenView implements RecView, RecViewObse
 
     private void initChart() {
         this.setChart(this.recorder.getFrameLength().getFrameNumber(), this.recorder.getFrameLength().getFrameNumber());
+    }
+
+    private void initProgressBar() {
+        this.progressBar.minWidthProperty().bind(this.recorderPane.widthProperty());
     }
 
     private void initGraphic() {

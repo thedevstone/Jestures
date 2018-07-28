@@ -30,6 +30,7 @@ import com.google.gson.JsonSyntaxException;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXScrollPane;
 import com.jfoenix.controls.JFXTreeView;
 
@@ -66,6 +67,7 @@ import recorder.controller.Recording;
 public class RecorderScreenView extends AbstractRecorderScreenView implements RecView {
     private static final Logger LOG = Logger.getLogger(RecorderScreenView.class);
     private final Recording recorder;
+    private int frameLength;
 
     // VIEW
     private Stage stage; // NOPMD
@@ -75,6 +77,8 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     private TreeItem<String> root; // NOPMD
 
     // ########### ALL TABS #############
+    @FXML
+    private JFXProgressBar progressBar;
     @FXML
     private HBox gestureHBox;
     @FXML
@@ -112,6 +116,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     public RecorderScreenView(final Recording recorder) {
         super(recorder);
         this.recorder = recorder;
+        this.frameLength = recorder.getFrameLength().getFrameNumber();
         // CREATE AND SET THE CONTROLLER. INIT THE BORDER PANE
         Platform.runLater(() -> {
             final FXMLLoader loader = new FXMLLoader();
@@ -164,6 +169,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
 
             this.getLiveContext().fillOval(-path.getX() + this.getLiveCanvas().getWidth() / 2,
                     path.getY() + this.getLiveCanvas().getHeight() / 2, 10, 10);
+            this.progressBar.setProgress(frame / (this.frameLength + 0.0));
         });
     }
 
@@ -229,6 +235,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     public void setFrameLength(final FrameLength length) {
         this.recorder.setFrameLength(length);
         this.setChart(length.getFrameNumber(), length.getFrameNumber());
+        this.frameLength = length.getFrameNumber();
     }
 
     @Override

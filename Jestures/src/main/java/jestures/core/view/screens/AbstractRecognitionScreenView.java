@@ -7,6 +7,7 @@ import org.kordamp.ikonli.material.Material;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPopup;
+import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXScrollPane;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTreeView;
@@ -60,7 +61,8 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
     private GraphicsContext userCanvasContext;
 
     // ########### ALL TABS #############
-
+    @FXML
+    private JFXProgressBar progressBar;
     @FXML
     private JFXTabPane tabPane;
     @FXML
@@ -123,6 +125,7 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
         this.initTreeView();
         this.initPopup();
         this.setDisabled();
+        this.initProgressBar();
     }
 
     private void setDisabled() {
@@ -173,6 +176,10 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
     private void initChart() {
         this.setChart(this.recognizer.getFrameLength().getFrameNumber(),
                 this.recognizer.getFrameLength().getFrameNumber());
+    }
+
+    private void initProgressBar() {
+        this.progressBar.minWidthProperty().bind(this.recorderPane.widthProperty());
     }
 
     private void initGraphic() {
