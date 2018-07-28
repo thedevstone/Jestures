@@ -30,7 +30,6 @@ import javafx.scene.layout.VBox;
 import jestures.core.codification.FrameLength;
 import jestures.core.recognition.Recognition;
 import jestures.core.view.AbstractView;
-import jestures.core.view.enums.DialogsType.DimDialogs;
 import jestures.core.view.enums.IconDim;
 import jestures.core.view.utils.RecordingFactory;
 import jestures.core.view.utils.ScrollPaneFactory;
@@ -120,7 +119,6 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
         this.initLiveCanvas();
         this.initUserCanvas();
         this.initChart();
-        this.initTabPaneListener();
         this.initScrollPane();
         this.initTreeView();
         this.initPopup();
@@ -186,17 +184,7 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
         this.tabPane.getTabs().get(0).setGraphic(ViewUtilities.iconSetter(Material.PERSON, IconDim.MEDIUM));
         this.tabPane.getTabs().get(1).setGraphic(ViewUtilities.iconSetter(Material.BLUR_ON, IconDim.MEDIUM));
         this.tabPane.getTabs().get(2).setGraphic(ViewUtilities.iconSetter(Material.MULTILINE_CHART, IconDim.MEDIUM));
-        this.tabPane.getTabs().get(3).setGraphic(ViewUtilities.iconSetter(Material.VIEW_LIST, IconDim.MEDIUM));
         this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY, IconDim.MEDIUM));
-    }
-
-    private void initTabPaneListener() {
-        this.tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (this.tabPane.getTabs().get(3).equals(newValue) && !oldValue.equals(newValue)) {
-                ViewUtilities.showDialog(this.tabStackPane, "Select Feature Vector",
-                        "left-click > select \n right-click > delete", DimDialogs.MEDIUM, null);
-            }
-        });
     }
 
     private void initScrollPane() {
