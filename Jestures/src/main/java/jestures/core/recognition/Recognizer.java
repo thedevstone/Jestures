@@ -20,6 +20,7 @@ import com.google.common.base.Functions;
 import com.google.gson.JsonSyntaxException;
 
 import javafx.util.Pair;
+import jestures.core.codification.FrameLength;
 import jestures.core.serialization.Serializer;
 import jestures.core.serialization.UserManager;
 import jestures.core.tracking.Tracker;
@@ -43,11 +44,11 @@ public final class Recognizer extends Tracker implements Recognition {
     // RECOGNITION
     private final DynamicTimeWarping<Vector2D> dtw;
     private int updateRate;
-    private final double dtwRadius;
-    private final double minDTWThreashold;
-    private final double maxDTWThreashold;
-    private final double minTimeSeparation;
-    private final int matchNumber;
+    private double dtwRadius;
+    private double minDTWThreashold;
+    private double maxDTWThreashold;
+    private int minTimeSeparation;
+    private int matchNumber;
     private boolean gestureRecognized;
 
     /**
@@ -123,7 +124,38 @@ public final class Recognizer extends Tracker implements Recognition {
         }
     }
 
-    private void recognize(final Vector2D[] featureVector) {
+    @Override
+    public void notifyOnFeatureVectorEvent(final List<Vector2D> featureVector) {
+        super.notifyOnFeatureVectorEvent(featureVector);
+        this.view.forEach(t -> t.notifyOnFeatureVectorEvent());
+    }
+
+    // ############################################# TRACKER #########################################
+    @Override
+    public boolean loadUserProfile(final String name) throws FileNotFoundException, IOException, JsonSyntaxException {
+        final boolean userExists = this.userManager.loadOrCreateNewUser(name);
+        this.userDataset = this.userManager.getDatasetForRecognition();
+        return userExists;
+    }
+
+    @Override
+    public List<List<Vector2D>> getGestureDataset(final String gestureName) {
+        return this.userManager.getGestureDataset(gestureName);
+    }
+
+    @Override
+    public List<String> getAllUserGesture() {
+        return this.userManager.getAllUserGestures();
+    }
+
+    @Override
+    public String getUserName() {
+        return this.userManager.getUserName();
+    }
+
+    // ############################################# TRACKER #########################################
+
+    private void recognize(final Vector2D... featureVector) {
         final List<Pair<Double, String>> distances = new ArrayList<>();
         for (final String gestureName : this.userDataset.keySet()) {
             for (final Vector2D[] gestureTemplate : this.userDataset.get(gestureName)) {
@@ -152,54 +184,76 @@ public final class Recognizer extends Tracker implements Recognition {
     }
 
     @Override
-    public void notifyOnFeatureVectorEvent(final List<Vector2D> featureVector) {
-        super.notifyOnFeatureVectorEvent(featureVector);
-        this.view.forEach(t -> t.notifyOnFeatureVectorEvent());
+    public double getDtwRadius() {
+        return this.dtwRadius;
     }
 
     @Override
-    public boolean loadUserProfile(final String name) throws FileNotFoundException, IOException, JsonSyntaxException {
-        final boolean userExists = this.userManager.loadOrCreateNewUser(name);
-        this.userDataset = this.userManager.getDatasetForRecognition();
-        return userExists;
+    public void setDtwRadius(final double dtwRadius) {
+        if (dtwRadius < 1 && dtwRadius > 0) {
+            this.dtwRadius = dtwRadius;
+        }
     }
 
     @Override
-    public List<List<Vector2D>> getGestureDataset(final String gestureName) {
-        return this.userManager.getGestureDataset(gestureName);
+    public double getMinDtwThreashold() {
+        return this.minDTWThreashold;
     }
 
     @Override
-    public List<String> getAllUserGesture() {
-        return this.userManager.getAllUserGestures();
+    public void setMinDtwThreashold(final double minDTWThreashold) {
+        if (minDTWThreashold > 0 && minDTWThreashold < this.maxDTWThreashold) {
+            this.minDTWThreashold = minDTWThreashold;
+        }
     }
 
     @Override
-    public String getUserName() {
-        return this.userManager.getUserName();
+    public double getMaxDTWThreashold() {
+        return this.maxDTWThreashold;
     }
 
     @Override
-    public void setUpdateRate(final int frameNumber) {
-        this.updateRate = frameNumber;
+    public void setMaxDtwThreashold(final double maxDtwThreashold) {
+        if (maxDtwThreashold > 0 && maxDtwThreashold > this.minDTWThreashold) {
+            this.maxDTWThreashold = maxDtwThreashold;
+        }
     }
 
     @Override
-    public void setDTWRadius(final double radius) {
-        // TODO Auto-generated method stub
-
+    public int getUpdateRate() {
+        return this.updateRate;
     }
 
     @Override
-    public void setMinDTWTreshold(final double minThreashold) {
-        // TODO Auto-generated method stub
-
+    public void setUpdateRate(final int updateRate) {
+        if (updateRate > 0 && updateRate < FrameLength.FPS_30.getFrameNumber()
+                && this.getFrameLength().getFrameNumber() % updateRate == 0) {
+            this.updateRate = updateRate;
+        }
     }
 
     @Override
-    public void setMaxDTWThreashold(final double maxThreashold) {
-        // TODO Auto-generated method stub
+    public int getMinTimeSeparation() {
+        return this.minTimeSeparation;
+    }
 
+    @Override
+    public void setMinTimeSeparation(final int minTimeSeparation) {
+        if (minTimeSeparation > 0 && minTimeSeparation < 1000) {
+            this.minTimeSeparation = minTimeSeparation;
+        }
+    }
+
+    @Override
+    public int getMatchNumber() {
+        return this.matchNumber;
+    }
+
+    @Override
+    public void setMatchNumber(final int matchNumber) {
+        if (matchNumber > 0) {
+            this.matchNumber = matchNumber;
+        }
     }
 
 }
