@@ -2,20 +2,24 @@ package jestures.core.recognition;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.apache.log4j.Logger;
 
+import com.google.common.base.Functions;
 import com.google.gson.JsonSyntaxException;
 
+import javafx.util.Pair;
 import jestures.core.serialization.Serializer;
 import jestures.core.serialization.UserManager;
 import jestures.core.tracking.Tracker;
@@ -34,6 +38,7 @@ public final class Recognizer extends Tracker implements Recognition {
     private static Recognition instance;
     private final Set<ViewObserver> view;
     private Map<String, List<Vector2D[]>> userDataset;
+    private long lastGestureTime;
 
     // RECOGNITION
     private final DynamicTimeWarping<Vector2D> dtw;
@@ -41,6 +46,9 @@ public final class Recognizer extends Tracker implements Recognition {
     private final double dtwRadius;
     private final double minDTWThreashold;
     private final double maxDTWThreashold;
+    private final double minTimeSeparation;
+    private final int matchNumber;
+    private boolean gestureRecognized;
 
     /**
      *
@@ -50,11 +58,15 @@ public final class Recognizer extends Tracker implements Recognition {
         this.view = new HashSet<>();
         this.userManager = new UserManager();
         this.userDataset = null;
+        this.lastGestureTime = 0;
         // RECOGNITION
         this.dtwRadius = 0.5;
-        this.updateRate = 10;
-        this.minDTWThreashold = 300;
+        this.updateRate = 5;
+        this.minDTWThreashold = 500;
         this.maxDTWThreashold = 800;
+        this.minTimeSeparation = 300;
+        this.matchNumber = 5;
+
         this.dtw = new DynamicTimeWarping<Vector2D>((a, b) -> a.distance(b), this.dtwRadius);
         RecognitionScreenView.startFxThread();
     }
@@ -100,32 +112,43 @@ public final class Recognizer extends Tracker implements Recognition {
         if ((frame + 1) % this.updateRate == 0) {
             final Vector2D[] arrayFeatureVector = new Vector2D[featureVector.size()];
             featureVector.toArray(arrayFeatureVector);
-            this.recognize(arrayFeatureVector);
+            final long currentSec = System.currentTimeMillis();
+            if (this.gestureRecognized && currentSec - this.lastGestureTime > this.minTimeSeparation) {
+                this.lastGestureTime = currentSec;
+                this.recognize(arrayFeatureVector);
+            } else if (!this.gestureRecognized) {
+                this.lastGestureTime = currentSec;
+                this.recognize(arrayFeatureVector);
+            }
         }
     }
 
     private void recognize(final Vector2D[] featureVector) {
-        final Map<String, Double> distances = new HashMap<>();
+        final List<Pair<Double, String>> distances = new ArrayList<>();
         for (final String gestureName : this.userDataset.keySet()) {
             for (final Vector2D[] gestureTemplate : this.userDataset.get(gestureName)) {
-                distances.put(gestureName, this.dtw.d(gestureTemplate, featureVector));
+                final double dtwDist = this.dtw.d(gestureTemplate, featureVector);
+                if (dtwDist < this.maxDTWThreashold && dtwDist > this.minDTWThreashold) {
+                    distances.add(new Pair<Double, String>(dtwDist, gestureName));
+                }
             }
         }
-        final Entry<String, Double> min = distances.entrySet()
-                                                   .stream()
-                                                   .min((a, b) -> Double.compare(a.getValue(), b.getValue()))
-                                                   .get();
 
-        if (min.getValue() < this.maxDTWThreashold && min.getValue() > this.minDTWThreashold) {
-            Recognizer.LOG.info(min);
+        if (distances.isEmpty()) {
+            // Recognizer.LOG.debug("NO GESURES");
+            this.gestureRecognized = false;
+        } else {
+            this.gestureRecognized = true;
         }
+        distances.stream()
+                 .map(t -> t.getValue())
+                 .collect(Collectors.groupingBy(Functions.identity(), Collectors.counting()))
+                 .entrySet()
+                 .stream()
+                 .filter(k -> k.getValue() > this.matchNumber) // MATCH NUMBER
+                 .max(Comparator.comparing(Entry::getValue))
+                 .ifPresent(t -> Recognizer.LOG.debug(t.getKey()));
 
-    }
-
-    private void printArray(final Vector2D[] array) {
-        for (final Vector2D elem : array) {
-            Recognizer.LOG.debug(elem);
-        }
     }
 
     @Override
