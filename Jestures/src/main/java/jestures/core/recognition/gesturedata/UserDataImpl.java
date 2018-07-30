@@ -21,6 +21,12 @@ import jestures.core.recognition.UpdateRate;
  *
  */
 public class UserDataImpl implements UserData, Serializable {
+    private static final UpdateRate DEFAULT_UPDATE = UpdateRate.FPS_10;
+    private static final double DEFAULT_RADIUS = 0.5;
+    private static final int DEFAULT_MIN_TRESHOLD = 300;
+    private static final int DEFAULT_MAX_TRESHOLD = 700;
+    private static final int DEFAULT_TIME_SEP = 500;
+    private static final int DEFAULT_MATCH = 3;
     /**
      *
      */
@@ -43,7 +49,9 @@ public class UserDataImpl implements UserData, Serializable {
      */
     public UserDataImpl(final String name) {
         this.userName = name;
-        this.recognitionSettings = new RecognitionSettingsImpl(UpdateRate.FPS_10, 0.5, 300, 800, 300, 5);
+        this.recognitionSettings = new RecognitionSettingsImpl(UserDataImpl.DEFAULT_UPDATE, UserDataImpl.DEFAULT_RADIUS,
+                UserDataImpl.DEFAULT_MIN_TRESHOLD, UserDataImpl.DEFAULT_MAX_TRESHOLD, UserDataImpl.DEFAULT_TIME_SEP,
+                UserDataImpl.DEFAULT_MATCH);
         this.gestures = new HashMap<>();
         UserDataImpl.LOG.getClass();
     }

@@ -232,6 +232,7 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
         this.tabPane.getTabs().get(0).setGraphic(ViewUtilities.iconSetter(Material.PERSON, IconDim.MEDIUM));
         this.tabPane.getTabs().get(1).setGraphic(ViewUtilities.iconSetter(Material.BLUR_ON, IconDim.MEDIUM));
         this.tabPane.getTabs().get(2).setGraphic(ViewUtilities.iconSetter(Material.MULTILINE_CHART, IconDim.MEDIUM));
+        this.tabPane.getTabs().get(3).setGraphic(ViewUtilities.iconSetter(Material.SETTINGS, IconDim.MEDIUM));
         this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY, IconDim.MEDIUM));
     }
 
