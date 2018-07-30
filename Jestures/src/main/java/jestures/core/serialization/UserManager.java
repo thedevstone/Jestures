@@ -21,8 +21,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import jestures.core.file.FileManager;
-import jestures.core.recognition.gesture.UserData;
-import jestures.core.recognition.gesture.UserDataImpl;
+import jestures.core.recognition.gesturedata.RecognitionSettingsImpl;
+import jestures.core.recognition.gesturedata.UserData;
+import jestures.core.recognition.gesturedata.UserDataImpl;
 
 /**
  * The {@link UserManager} class.
@@ -45,6 +46,17 @@ public class UserManager implements Serializer {
     @Override
     public String getUserName() {
         return this.userData.getUserName();
+    }
+
+    @Override
+    public RecognitionSettingsImpl getRecognitionSettings() {
+        return this.userData.getRecognitionSettings();
+    }
+
+    @Override
+    public void setRecognitionSettings(final RecognitionSettingsImpl recognitionSettings) throws IOException {
+        this.userData.setRecognitionSettings(recognitionSettings);
+        this.serializeUser();
     }
 
     @Override

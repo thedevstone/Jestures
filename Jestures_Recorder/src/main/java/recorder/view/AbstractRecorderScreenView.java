@@ -33,7 +33,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import jestures.core.codification.FrameLength;
-import jestures.core.recognition.gesture.DefaultGesture;
+import jestures.core.recognition.gesturedata.DefaultGesture;
 import jestures.core.view.enums.DialogsType.DimDialogs;
 import jestures.core.view.enums.IconDim;
 import jestures.core.view.enums.NotificationType;

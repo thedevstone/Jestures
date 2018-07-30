@@ -12,6 +12,9 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import com.google.gson.JsonIOException;
 
+import jestures.core.recognition.gesturedata.RecognitionSettings;
+import jestures.core.recognition.gesturedata.RecognitionSettingsImpl;
+
 /**
  * The {@link Serializer} class.
  *
@@ -23,6 +26,23 @@ public interface Serializer {
      * @return the String username
      */
     String getUserName();
+
+    /**
+     * Get the {@link RecognitionSettings}.
+     *
+     * @return the settings
+     */
+    RecognitionSettingsImpl getRecognitionSettings();
+
+    /**
+     * Set the settings.
+     *
+     * @param recognitionSettings
+     *            the {@link RecognitionSettings}
+     * @throws IOException
+     *             the {@link IOException}
+     */
+    void setRecognitionSettings(RecognitionSettingsImpl recognitionSettings) throws IOException;
 
     /**
      * Get all user gestures.

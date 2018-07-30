@@ -114,6 +114,8 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
 
     @FXML
     private JFXSlider sliderMatchNumber;
+    @FXML
+    private JFXButton saveSettingsButton;
 
     /**
      * The constructor.
@@ -194,6 +196,11 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
                 this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY_OFF, IconDim.MEDIUM));
             }
         });
+
+        // SAVE BUTTON
+        this.saveSettingsButton.setGraphic(ViewUtilities.iconSetter(Material.SAVE, IconDim.MEDIUM));
+        JFXDepthManager.setDepth(this.saveSettingsButton, 4);
+        this.saveSettingsButton.setOnAction(t -> this.saveSettings());
 
     }
 

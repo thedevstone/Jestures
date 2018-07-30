@@ -46,6 +46,7 @@ import jestures.core.codification.FrameLength;
 import jestures.core.file.FileManager;
 import jestures.core.recognition.Recognition;
 import jestures.core.recognition.UpdateRate;
+import jestures.core.recognition.gesturedata.RecognitionSettingsImpl;
 import jestures.core.view.enums.DialogsType.DimDialogs;
 import jestures.core.view.enums.IconDim;
 import jestures.core.view.enums.NotificationType;
@@ -109,6 +110,8 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
 
     @FXML
     private JFXSlider sliderMatchNumber;
+    @FXML
+    private JFXButton saveSettingsButton;
 
     /**
      * @param recognizer
@@ -199,33 +202,15 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
     // ############################## FROM RECOGNIZER (RECOGNITION VIEW OBSERVER )##########################
     // TAB 4
     @Override
-    public void updateDtwRadius(final double radius) {
-        this.sliderRadius.setValue(radius * 10);
-    }
-
-    @Override
-    public void updateMinDtwThreashold(final double minDtwThreashold) {
-        this.sliderMaxThreshold.setValue(minDtwThreashold);
-    }
-
-    @Override
-    public void updateMaxDtwThreashold(final double maxDtwThreashold) {
-        this.sliderMaxThreshold.setValue(maxDtwThreashold);
-    }
-
-    @Override
-    public void updateUpdateRate(final int updateRate) {
-        this.udpateRateCombo.getSelectionModel().select(updateRate);
-    }
-
-    @Override
-    public void updateMinTimeSeparation(final int minTimeSeparation) {
-        this.sliderTimeSeparation.setValue(minTimeSeparation);
-    }
-
-    @Override
-    public void updateMatchNumber(final int matchNumber) {
-        this.sliderMatchNumber.setValue(matchNumber);
+    public void updateSettings(final RecognitionSettingsImpl settings) {
+        Platform.runLater(() -> {
+            this.udpateRateCombo.getSelectionModel().select(settings.getUpdateRate());
+            this.sliderRadius.setValue(settings.getDtwRadius() * 10);
+            this.sliderMinThreshold.setValue(settings.getMinDtwThreashold());
+            this.sliderMaxThreshold.setValue(settings.getMaxDTWThreashold());
+            this.sliderTimeSeparation.setValue(settings.getMinTimeSeparation());
+            this.sliderMatchNumber.setValue(settings.getMatchNumber());
+        });
     }
 
     // ############################################## TO TRACKER (VIEW) ###################################
@@ -299,6 +284,16 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
     @Override
     public void setMatchNumber(final int matchNumber) {
         this.recognizer.setMatchNumber(matchNumber);
+    }
+
+    @Override
+    public void saveSettings() {
+        try {
+            this.recognizer.saveSettings();
+        } catch (final IOException e) {
+            ViewUtilities.showNotificationPopup("Exception", "Cannot serialize user data", Duration.MEDIUM,
+                    NotificationType.WARNING, null);
+        }
     }
 
     // ################# TREE VIEW ###################

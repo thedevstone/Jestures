@@ -160,7 +160,10 @@
                            </opaqueInsets>
                            <padding>
                               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                           </padding></BorderPane>
+                           </padding>
+                           <bottom>
+                              <JFXButton fx:id="saveSettingsButton" buttonType="RAISED" BorderPane.alignment="CENTER" />
+                           </bottom></BorderPane>
                      </content>
                   </Tab>
               </tabs>

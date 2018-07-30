@@ -1,4 +1,4 @@
-package jestures.core.recognition.gesture;
+package jestures.core.recognition.gesturedata;
 
 import java.util.ArrayList;
 import java.util.Collections;

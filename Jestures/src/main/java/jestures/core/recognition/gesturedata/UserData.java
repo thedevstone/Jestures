@@ -1,4 +1,4 @@
-package jestures.core.recognition.gesture;
+package jestures.core.recognition.gesturedata;
 
 import java.util.List;
 import java.util.Map;
@@ -32,6 +32,21 @@ public interface UserData {
     String getUserName();
 
     /**
+     * Get the {@link RecognitionSettings}.
+     *
+     * @return the settings
+     */
+    RecognitionSettingsImpl getRecognitionSettings();
+
+    /**
+     * Set the settings.
+     *
+     * @param recognitionSettings
+     *            the {@link RecognitionSettings}
+     */
+    void setRecognitionSettings(RecognitionSettingsImpl recognitionSettings);
+
+    /**
      * Get all user gestures.
      *
      * @return the {@link List} of gestures
@@ -58,7 +73,7 @@ public interface UserData {
 
     /**
      * Delete all the gesture's dataset.
-     * 
+     *
      * @param gestureName
      *            the gesture name
      */

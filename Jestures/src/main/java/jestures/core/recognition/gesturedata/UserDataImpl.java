@@ -1,7 +1,7 @@
 /**
  *
  */
-package jestures.core.recognition.gesture;
+package jestures.core.recognition.gesturedata;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,6 +14,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.apache.log4j.Logger;
 
 import jestures.core.codification.DerivativeCodifier;
+import jestures.core.recognition.UpdateRate;
 
 /**
  * The {@link UserDataImpl} class that contains all the gestures codified by the {@link DerivativeCodifier}.
@@ -30,6 +31,7 @@ public class UserDataImpl implements UserData, Serializable {
      *
      */
     private String userName;
+    private RecognitionSettingsImpl recognitionSettings;
     private final Map<String, List<List<Vector2D>>> gestures;
     private static final Logger LOG = Logger.getLogger(UserDataImpl.class);
 
@@ -40,8 +42,9 @@ public class UserDataImpl implements UserData, Serializable {
      *            the String username
      */
     public UserDataImpl(final String name) {
-        this.gestures = new HashMap<>();
         this.userName = name;
+        this.recognitionSettings = new RecognitionSettingsImpl(UpdateRate.FPS_10, 0.5, 300, 800, 300, 5);
+        this.gestures = new HashMap<>();
         UserDataImpl.LOG.getClass();
     }
 
@@ -53,6 +56,16 @@ public class UserDataImpl implements UserData, Serializable {
     @Override
     public String getUserName() {
         return this.userName;
+    }
+
+    @Override
+    public RecognitionSettingsImpl getRecognitionSettings() {
+        return this.recognitionSettings;
+    }
+
+    @Override
+    public void setRecognitionSettings(final RecognitionSettingsImpl recognitionSettings) {
+        this.recognitionSettings = recognitionSettings;
     }
 
     @Override
