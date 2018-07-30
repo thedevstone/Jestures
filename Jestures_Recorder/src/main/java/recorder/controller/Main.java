@@ -6,7 +6,7 @@ import jestures.sensor.SensorException;
 import jestures.sensor.kinect.Kinect;
 import jestures.sensor.kinect.KinectSensors;
 import jestures.sensor.kinect.KinectVersion;
-import recorder.view.RecView;
+import recorder.view.RecordingView;
 import recorder.view.RecorderScreenView;
 
 /**
@@ -30,7 +30,7 @@ public final class Main {
         final Sensor sensor = new Kinect(Joint.RIGHT_HAND, KinectSensors.SKELETON_ONLY, KinectVersion.KINECT1);
         final Recording recorder = Recorder.getInstance();
         recorder.attacheSensor(sensor);
-        final RecView view = new RecorderScreenView(recorder);
+        final RecordingView view = new RecorderScreenView(recorder);
         recorder.attacheUI(view);
     }
 

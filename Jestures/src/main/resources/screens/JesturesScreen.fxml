@@ -92,7 +92,7 @@
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <JFXSlider>
+                                    <JFXSlider fx:id="sliderRadius" blockIncrement="0.0" majorTickUnit="1.0" max="10.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true">
                                        <VBox.margin>
                                           <Insets top="10.0" />
                                        </VBox.margin>
@@ -105,12 +105,12 @@
                                           <Insets top="30.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <JFXSlider>
+                                    <JFXSlider fx:id="sliderMinThreshold" blockIncrement="0.0" majorTickUnit="100.0" max="2000.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true">
                                        <VBox.margin>
                                           <Insets top="10.0" />
                                        </VBox.margin>
                                     </JFXSlider>
-                                    <Label text="Minimun Threshold">
+                                    <Label text="Maximun Threshold">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
@@ -118,7 +118,7 @@
                                           <Insets top="30.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <JFXSlider>
+                                    <JFXSlider fx:id="sliderMaxThreshold" blockIncrement="100.0" majorTickUnit="100.0" max="5000.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true">
                                        <VBox.margin>
                                           <Insets top="10.0" />
                                        </VBox.margin>
@@ -131,7 +131,20 @@
                                           <Insets top="30.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <JFXSlider>
+                                    <JFXSlider fx:id="sliderTimeSeparation" majorTickUnit="100.0" max="1000.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </JFXSlider>
+                                    <Label text="Match Number">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="30.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <JFXSlider fx:id="sliderMatchNumber" majorTickUnit="1.0" max="10.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true">
                                        <VBox.margin>
                                           <Insets top="10.0" />
                                        </VBox.margin>
@@ -141,7 +154,13 @@
                                     <Insets top="50.0" />
                                  </BorderPane.margin>
                               </VBox>
-                           </center></BorderPane>
+                           </center>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <padding>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                           </padding></BorderPane>
                      </content>
                   </Tab>
               </tabs>

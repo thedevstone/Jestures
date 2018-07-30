@@ -6,7 +6,7 @@ import jestures.core.view.View;
  *
  *
  */
-public interface RecView extends View, RecViewObserver {
+public interface RecordingView extends View, RecordingViewObserver {
 
     /**
      * Delete the user profile.

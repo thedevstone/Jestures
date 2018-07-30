@@ -34,7 +34,7 @@ import jestures.core.serialization.UserManager;
 import jestures.core.tracking.Tracker;
 import jestures.core.tracking.Tracking;
 import jestures.core.view.screens.RecognitionScreenView;
-import recorder.view.RecViewObserver;
+import recorder.view.RecordingViewObserver;
 
 /**
  * The {@link Recorder} class.
@@ -43,7 +43,7 @@ import recorder.view.RecViewObserver;
 public final class Recorder extends Tracker implements Recording {
     private final Serializer userManager;
     private static Recording instance;
-    private final Set<RecViewObserver> view;
+    private final Set<RecordingViewObserver> view;
     private boolean isRecording;
     private final List<List<Vector2D>> listOfFeatureVector;
 
@@ -73,7 +73,7 @@ public final class Recorder extends Tracker implements Recording {
     // ############################################## OBSERVER ###################################
 
     @Override
-    public void attacheUI(final RecViewObserver view) {
+    public void attacheUI(final RecordingViewObserver view) {
         this.view.add(view);
         this.view.forEach(t -> t.refreshUsers());
     }

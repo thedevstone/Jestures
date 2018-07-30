@@ -49,7 +49,7 @@ import recorder.controller.Recording;
  *
  */
 
-public abstract class AbstractRecorderScreenView implements RecView, RecViewObserver {
+public abstract class AbstractRecorderScreenView implements RecordingView, RecordingViewObserver {
     // private static final Logger LOG = Logger.getLogger(AbstractRecorderScreenView.class);
     private final Recording recorder;
 

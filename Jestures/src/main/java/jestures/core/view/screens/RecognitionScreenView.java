@@ -28,6 +28,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXScrollPane;
+import com.jfoenix.controls.JFXSlider;
 import com.jfoenix.controls.JFXTreeView;
 import com.sun.javafx.application.PlatformImpl;
 
@@ -44,7 +45,7 @@ import javafx.stage.Stage;
 import jestures.core.codification.FrameLength;
 import jestures.core.file.FileManager;
 import jestures.core.recognition.Recognition;
-import jestures.core.view.View;
+import jestures.core.recognition.UpdateRate;
 import jestures.core.view.enums.DialogsType.DimDialogs;
 import jestures.core.view.enums.IconDim;
 import jestures.core.view.enums.NotificationType;
@@ -57,7 +58,7 @@ import jestures.core.view.utils.ViewUtilities;
  */
 
 @SuppressWarnings("restriction")
-public class RecognitionScreenView extends AbstractRecognitionScreenView implements View {
+public class RecognitionScreenView extends AbstractRecognitionScreenView {
     private static final Logger LOG = Logger.getLogger(RecognitionScreenView.class);
     private final Recognition recognizer;
     private int frameLength;
@@ -91,6 +92,23 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView impleme
     // ########### TAB 3 #############
 
     // ########### TAB 4 #############
+    @FXML
+    private JFXComboBox<UpdateRate> udpateRateCombo;
+
+    @FXML
+    private JFXSlider sliderRadius;
+
+    @FXML
+    private JFXSlider sliderMinThreshold;
+
+    @FXML
+    private JFXSlider sliderMaxThreshold;
+
+    @FXML
+    private JFXSlider sliderTimeSeparation;
+
+    @FXML
+    private JFXSlider sliderMatchNumber;
 
     /**
      * @param recognizer
@@ -139,8 +157,7 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView impleme
     }
 
     // ############################################## FROM TRACKER (VIEW OBSERVER) ###################################
-    // KINECT
-    // ######## TAB 2 AND 3 #########
+
     @Override
     public void notifyOnFrameChange(final int frame, final Vector2D derivative, final Vector2D path) {
         Platform.runLater(() -> {
@@ -161,7 +178,6 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView impleme
 
     }
 
-    // TRACKER
     @Override
     public void refreshUsers() {
         Platform.runLater(() -> {
@@ -180,9 +196,45 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView impleme
         return this.recognizer.getFrameLength();
     }
 
-    // ###################################### FROM RECORDER (REC VIEW OBSERVER) ##################################
+    // ############################## FROM RECOGNIZER (RECOGNITION VIEW OBSERVER )##########################
+    // TAB 4
+    @Override
+    public void updateDtwRadius(final double radius) {
+        // TODO Auto-generated method stub
 
-    // ############################################## TO TRACKER ###################################
+    }
+
+    @Override
+    public void updateMinDtwThreashold(final double minDtwThreashold) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void updateMaxDtwThreashold(final double maxDtwThreashold) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void updateUpdateRate(final int updateRate) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void updateMinTimeSeparation(final int minTimeSeparation) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void updateMatchNumber(final int matchNumber) {
+        // TODO Auto-generated method stub
+
+    }
+
+    // ############################################## TO TRACKER (VIEW) ###################################
     @Override
     public void startSensor() {
         this.selectUserCombo.setDisable(true);
@@ -203,8 +255,7 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView impleme
         this.frameLength = length.getFrameNumber();
     }
 
-    // ############################################## TO RECORDER ###################################
-    // ###### TAB 1 ######
+    // ######################################## TO RECOGNIZER (RECOGNITION VIEW) ###################################
 
     @Override
     public void loadUserProfile(final String name) {
@@ -224,6 +275,36 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView impleme
                 Duration.MEDIUM, DimDialogs.SMALL, null);
         this.createGestureTreeView(this.recognizer.getUserName());
         this.startButton.setDisable(false);
+    }
+
+    @Override
+    public void setDtwRadius(final double radius) {
+        this.recognizer.setDtwRadius(radius);
+    }
+
+    @Override
+    public void setMinDtwThreashold(final int minDtwThreashold) {
+        this.recognizer.setMinDtwThreashold(minDtwThreashold);
+    }
+
+    @Override
+    public void setMaxDtwThreashold(final int maxDtwThreashold) {
+        this.recognizer.setMaxDtwThreashold(maxDtwThreashold);
+    }
+
+    @Override
+    public void setUpdateRate(final UpdateRate updateRate) {
+        this.recognizer.setUpdateRate(updateRate);
+    }
+
+    @Override
+    public void setMinTimeSeparation(final int minTimeSeparation) {
+        this.recognizer.setMinTimeSeparation(minTimeSeparation);
+    }
+
+    @Override
+    public void setMatchNumber(final int matchNumber) {
+        this.recognizer.setMatchNumber(matchNumber);
     }
 
     // ################# TREE VIEW ###################

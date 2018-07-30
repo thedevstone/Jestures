@@ -20,12 +20,11 @@ import com.google.common.base.Functions;
 import com.google.gson.JsonSyntaxException;
 
 import javafx.util.Pair;
-import jestures.core.codification.FrameLength;
 import jestures.core.serialization.Serializer;
 import jestures.core.serialization.UserManager;
 import jestures.core.tracking.Tracker;
 import jestures.core.tracking.Tracking;
-import jestures.core.view.ViewObserver;
+import jestures.core.view.RecognitionViewObserver;
 import jestures.core.view.screens.RecognitionScreenView;
 import smile.math.distance.DynamicTimeWarping;
 
@@ -37,13 +36,13 @@ public final class Recognizer extends Tracker implements Recognition {
     private static final Logger LOG = Logger.getLogger(Recognizer.class);
     private final Serializer userManager;
     private static Recognition instance;
-    private final Set<ViewObserver> view;
+    private final Set<RecognitionViewObserver> view;
     private Map<String, List<Vector2D[]>> userDataset;
     private long lastGestureTime;
 
     // RECOGNITION
     private final DynamicTimeWarping<Vector2D> dtw;
-    private int updateRate;
+    private UpdateRate updateRate;
     private double dtwRadius;
     private double minDTWThreashold;
     private double maxDTWThreashold;
@@ -55,14 +54,13 @@ public final class Recognizer extends Tracker implements Recognition {
      *
      */
     private Recognizer() {
-        this.setUpdateRate(10);
         this.view = new HashSet<>();
         this.userManager = new UserManager();
         this.userDataset = null;
         this.lastGestureTime = 0;
         // RECOGNITION
+        this.setUpdateRate(UpdateRate.FPS_10);
         this.dtwRadius = 0.5;
-        this.updateRate = 5;
         this.minDTWThreashold = 500;
         this.maxDTWThreashold = 800;
         this.minTimeSeparation = 300;
@@ -87,7 +85,7 @@ public final class Recognizer extends Tracker implements Recognition {
     }
 
     @Override
-    public void attacheUI(final ViewObserver view) {
+    public void attacheUI(final RecognitionViewObserver view) {
         this.view.add(view);
         this.view.forEach(t -> t.refreshUsers());
     }
@@ -110,7 +108,7 @@ public final class Recognizer extends Tracker implements Recognition {
         super.notifyOnFrameChange(frame, featureVector, derivative, distanceVector);
         this.view.forEach(t -> t.notifyOnFrameChange(frame, derivative, distanceVector));
         // QUI SI INNESTA IL RICONOSCIMENTO
-        if ((frame + 1) % this.updateRate == 0) {
+        if ((frame + 1) % this.updateRate.getFrameNumber() == 0) {
             final Vector2D[] arrayFeatureVector = new Vector2D[featureVector.size()];
             featureVector.toArray(arrayFeatureVector);
             final long currentSec = System.currentTimeMillis();
@@ -192,6 +190,9 @@ public final class Recognizer extends Tracker implements Recognition {
     public void setDtwRadius(final double dtwRadius) {
         if (dtwRadius < 1 && dtwRadius > 0) {
             this.dtwRadius = dtwRadius;
+            Recognizer.LOG.debug(this.dtwRadius);
+        } else {
+            throw new IllegalStateException("Radius must be between 0 and 1");
         }
     }
 
@@ -201,9 +202,12 @@ public final class Recognizer extends Tracker implements Recognition {
     }
 
     @Override
-    public void setMinDtwThreashold(final double minDTWThreashold) {
-        if (minDTWThreashold > 0 && minDTWThreashold < this.maxDTWThreashold) {
+    public void setMinDtwThreashold(final int minDTWThreashold) {
+        if (minDTWThreashold > 0) {
             this.minDTWThreashold = minDTWThreashold;
+            Recognizer.LOG.debug(this.minDTWThreashold);
+        } else {
+            throw new IllegalStateException("Min threshold must be greater than 0");
         }
     }
 
@@ -213,22 +217,27 @@ public final class Recognizer extends Tracker implements Recognition {
     }
 
     @Override
-    public void setMaxDtwThreashold(final double maxDtwThreashold) {
-        if (maxDtwThreashold > 0 && maxDtwThreashold > this.minDTWThreashold) {
+    public void setMaxDtwThreashold(final int maxDtwThreashold) {
+        if (maxDtwThreashold > 0) {
             this.maxDTWThreashold = maxDtwThreashold;
+            Recognizer.LOG.debug(this.maxDTWThreashold);
+        } else {
+            throw new IllegalStateException("Min threshold must be greater than 0");
         }
     }
 
     @Override
-    public int getUpdateRate() {
+    public UpdateRate getUpdateRate() {
         return this.updateRate;
     }
 
     @Override
-    public void setUpdateRate(final int updateRate) {
-        if (updateRate > 0 && updateRate < FrameLength.FPS_30.getFrameNumber()
-                && this.getFrameLength().getFrameNumber() % updateRate == 0) {
+    public void setUpdateRate(final UpdateRate updateRate) {
+        if (this.getFrameLength().getFrameNumber() % updateRate.getFrameNumber() == 0) {
             this.updateRate = updateRate;
+            Recognizer.LOG.debug(this.updateRate);
+        } else {
+            throw new IllegalStateException("Update rate must be a MDC of the gesture length in frame");
         }
     }
 
@@ -241,6 +250,9 @@ public final class Recognizer extends Tracker implements Recognition {
     public void setMinTimeSeparation(final int minTimeSeparation) {
         if (minTimeSeparation > 0 && minTimeSeparation < 1000) {
             this.minTimeSeparation = minTimeSeparation;
+            Recognizer.LOG.debug(this.minTimeSeparation);
+        } else {
+            throw new IllegalStateException("Time must be greater than 0 and less than 1000");
         }
     }
 
@@ -253,6 +265,9 @@ public final class Recognizer extends Tracker implements Recognition {
     public void setMatchNumber(final int matchNumber) {
         if (matchNumber > 0) {
             this.matchNumber = matchNumber;
+            Recognizer.LOG.debug(this.matchNumber);
+        } else {
+            throw new IllegalStateException("Match number must be greater than 0");
         }
     }
 

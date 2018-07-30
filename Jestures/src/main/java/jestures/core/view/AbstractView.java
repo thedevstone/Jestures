@@ -5,45 +5,24 @@ package jestures.core.view;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-import jestures.core.codification.FrameLength;
+import jestures.core.recognition.Recognition;
 import jestures.core.tracking.Tracking;
 
 /**
  * The @link{AbstractView} class.
  */
-public abstract class AbstractView implements View, ViewObserver {
-    private final Tracking tracker;
-    private FrameLength frameLength;
+public abstract class AbstractView implements RecognitionView {
+    private final Recognition recognizer; // NOPMD
 
     /**
      * The @link{AbstractView.java} constructor.
      *
-     * @param tracker
-     *            the {@link Tracking} tracker
+     * @param recognizer
+     *            the {@link Tracking} recognizer
      */
-    public AbstractView(final Tracking tracker) {
-        this.tracker = tracker;
-    }
-
-    @Override
-    public FrameLength getFrameLength() {
-        return this.frameLength;
-    }
-
-    @Override
-    public void setFrameLength(final FrameLength length) {
-        this.frameLength = length;
-        this.tracker.setFrameLength(length);
-    }
-
-    @Override
-    public void startSensor() {
-        this.tracker.startSensor();
-    }
-
-    @Override
-    public void stopSensor() {
-        this.tracker.stopSensor();
+    public AbstractView(final Recognition recognizer) {
+        this.recognizer = recognizer;
+        this.recognizer.getClass();
     }
 
     @Override

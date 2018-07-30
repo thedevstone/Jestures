@@ -6,10 +6,10 @@ import jestures.core.view.ViewObserver;
 
 /**
  *
- * The {@link RecViewObserver} class.
+ * The {@link RecordingViewObserver} class.
  *
  */
-public interface RecViewObserver extends ViewObserver {
+public interface RecordingViewObserver extends ViewObserver {
 
     /**
      * Set Recording.

@@ -9,6 +9,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXScrollPane;
+import com.jfoenix.controls.JFXSlider;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTreeView;
 import com.jfoenix.effects.JFXDepthManager;
@@ -29,6 +30,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import jestures.core.codification.FrameLength;
 import jestures.core.recognition.Recognition;
+import jestures.core.recognition.UpdateRate;
 import jestures.core.view.AbstractView;
 import jestures.core.view.enums.IconDim;
 import jestures.core.view.utils.RecordingFactory;
@@ -95,6 +97,23 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
     // ########### TAB 3 #############
 
     // ########### TAB 4 #############
+    @FXML
+    private JFXComboBox<UpdateRate> udpateRateCombo;
+
+    @FXML
+    private JFXSlider sliderRadius;
+
+    @FXML
+    private JFXSlider sliderMinThreshold;
+
+    @FXML
+    private JFXSlider sliderMaxThreshold;
+
+    @FXML
+    private JFXSlider sliderTimeSeparation;
+
+    @FXML
+    private JFXSlider sliderMatchNumber;
 
     /**
      * The constructor.
@@ -124,6 +143,28 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
         this.initPopup();
         this.setDisabled();
         this.initProgressBar();
+        // recognition
+        this.initSliders();
+    }
+
+    private void initSliders() {
+        for (final UpdateRate elem : UpdateRate.values()) {
+            this.udpateRateCombo.getItems().add(elem);
+        }
+        this.udpateRateCombo.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> this.setUpdateRate(newValue));
+        this.sliderRadius.valueProperty().addListener(
+                (observable, oldValue, newValue) -> this.setDtwRadius(newValue.doubleValue() / 10));
+
+        this.sliderMinThreshold.valueProperty().addListener(
+                (observable, oldValue, newValue) -> this.setMinDtwThreashold(newValue.intValue()));
+        this.sliderMaxThreshold.valueProperty().addListener(
+                (observable, oldValue, newValue) -> this.setMaxDtwThreashold(newValue.intValue()));
+        this.sliderTimeSeparation.valueProperty().addListener(
+                (observable, oldValue, newValue) -> this.setMinTimeSeparation(newValue.intValue()));
+        this.sliderMatchNumber.valueProperty().addListener(
+                (observable, oldValue, newValue) -> this.setMatchNumber(newValue.intValue()));
+
     }
 
     private void setDisabled() {

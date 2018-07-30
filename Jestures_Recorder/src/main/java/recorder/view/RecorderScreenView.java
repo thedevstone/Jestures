@@ -64,7 +64,7 @@ import recorder.controller.Recording;
  *
  *
  */
-public class RecorderScreenView extends AbstractRecorderScreenView implements RecView {
+public class RecorderScreenView extends AbstractRecorderScreenView implements RecordingView {
     private static final Logger LOG = Logger.getLogger(RecorderScreenView.class);
     private final Recording recorder;
     private int frameLength;

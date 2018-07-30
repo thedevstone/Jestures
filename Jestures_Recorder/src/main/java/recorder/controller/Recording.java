@@ -25,8 +25,8 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import com.google.gson.JsonIOException;
 
 import jestures.core.tracking.Tracking;
-import recorder.view.RecView;
-import recorder.view.RecViewObserver;
+import recorder.view.RecordingView;
+import recorder.view.RecordingViewObserver;
 
 /**
  * Inteface for tracking.
@@ -39,9 +39,9 @@ public interface Recording extends Tracking {
      * Attache the view.
      *
      * @param view
-     *            the {@link RecView}
+     *            the {@link RecordingView}
      */
-    void attacheUI(RecViewObserver view);
+    void attacheUI(RecordingViewObserver view);
 
     /**
      * Get all template (feature vectors) for the selected gesture.

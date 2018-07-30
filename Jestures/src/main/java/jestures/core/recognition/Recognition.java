@@ -7,8 +7,7 @@ import java.util.List;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import jestures.core.tracking.Tracking;
-import jestures.core.view.View;
-import jestures.core.view.ViewObserver;
+import jestures.core.view.RecognitionViewObserver;
 import smile.math.distance.DynamicTimeWarping;
 
 /**
@@ -21,9 +20,9 @@ public interface Recognition extends Tracking {
      * Attache the view.
      *
      * @param view
-     *            the {@link View}
+     *            the {@link RecognitionViewObserver}
      */
-    void attacheUI(ViewObserver view);
+    void attacheUI(RecognitionViewObserver view);
 
     /**
      * Load the user.
@@ -81,7 +80,7 @@ public interface Recognition extends Tracking {
      * @param minDtwThreashold
      *            represents the minimum distance above which a feature vector is accepted
      */
-    void setMinDtwThreashold(double minDtwThreashold);
+    void setMinDtwThreashold(int minDtwThreashold);
 
     /**
      * Get the threshold for gesture maximum acceptance.
@@ -102,14 +101,14 @@ public interface Recognition extends Tracking {
      * @param maxDtwThreashold
      *            represents the maximum distance above which a feature vector is accepted
      */
-    void setMaxDtwThreashold(double maxDtwThreashold);
+    void setMaxDtwThreashold(int maxDtwThreashold);
 
     /**
      * Get the update rate of the recognizer.
      *
      * @return the frame value
      */
-    int getUpdateRate();
+    UpdateRate getUpdateRate();
 
     /**
      * Set the update rate of the recognizer. The rate must be a value that can be devided by the frame length.
@@ -117,7 +116,7 @@ public interface Recognition extends Tracking {
      * @param updateRate
      *            the update rate
      */
-    void setUpdateRate(int updateRate);
+    void setUpdateRate(UpdateRate updateRate);
 
     /**
      * Get the minimum time separation between two gestures.
