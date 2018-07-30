@@ -200,38 +200,32 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
     // TAB 4
     @Override
     public void updateDtwRadius(final double radius) {
-        // TODO Auto-generated method stub
-
+        this.sliderRadius.setValue(radius * 10);
     }
 
     @Override
     public void updateMinDtwThreashold(final double minDtwThreashold) {
-        // TODO Auto-generated method stub
-
+        this.sliderMaxThreshold.setValue(minDtwThreashold);
     }
 
     @Override
     public void updateMaxDtwThreashold(final double maxDtwThreashold) {
-        // TODO Auto-generated method stub
-
+        this.sliderMaxThreshold.setValue(maxDtwThreashold);
     }
 
     @Override
     public void updateUpdateRate(final int updateRate) {
-        // TODO Auto-generated method stub
-
+        this.udpateRateCombo.getSelectionModel().select(updateRate);
     }
 
     @Override
     public void updateMinTimeSeparation(final int minTimeSeparation) {
-        // TODO Auto-generated method stub
-
+        this.sliderTimeSeparation.setValue(minTimeSeparation);
     }
 
     @Override
     public void updateMatchNumber(final int matchNumber) {
-        // TODO Auto-generated method stub
-
+        this.sliderMatchNumber.setValue(matchNumber);
     }
 
     // ############################################## TO TRACKER (VIEW) ###################################

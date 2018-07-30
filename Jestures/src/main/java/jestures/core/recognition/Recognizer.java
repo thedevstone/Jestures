@@ -190,7 +190,6 @@ public final class Recognizer extends Tracker implements Recognition {
     public void setDtwRadius(final double dtwRadius) {
         if (dtwRadius < 1 && dtwRadius > 0) {
             this.dtwRadius = dtwRadius;
-            Recognizer.LOG.debug(this.dtwRadius);
         } else {
             throw new IllegalStateException("Radius must be between 0 and 1");
         }
