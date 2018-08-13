@@ -38,7 +38,7 @@ import jestures.core.recognition.gesturedata.UserData;
 import jestures.core.recognition.gesturedata.UserDataImpl;
 
 /**
- * The {@link UserManager} class.
+ * A User Manager is a serializer that manage all user data and templates.
  *
  */
 public class UserManager implements Serializer {

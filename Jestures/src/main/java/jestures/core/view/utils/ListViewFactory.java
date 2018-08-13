@@ -25,7 +25,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 
 /**
- * A simil factory class for the creation of gui components ({@link JFXListView}).
+ * A factory class for the creation of gui components ({@link JFXListView}).
  */
 public final class ListViewFactory {
 
@@ -33,7 +33,7 @@ public final class ListViewFactory {
     }
 
     /**
-     * Create a {@link JFXListView} for the Players.
+     * Create a {@link JFXListView} for the templates.
      *
      * @param listView
      *            the {@link JFXListView}

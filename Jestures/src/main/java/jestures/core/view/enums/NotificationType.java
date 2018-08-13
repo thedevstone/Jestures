@@ -18,7 +18,7 @@ package jestures.core.view.enums;
 import eu.hansolo.enzo.notification.Notification;
 
 /**
- * Enum for selecting type for {@link Notification}.
+ * Enumeration for notification type.
  */
 public enum NotificationType {
     /**

@@ -16,7 +16,13 @@
 package jestures.core.recognition;
 
 /**
- * The {@link UpdateRate} class.
+ * The update rate of the recognizer. The recognizer will perform the recognition task after a prefixed number of FPS.
+ * <p>
+ * By default recognition uses a non overlapping update rate (30 FPS) that is the same frequency of codification. For a
+ * better result an overlapping update rate must be used.
+ * <p>
+ * PRO: Precise recognition. CONS: High Cpu load (with high frequency), need a gesture division time (a single gesture
+ * can be recognized multiple times according to overlapping time eg. 30fps codification 5fps recognition = 6 gestures)
  *
  */
 public enum UpdateRate {

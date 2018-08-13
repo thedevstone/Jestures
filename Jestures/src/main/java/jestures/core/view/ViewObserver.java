@@ -20,7 +20,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import jestures.core.codification.FrameLength;
 
 /**
- * The {@link ViewObserver} class.
+ * Observer for view. The view can be notified by external class when an event occurs.
  *
  */
 public interface ViewObserver {
@@ -39,7 +39,6 @@ public interface ViewObserver {
 
     /**
      * Update view on feature vector event.
-     *
      *
      */
     void notifyOnFeatureVectorEvent();

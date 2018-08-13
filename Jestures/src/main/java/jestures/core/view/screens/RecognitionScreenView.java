@@ -54,7 +54,7 @@ import jestures.core.view.enums.NotificationType.Duration;
 import jestures.core.view.utils.ViewUtilities;
 
 /**
- *
+ * The effective instance of the recognition view. This is a simple screen controller for a javafx fxml file.
  *
  */
 

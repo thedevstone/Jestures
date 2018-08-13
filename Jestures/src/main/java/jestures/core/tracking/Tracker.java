@@ -13,160 +13,101 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
+
 package jestures.core.tracking;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Queue;
-import java.util.Set;
-
-import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import jestures.core.codification.Codification;
-import jestures.core.codification.Codifier;
-import jestures.core.codification.DerivativeCodifier;
 import jestures.core.codification.FrameLength;
-import jestures.core.view.screens.RecognitionScreenView;
-import jestures.sensor.IllegalSensorStateException;
 import jestures.sensor.Sensor;
-import jestures.sensor.SensorException;
-import jestures.sensor.SensorObserver;
 
 /**
- * The {@link Tracker} class.
+ * A Tracker get all vector positions, codifies them in a new relative form that can be used for more complex tasks
+ * (recognition).
+ *
  */
-
-public abstract class Tracker implements TrackingObserver, SensorObserver, Tracking {
-    private Codifier codifier;
-    private Sensor sensor;
-    private final Set<JointListener> jointListener;
-    private FrameLength frameLength;
-    private static boolean started; // NOPMD
+public interface Tracker {
 
     /**
+     * Get the {@link Codification} type.
      *
+     * @return the {@link Codification} type.
      */
-    public Tracker() {
-        this(Codification.DERIVATIVE, FrameLength.FPS_30);
-    }
-
-    private Tracker(final Codification codificationType, final FrameLength gestureLenght) {
-
-        if (codificationType.equals(Codification.DERIVATIVE)) {
-            this.codifier = new DerivativeCodifier(gestureLenght);
-        }
-        this.frameLength = gestureLenght;
-        Tracker.started = false;
-        this.codifier.attacheCoreRecognizer(this);
-
-        this.jointListener = new HashSet<>();
-        RecognitionScreenView.startFxThread();
-
-    }
-
-    // ############################################## OBSERVER ###################################
-    @Override
-    public void attacheSensor(final Sensor sensor) {
-        this.sensor = sensor;
-        this.sensor.attacheTracker(this);
-    }
-
-    // ############################################## FROM SENSOR ###################################
-    @Override
-    public void notifyOnSkeletonChange(final Vector2D primaryJoint, final Vector2D secondaryJoint) {
-        this.codifier.codifyOnSkeletonChange(primaryJoint);
-        this.jointListener.forEach(t -> t.onJointTracked(primaryJoint, secondaryJoint));
-    }
-
-    @Override
-    public void notifyOnAccelerometerChange(final Vector3D acceleration) {
-        this.jointListener.forEach(t -> t.onAccelerometerTracked(acceleration));
-    }
-
-    // ############################################## FROM CODIFIER ###################################
-    @Override
-    public void notifyOnFrameChange(final int frame, final Queue<Vector2D> featureVector, final Vector2D derivative,
-            final Vector2D distanceVector) {
-        this.jointListener.forEach(t -> t.onDerivativeJointTracked(derivative));
-        this.jointListener.forEach(t -> t.onDistanceFromStartingJoint(distanceVector));
-
-    }
-
-    @Override
-    public void notifyOnFeatureVectorEvent(final List<Vector2D> featureVector) {
-
-    }
-
-    // ############################################## INSTANCE METHODS ###################################
-    @Override
-    public void startSensor() {
-        try {
-            Tracker.started = true;
-            this.sensor.startSensor();
-        } catch (final SensorException e) {
-            e.printStackTrace();
-        } catch (final IllegalSensorStateException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void stopSensor() {
-        try {
-            Tracker.started = false;
-            this.sensor.stopSensor();
-        } catch (final SensorException e) {
-            e.printStackTrace();
-        } catch (final IllegalSensorStateException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public Codification getCodificationType() {
-        return this.codifier.getCodificationType();
-    }
-
-    @Override
-    public void resetCodificationFrame() {
-        this.codifier.resetFrame();
-    }
-
-    @Override
-    public FrameLength getFrameLength() {
-        return this.frameLength;
-    }
-
-    @Override
-    public boolean isStarted() {
-        return Tracker.started;
-    }
-
-    @Override
-    public void setFrameLength(final FrameLength length) {
-        this.frameLength = length;
-        this.codifier.setFrameLength(length);
-    }
-
-    @Override
-    public void setOnJointTracked(final JointListener listener) {
-        this.jointListener.add(listener);
-    }
-
-    @Override
-    public boolean state() {
-        return this.sensor.state();
-    }
+    Codification getCodificationType();
 
     /**
-     * Check if the sensor is started statically.
+     * Attache the listener.
      *
-     * @return <code>true</code> if the sensor is started
+     * @param listener
+     *            the listener
      */
-    public static boolean checkStarted() {
-        return Tracker.started;
+    void setOnJointTracked(JointListener listener);
 
-    }
+    /**
+     * Attache the {@link Sensor}.
+     *
+     * @param sensor
+     *            the {@link Sensor}
+     */
+    void attacheSensor(Sensor sensor);
+
+    /**
+     * The sensor is started.
+     *
+     * @return <code>true</code> if the sensor is started.
+     */
+    boolean isStarted();
+
+    /**
+     * Reset the gesture frame.
+     */
+    void resetCodificationFrame();
+
+    /**
+     * Set the frame length.
+     *
+     * @param length
+     *            the length
+     */
+    void setFrameLength(FrameLength length);
+
+    /**
+     * Get all user gestures.
+     *
+     * @return the {@link List} of gestures
+     */
+    List<String> getAllUserGesture();
+
+    /**
+     * Get the actual user.
+     *
+     * @return the String username
+     */
+    String getUserName();
+
+    /**
+     * Get the frame length.
+     *
+     * @return the frame length in frame
+     */
+    FrameLength getFrameLength();
+
+    /**
+     * Start the sensor.
+     */
+    void startSensor();
+
+    /**
+     * Stop the sensor.
+     */
+    void stopSensor();
+
+    /**
+     * Sensor state.
+     *
+     * @return <code>true</code> if it's on
+     */
+    boolean state();
 
 }

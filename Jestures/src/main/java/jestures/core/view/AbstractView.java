@@ -18,10 +18,10 @@ package jestures.core.view;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import jestures.core.recognition.Recognition;
-import jestures.core.tracking.Tracking;
+import jestures.core.tracking.Tracker;
 
 /**
- * The @link{AbstractView} class.
+ * A simple skeleton view. Extends it to create your own view.
  */
 public abstract class AbstractView implements RecognitionView {
     private final Recognition recognizer; // NOPMD
@@ -30,7 +30,7 @@ public abstract class AbstractView implements RecognitionView {
      * The @link{AbstractView.java} constructor.
      *
      * @param recognizer
-     *            the {@link Tracking} recognizer
+     *            the {@link Tracker} recognizer
      */
     public AbstractView(final Recognition recognizer) {
         this.recognizer = recognizer;

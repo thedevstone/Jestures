@@ -17,7 +17,7 @@
 package jestures.sensor.kinect;
 
 /**
- * The @link{KinectVersion} class.
+ * Kinect version.
  */
 public enum KinectVersion {
 

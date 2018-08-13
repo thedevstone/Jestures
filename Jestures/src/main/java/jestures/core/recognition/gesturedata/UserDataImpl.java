@@ -25,11 +25,10 @@ import java.util.Map;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.apache.log4j.Logger;
 
-import jestures.core.codification.DerivativeCodifier;
 import jestures.core.recognition.UpdateRate;
 
 /**
- * The {@link UserDataImpl} class that contains all the gestures codified by the {@link DerivativeCodifier}.
+ * The {@link UserDataImpl} class that contains all the gestures codified by the codifier.
  *
  */
 public class UserDataImpl implements UserData, Serializable {

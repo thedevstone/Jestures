@@ -19,14 +19,14 @@ package jestures.sensor.kinect;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-import jestures.core.tracking.Tracker;
+import jestures.core.tracking.TrackerImpl;
 import jestures.sensor.IllegalSensorStateException;
 import jestures.sensor.Joint;
 import jestures.sensor.Sensor;
 import jestures.sensor.SensorObserver;
 
 /**
- * The @link{Kinect} class.
+ * Kinect sensor from Microsoft.
  */
 public class Kinect implements KinectObserver, Sensor {
     private final KinectAdapter kinectAdapter;
@@ -73,7 +73,7 @@ public class Kinect implements KinectObserver, Sensor {
 
     @Override
     public void startSensor() throws IllegalSensorStateException {
-        if (!Tracker.checkStarted()) {
+        if (!TrackerImpl.checkStarted()) {
             throw new IllegalSensorStateException();
         } else {
             this.kinectAdapter.start();
@@ -83,7 +83,7 @@ public class Kinect implements KinectObserver, Sensor {
 
     @Override
     public void stopSensor() throws IllegalSensorStateException {
-        if (Tracker.checkStarted()) {
+        if (TrackerImpl.checkStarted()) {
             throw new IllegalSensorStateException();
         } else {
             this.kinectAdapter.stop();

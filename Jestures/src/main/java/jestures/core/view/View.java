@@ -16,21 +16,20 @@
 package jestures.core.view;
 
 import jestures.core.codification.FrameLength;
-import jestures.core.tracking.Tracking;
+import jestures.core.tracking.Tracker;
 
 /**
- *
- *
+ * A view that performs all basic tasks.
  */
 public interface View extends ViewObserver {
 
     /**
-     * Start the {@link Tracking}.
+     * Start the {@link Tracker}.
      */
     void startSensor();
 
     /**
-     * Stop the {@link Tracking}.
+     * Stop the {@link Tracker}.
      */
     void stopSensor();
 

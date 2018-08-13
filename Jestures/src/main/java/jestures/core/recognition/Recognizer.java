@@ -38,17 +38,17 @@ import javafx.util.Pair;
 import jestures.core.recognition.gesturedata.RecognitionSettingsImpl;
 import jestures.core.serialization.Serializer;
 import jestures.core.serialization.UserManager;
+import jestures.core.tracking.TrackerImpl;
 import jestures.core.tracking.Tracker;
-import jestures.core.tracking.Tracking;
 import jestures.core.view.RecognitionViewObserver;
 import jestures.core.view.screens.RecognitionScreenView;
 import smile.math.distance.DynamicTimeWarping;
 
 /**
- *
+ * A Recognizer is a simple tracker that can also perform a recognition task.
  *
  */
-public final class Recognizer extends Tracker implements Recognition {
+public final class Recognizer extends TrackerImpl implements Recognition {
     private static final Logger LOG = Logger.getLogger(Recognizer.class);
     private final Serializer userManager;
     private static Recognition instance;
@@ -61,9 +61,6 @@ public final class Recognizer extends Tracker implements Recognition {
     private RecognitionSettingsImpl recognitionSettings;
     private boolean gestureRecognized;
 
-    /**
-     *
-     */
     private Recognizer() {
         this.view = new HashSet<>();
         this.userManager = new UserManager();
@@ -78,10 +75,10 @@ public final class Recognizer extends Tracker implements Recognition {
     /**
      * Get the instance.
      *
-     * @return the {@link Tracking} instance.
+     * @return the {@link Tracker} instance.
      */
     public static Recognition getInstance() {
-        synchronized (Tracking.class) {
+        synchronized (Tracker.class) {
             if (Recognizer.instance == null) {
                 Recognizer.instance = new Recognizer();
             }
@@ -107,6 +104,7 @@ public final class Recognizer extends Tracker implements Recognition {
     }
 
     // ############################################## FROM CODIFIER ###################################
+
     @Override
     public void notifyOnFrameChange(final int frame, final Queue<Vector2D> featureVector, final Vector2D derivative,
             final Vector2D distanceVector) {

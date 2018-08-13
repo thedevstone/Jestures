@@ -18,7 +18,7 @@ package jestures.core.view.enums;
 import com.jfoenix.controls.JFXDialog;
 
 /**
- * Enum of predefined desctiption and titles for {@link JFXDialog}.
+ * Enumeration of predefined descriptions and titles for {@link JFXDialog}.
  */
 public enum DialogsType {
 

@@ -53,7 +53,7 @@ import jestures.core.view.utils.ScrollPaneFactory;
 import jestures.core.view.utils.ViewUtilities;
 
 /**
- * Recorder abstact view for initialization.
+ * The abstract class of the recognition view. This is a simple screen controller for a javafx fxml file.
  *
  */
 

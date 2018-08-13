@@ -21,15 +21,15 @@ import java.util.List;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-import jestures.core.tracking.Tracking;
+import jestures.core.tracking.Tracker;
 import jestures.core.view.RecognitionViewObserver;
 import smile.math.distance.DynamicTimeWarping;
 
 /**
- * Interface for recognition.
+ * Interface for recognition. Recognition is based on Dynamic Time Warping algorithm.
  *
  */
-public interface Recognition extends Tracking {
+public interface Recognition extends Tracker {
 
     /**
      * Attache the view.
@@ -92,7 +92,7 @@ public interface Recognition extends Tracking {
     void setMaxDtwThreashold(int maxDtwThreashold);
 
     /**
-     * Set the update rate of the recognizer. The rate must be a value that can be devided by the frame length.
+     * Set the update rate of the recognizer. The rate must be a value that can be divided by the frame length.
      *
      * @param updateRate
      *            the update rate

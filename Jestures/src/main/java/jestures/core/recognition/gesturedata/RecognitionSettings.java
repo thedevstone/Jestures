@@ -19,7 +19,7 @@ import jestures.core.recognition.UpdateRate;
 import smile.math.distance.DynamicTimeWarping;
 
 /**
- * The {@link RecognitionSettings} class.
+ * Recognition settings.
  *
  */
 public interface RecognitionSettings {

@@ -13,174 +13,134 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
+
 package recorder.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Queue;
-import java.util.Set;
 
-import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-import com.google.gson.JsonSyntaxException;
+import com.google.gson.JsonIOException;
 
-import jestures.core.serialization.Serializer;
-import jestures.core.serialization.UserManager;
 import jestures.core.tracking.Tracker;
-import jestures.core.tracking.Tracking;
-import jestures.core.view.screens.RecognitionScreenView;
+import recorder.view.RecordingView;
 import recorder.view.RecordingViewObserver;
 
 /**
- * The {@link Recorder} class.
+ * A recorder is a basic tool that manages all recording tasks.
+ *
  */
-
-public final class Recorder extends Tracker implements Recording {
-    private final Serializer userManager;
-    private static Recording instance;
-    private final Set<RecordingViewObserver> view;
-    private boolean isRecording;
-    private final List<List<Vector2D>> listOfFeatureVector;
-
-    private static final int THREASHOLD = 50;
-
-    private Recorder() {
-        this.listOfFeatureVector = new ArrayList<>();
-        this.userManager = new UserManager();
-        this.view = new HashSet<>();
-        RecognitionScreenView.startFxThread();
-    }
+public interface Recorder extends Tracker {
 
     /**
-     * Get the instance.
+     * Attache the view.
      *
-     * @return the {@link Tracking} instance.
+     * @param view
+     *            the {@link RecordingView}
      */
-    public static Recording getInstance() {
-        synchronized (Tracking.class) {
-            if (Recorder.instance == null) {
-                Recorder.instance = new Recorder();
-            }
-        }
-        return Recorder.instance;
-    }
+    void attacheUI(RecordingViewObserver view);
 
-    // ############################################## OBSERVER ###################################
+    /**
+     * Get all template (feature vectors) for the selected gesture.
+     *
+     * @param gestureName
+     *            the {@link String} gesture name
+     * @return the {@link List} of feature vectors
+     */
+    List<List<Vector2D>> getGestureDataset(String gestureName);
 
-    @Override
-    public void attacheUI(final RecordingViewObserver view) {
-        this.view.add(view);
-        this.view.forEach(t -> t.refreshUsers());
-    }
+    /**
+     * Delete the user profile.
+     *
+     * @throws IOException
+     *             the {@link IOException}
+     */
+    void deleteUserProfile() throws IOException;
 
-    // ############################################## FROM SENSOR ###################################
-    @Override
-    public void notifyOnSkeletonChange(final Vector2D primaryJoint, final Vector2D secondaryJoint) {
-        super.notifyOnSkeletonChange(primaryJoint, secondaryJoint);
-        this.secJointTrigger(primaryJoint, secondaryJoint);
-    }
+    /**
+     * Create user profile.
+     *
+     * @param name
+     *            the {@link String} username
+     * @return <code>true</code> if can create the profile
+     * @throws IOException
+     *             if
+     * @throws FileNotFoundException
+     */
+    boolean createUserProfile(String name) throws IOException;
 
-    @Override
-    public void notifyOnAccelerometerChange(final Vector3D acceleration) {
-    }
+    /**
+     * Load the user.
+     *
+     * @param name
+     *            the {@link String} username
+     * @return <code>true</code> if is loaded
+     * @throws FileNotFoundException
+     *             if file not found
+     * @throws IOException
+     *             the {@link IOException} if can't create user folder
+     */
+    boolean loadUserProfile(String name) throws FileNotFoundException, IOException;
 
-    // ############################################## FROM CODIFIER ###################################
-    @Override
-    public void notifyOnFrameChange(final int frame, final Queue<Vector2D> featureVector, final Vector2D derivative,
-            final Vector2D distanceVector) {
-        this.view.forEach(t -> t.notifyOnFrameChange(frame, derivative, distanceVector));
+    /**
+     * Select the feature vector.
+     *
+     * @param gesture
+     *            the {@link String} gesture
+     * @param index
+     *            the index in the list
+     * @throws IOException
+     *             the exception
+     * @throws JsonIOException
+     *             the {@link JsonIOException}
+     */
+    void addFeatureVector(String gesture, int index) throws IOException;
 
-    }
+    /**
+     * Add all templates.
+     *
+     * @param gesture
+     *            the String gesture
+     * @throws IOException
+     *             the exception
+     * @throws JsonIOException
+     *             the {@link JsonIOException}
+     */
+    void addAllFeatureVectors(String gesture) throws IOException;
 
-    @Override
-    public void notifyOnFeatureVectorEvent(final List<Vector2D> featureVector) {
-        if (this.isRecording) {
-            this.view.forEach(t -> t.notifyOnFeatureVectorEvent());
-            this.listOfFeatureVector.add(Collections.unmodifiableList(featureVector));
-        }
-    }
+    /**
+     * Delete the feature vector in the list.
+     *
+     * @param index
+     *            the index in the list.
+     */
+    void deleteRecordedFeatureVector(int index);
 
-    // ############## RECORDED DATASET ##############
+    /**
+     * Clear the featureVector.
+     */
+    void clearRecordedDataset();
 
-    @Override
-    public void deleteRecordedFeatureVector(final int index) {
-        this.listOfFeatureVector.remove(index);
-    }
+    /**
+     * Delete all the gesture's dataset.
+     *
+     * @param gestureName
+     *            the gesture name
+     * @throws IOException
+     *             the {@link IOException}
+     */
+    void deleteGestureDataset(String gestureName) throws IOException;
 
-    @Override
-    public void clearRecordedDataset() {
-        this.listOfFeatureVector.clear();
-    }
-
-    // #################### USER MANAGER #####################
-
-    @Override
-    public String getUserName() {
-        return this.userManager.getUserName();
-    }
-
-    @Override
-    public List<String> getAllUserGesture() {
-        return this.userManager.getAllUserGestures();
-    }
-
-    @Override
-    public List<List<Vector2D>> getGestureDataset(final String gestureName) {
-        return this.userManager.getGestureDataset(gestureName);
-    }
-
-    @Override
-    public void deleteUserProfile() throws IOException {
-        this.userManager.deleteUserProfile();
-    }
-
-    @Override
-    public boolean createUserProfile(final String name) throws IOException {
-        return this.userManager.createUserProfile(name);
-    }
-
-    @Override
-    public boolean loadUserProfile(final String name) throws FileNotFoundException, IOException, JsonSyntaxException {
-        return this.userManager.loadOrCreateNewUser(name);
-    }
-
-    @Override
-    public void addFeatureVector(final String gesture, final int index) throws IOException {
-        this.userManager.addFeatureVectorAndSerialize(gesture, this.listOfFeatureVector.get(index));
-
-    }
-
-    @Override
-    public void addAllFeatureVectors(final String gesture) throws IOException {
-        this.userManager.addAllFeatureVectorsAndSerialize(gesture, this.listOfFeatureVector);
-    }
-
-    @Override
-    public void deleteGestureDataset(final String gestureName) throws IOException {
-        this.userManager.deleteGestureDataset(gestureName);
-    }
-
-    @Override
-    public void deleteGestureFeatureVector(final String gestureName, final int index) {
-        this.userManager.deleteGestureFeatureVector(gestureName, index);
-    }
-
-    // ############################################## INSTANCE METHODS ###################################
-
-    private void secJointTrigger(final Vector2D primaryJoint, final Vector2D secondaryJoint) {
-        if (secondaryJoint.getY() > primaryJoint.getY() + Recorder.THREASHOLD && !this.isRecording) {
-            this.isRecording = true;
-            this.view.forEach(t -> t.setRecording(true));
-            this.resetCodificationFrame();
-        } else if (primaryJoint.getY() - Recorder.THREASHOLD > secondaryJoint.getY() && this.isRecording) {
-            this.isRecording = false;
-            this.view.forEach(t -> t.setRecording(false));
-        }
-    }
+    /**
+     * Delete a single feature vector given a gesture and an index in the dataset.
+     *
+     * @param gestureName
+     *            the String gesture name
+     * @param index
+     *            the index in the dataset
+     */
+    void deleteGestureFeatureVector(String gestureName, int index);
 
 }

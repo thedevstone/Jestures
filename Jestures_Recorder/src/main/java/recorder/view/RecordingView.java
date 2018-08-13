@@ -18,8 +18,7 @@ package recorder.view;
 import jestures.core.view.View;
 
 /**
- *
- *
+ * A particular view for recording.
  */
 public interface RecordingView extends View, RecordingViewObserver {
 

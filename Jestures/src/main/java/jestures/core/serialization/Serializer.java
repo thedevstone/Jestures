@@ -28,7 +28,7 @@ import jestures.core.recognition.gesturedata.RecognitionSettings;
 import jestures.core.recognition.gesturedata.RecognitionSettingsImpl;
 
 /**
- * The {@link Serializer} class.
+ * A serializer manages all user data and settings present on file.
  *
  */
 public interface Serializer {

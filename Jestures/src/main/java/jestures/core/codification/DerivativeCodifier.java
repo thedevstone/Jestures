@@ -25,7 +25,9 @@ import com.google.common.collect.EvictingQueue;
 import jestures.core.tracking.TrackingObserver;
 
 /**
- * The @link{DerivativeCodifier} class.
+ * A derivative codifier takes absolute vectors and create a list of theirs derivatives.
+ * <p>
+ * For example (2, 0) (3, 5) (3, 6) become (1, 5) (0, 1) and so on.
  */
 public class DerivativeCodifier implements Codifier {
     private Queue<Vector2D> featureVector;
@@ -81,7 +83,7 @@ public class DerivativeCodifier implements Codifier {
     }
 
     @Override
-    public void attacheCoreRecognizer(final TrackingObserver recognizer) {
+    public void attacheTracker(final TrackingObserver recognizer) {
         this.recognizer = recognizer;
     }
 

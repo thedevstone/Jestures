@@ -25,7 +25,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 
 /**
- * Static Factory.
+ * Static Factory for scroll pane.
  */
 public final class ScrollPaneFactory {
 

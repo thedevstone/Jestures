@@ -22,11 +22,11 @@ import java.util.Queue;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 /**
- * The @link{ObservableCoreRecognizer} class.
+ * A Tracking observer observes the codifier and get notified when a feature vector is ready.
  */
 public interface TrackingObserver {
     /**
-     * Notify the {@link Tracker} when a feature vector {@link Queue} is avaiable.
+     * Notify the {@link TrackerImpl} when a feature vector {@link Queue} is avaiable.
      *
      * @param list
      *            the {@link List} feature vector.
@@ -34,7 +34,7 @@ public interface TrackingObserver {
     void notifyOnFeatureVectorEvent(List<Vector2D> list);
 
     /**
-     * Notify the {@link Tracker} when a frame changes.
+     * Notify the {@link TrackerImpl} when a frame changes.
      *
      * @param frame
      *            the frame

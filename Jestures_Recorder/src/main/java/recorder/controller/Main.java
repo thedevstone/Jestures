@@ -43,7 +43,7 @@ public final class Main {
      */
     public static void main(final String[] args) throws SensorException {
         final Sensor sensor = new Kinect(Joint.RIGHT_HAND, KinectSensors.SKELETON_ONLY, KinectVersion.KINECT1);
-        final Recording recorder = Recorder.getInstance();
+        final Recorder recorder = RecorderImpl.getInstance();
         recorder.attacheSensor(sensor);
         final RecordingView view = new RecorderScreenView(recorder);
         recorder.attacheUI(view);

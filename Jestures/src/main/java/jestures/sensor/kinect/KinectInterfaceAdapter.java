@@ -17,7 +17,7 @@
 package jestures.sensor.kinect;
 
 /**
- * Interface for other kind of kinect SKD.
+ * Interface for other kind of kinect SDK.
  */
 interface KinectInterfaceAdapter {
     /**

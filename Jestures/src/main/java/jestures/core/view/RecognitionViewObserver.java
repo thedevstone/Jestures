@@ -20,7 +20,7 @@ import jestures.core.recognition.gesturedata.RecognitionSettings;
 import jestures.core.recognition.gesturedata.RecognitionSettingsImpl;
 
 /**
- * The {@link RecognitionViewObserver} class.
+ * Pattern obsrver that extends the view obersver.
  *
  */
 public interface RecognitionViewObserver extends ViewObserver {

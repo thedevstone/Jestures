@@ -17,7 +17,7 @@
 package jestures.sensor;
 
 /**
- * The @link{Sensor} class. It rapresents a general sensor that can be attached to the framework.
+ * The @link{Sensor} class. It represents a general sensor that can be attached to the framework.
  * <p>
  * Sensors may be Kinect, LipMotion ecc. If your sensor is not present please contact me.
  */

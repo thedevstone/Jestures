@@ -29,7 +29,7 @@ import java.util.stream.Stream;
 import org.apache.log4j.Logger;
 
 /**
- * Class dedicated to File managing.
+ * A File manager creates folder, loads dll and manges users.
  */
 public final class FileManager {
 
@@ -40,7 +40,6 @@ public final class FileManager {
      * Constructor.
      */
     private FileManager() {
-        // TODO Auto-generated constructor stub
     }
     // ##################################### FOLDER CREATION ################################
 
@@ -71,10 +70,10 @@ public final class FileManager {
         }
     }
 
+    // ##################################### CREATE DIRECTORIES ################################
     /**
      *
-     * // ##################################### CREATE DIRECTORIES ################################ Create the framework
-     * main directory.
+     * Create the framework main directory.
      *
      * @throws IOException
      *             the {@link IOException}
@@ -89,6 +88,8 @@ public final class FileManager {
     }
 
     /**
+     * Crate a framework sub-folder.
+     *
      * @param folder
      *            the {@link String} path
      * @return <code>true</code> if the folder exists
@@ -101,6 +102,8 @@ public final class FileManager {
     }
 
     /**
+     * Create a user folder.
+     *
      * @param folder
      *            the {@link String} path
      * @return <code>true</code> if the folder exists
@@ -114,6 +117,8 @@ public final class FileManager {
     }
 
     /**
+     * Delete a user folder.
+     *
      * @param folder
      *            the {@link String} path
      *
@@ -127,6 +132,7 @@ public final class FileManager {
     }
 
     // ##################################### LOAD NATIVES ################################
+
     /**
      * Create the lib for native dll (Kinect).
      */
@@ -169,7 +175,7 @@ public final class FileManager {
     // ##################################### USEFUL METHODS ################################
 
     /**
-     * Get the list of directorey.
+     * Get the list of directories.
      *
      * @return the {@link List} of directory
      * @throws IOException

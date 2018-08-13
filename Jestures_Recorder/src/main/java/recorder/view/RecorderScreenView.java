@@ -58,15 +58,15 @@ import jestures.core.view.enums.NotificationType;
 import jestures.core.view.enums.NotificationType.Duration;
 import jestures.core.view.utils.ListViewFactory;
 import jestures.core.view.utils.ViewUtilities;
-import recorder.controller.Recording;
+import recorder.controller.Recorder;
 
 /**
- *
+ * Javafx controller for fxml file.
  *
  */
 public class RecorderScreenView extends AbstractRecorderScreenView implements RecordingView {
     private static final Logger LOG = Logger.getLogger(RecorderScreenView.class);
-    private final Recording recorder;
+    private final Recorder recorder;
     private int frameLength;
 
     // VIEW
@@ -113,7 +113,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
      * @param recorder
      *            the {@link RecorderScreenView}
      */
-    public RecorderScreenView(final Recording recorder) {
+    public RecorderScreenView(final Recorder recorder) {
         super(recorder);
         this.recorder = recorder;
         this.frameLength = recorder.getFrameLength().getFrameNumber();

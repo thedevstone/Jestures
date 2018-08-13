@@ -57,16 +57,15 @@ import jestures.core.view.utils.RecordingFactory;
 import jestures.core.view.utils.ScrollPaneFactory;
 import jestures.core.view.utils.ViewUtilities;
 import recorder.controller.Recorder;
-import recorder.controller.Recording;
+import recorder.controller.RecorderImpl;
 
 /**
- * Recorder abstact view for initialization.
- *
+ * Recorder abstract view for initialization.
  */
 
 public abstract class AbstractRecorderScreenView implements RecordingView, RecordingViewObserver {
     // private static final Logger LOG = Logger.getLogger(AbstractRecorderScreenView.class);
-    private final Recording recorder;
+    private final Recorder recorder;
 
     // CHART
     private LineChart<Number, Number> lineChartX; // NOPMD
@@ -150,10 +149,10 @@ public abstract class AbstractRecorderScreenView implements RecordingView, Recor
      * The constructor.
      *
      * @param recorder
-     *            the {@link Recorder}
+     *            the {@link RecorderImpl}
      *
      */
-    public AbstractRecorderScreenView(final Recording recorder) {
+    public AbstractRecorderScreenView(final Recorder recorder) {
         this.recorder = recorder;
     }
 

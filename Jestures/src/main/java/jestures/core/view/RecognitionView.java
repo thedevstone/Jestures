@@ -20,7 +20,7 @@ import smile.math.distance.DynamicTimeWarping;
 
 /**
  *
- * The {@link RecognitionView} class.
+ * A simple view with more methods for recognition.
  *
  */
 public interface RecognitionView extends View, RecognitionViewObserver {

@@ -26,10 +26,10 @@ import smile.math.distance.DynamicTimeWarping;
  * The {@link RecognitionSettingsImpl} class.
  *
  */
-public class RecognitionSettingsImpl implements Serializable {
+public class RecognitionSettingsImpl implements Serializable, RecognitionSettings {
 
     /**
-     *
+     * Recognition settings that can be serialized.
      */
     private static final long serialVersionUID = -698249799317303588L;
 
@@ -80,6 +80,7 @@ public class RecognitionSettingsImpl implements Serializable {
      *
      * @return the window width of Sakoe-Chiba band in terms of percentage of sequence length.
      */
+    @Override
     public double getDtwRadius() {
         return this.dtwRadius;
     }
@@ -90,6 +91,7 @@ public class RecognitionSettingsImpl implements Serializable {
      * @param dtwRadius
      *            the window width of Sakoe-Chiba band in terms of percentage of sequence length.
      */
+    @Override
     public void setDtwRadius(final double dtwRadius) {
         if (dtwRadius < 1 && dtwRadius >= 0) {
             this.dtwRadius = dtwRadius;
@@ -106,6 +108,7 @@ public class RecognitionSettingsImpl implements Serializable {
      *
      * @return represents the minimum distance above which a feature vector is accepted
      */
+    @Override
     public double getMinDtwThreashold() {
         return this.minDTWThreashold;
     }
@@ -119,6 +122,7 @@ public class RecognitionSettingsImpl implements Serializable {
      * @param minDTWThreashold
      *            represents the minimum distance above which a feature vector is accepted
      */
+    @Override
     public void setMinDtwThreashold(final int minDTWThreashold) {
         if (minDTWThreashold >= 0) {
             this.minDTWThreashold = minDTWThreashold;
@@ -136,6 +140,7 @@ public class RecognitionSettingsImpl implements Serializable {
      *
      * @return represents the maximum distance above which a feature vector is accepted
      */
+    @Override
     public double getMaxDTWThreashold() {
         return this.maxDTWThreashold;
     }
@@ -149,6 +154,7 @@ public class RecognitionSettingsImpl implements Serializable {
      * @param maxDtwThreashold
      *            represents the maximum distance above which a feature vector is accepted
      */
+    @Override
     public void setMaxDtwThreashold(final int maxDtwThreashold) {
         if (maxDtwThreashold >= 0) {
             this.maxDTWThreashold = maxDtwThreashold;
@@ -163,6 +169,7 @@ public class RecognitionSettingsImpl implements Serializable {
      *
      * @return the frame value
      */
+    @Override
     public UpdateRate getUpdateRate() {
         return this.updateRate;
     }
@@ -173,6 +180,7 @@ public class RecognitionSettingsImpl implements Serializable {
      * @param updateRate
      *            the update rate
      */
+    @Override
     public void setUpdateRate(final UpdateRate updateRate) {
         this.updateRate = updateRate;
     }
@@ -184,6 +192,7 @@ public class RecognitionSettingsImpl implements Serializable {
      *
      * @return the time separation in milliseconds, a value usually between 0 and 1000.
      */
+    @Override
     public int getMinTimeSeparation() {
         return this.minTimeSeparation;
     }
@@ -196,6 +205,7 @@ public class RecognitionSettingsImpl implements Serializable {
      * @param minTimeSeparation
      *            the time separation in milliseconds, a value usually between 0 and 1000.
      */
+    @Override
     public void setMinTimeSeparation(final int minTimeSeparation) {
         if (minTimeSeparation >= 0 && minTimeSeparation < 1000) {
             this.minTimeSeparation = minTimeSeparation;
@@ -210,6 +220,7 @@ public class RecognitionSettingsImpl implements Serializable {
      *
      * @return the number of templates.
      */
+    @Override
     public int getMatchNumber() {
         return this.matchNumber;
     }
@@ -220,6 +231,7 @@ public class RecognitionSettingsImpl implements Serializable {
      * @param matchNumber
      *            the number of templates.
      */
+    @Override
     public void setMatchNumber(final int matchNumber) {
         if (matchNumber >= 0) {
             this.matchNumber = matchNumber;

@@ -19,8 +19,7 @@ package jestures.core.file;
 import java.util.Locale;
 
 /**
- *
- *
+ * Operating system specific settings.
  */
 final class OsUtils {
 
@@ -29,7 +28,7 @@ final class OsUtils {
     }
 
     /**
-     * types of Operating Systems.
+     * OS Types.
      */
     public enum OSType {
         /**
@@ -44,7 +43,7 @@ final class OsUtils {
     private static String home; // NOPMD
 
     /**
-     * detect the operating system from the os.name System property and cache the result.
+     * Detect the operating system from the os.name System property and cache the result.
      *
      * @return the operating system detected
      */
