@@ -110,8 +110,6 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
 
     @FXML
     private JFXSlider sliderMatchNumber;
-    @FXML
-    private JFXButton saveSettingsButton;
 
     /**
      * @param recognizer
