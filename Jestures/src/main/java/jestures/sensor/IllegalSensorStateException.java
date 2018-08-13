@@ -17,7 +17,7 @@
 package jestures.sensor;
 
 /**
- * If the user starts a sensor in a wrong way an {@link IllegalSensorStateException will be thrown.
+ * If the user starts a sensor in a wrong way an {@link IllegalSensorStateException} will be thrown.
  */
 public class IllegalSensorStateException extends Exception {
 
