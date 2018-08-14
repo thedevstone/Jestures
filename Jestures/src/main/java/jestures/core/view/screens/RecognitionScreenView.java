@@ -73,8 +73,6 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
 
     // ########### ALL TABS #############
     @FXML
-    private JFXSlider elevation;
-    @FXML
     private JFXProgressBar progressBar;
     @FXML
     private BorderPane recorderPane; // NOPMD
