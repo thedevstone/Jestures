@@ -18,7 +18,7 @@
 
 
 ## Download
-* Released builds are available from - [Bintray](https://bintray.com/giulianini/maven/Track4J/_latestVersion)
+* Released builds are available from - [Bintray](https://bintray.com/giulianini/maven/Jestures/_latestVersion)
 * Released builds are available from - [Maven Central](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A"com.github.giulianini.track4j"%20AND%20a%3A"track4j")
 * Snapshot builds are available from - [Artifactory](http://oss.jfrog.org/oss-snapshot-local/com/github/giulianini/track4j/track4j/0.1.6-SNAPSHOT/)
 
