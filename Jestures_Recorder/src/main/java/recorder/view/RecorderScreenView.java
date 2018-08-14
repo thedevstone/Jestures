@@ -243,6 +243,11 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
         this.startButton.setDisable(false);
     }
 
+    @Override
+    public void setSensorElevation(final int angle) {
+        this.recorder.setElevationAngle(angle);
+    }
+
     // ############################################## TO RECORDER ###################################
     // ###### TAB 1 ######
     @Override

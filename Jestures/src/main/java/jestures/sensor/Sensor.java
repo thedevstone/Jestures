@@ -58,4 +58,19 @@ public interface Sensor {
      * @return <code>true</code> if it's on
      */
     boolean state();
+
+    /**
+     * Set the elevation angle of the sensor.
+     *
+     * @param angle
+     *            the angle
+     */
+    void setElevationAngle(int angle);
+
+    /**
+     * Get the elevation angle.
+     *
+     * @return the elevation angle
+     */
+    int getElevationAngle();
 }

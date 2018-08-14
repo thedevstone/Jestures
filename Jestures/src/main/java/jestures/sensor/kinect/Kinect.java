@@ -102,15 +102,14 @@ public class Kinect implements KinectObserver, Sensor {
         return this.state;
     }
 
-    /**
-     * Set the elevation angle of the kinect.
-     *
-     * @param angle
-     *            the angle
-     */
+    @Override
     public void setElevationAngle(final int angle) {
-
         this.kinectAdapter.setElevationAngle(angle);
+    }
+
+    @Override
+    public int getElevationAngle() {
+        return this.kinectAdapter.getElevationAngle();
     }
 
 }

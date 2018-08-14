@@ -26,6 +26,7 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXPopup;
 import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXScrollPane;
+import com.jfoenix.controls.JFXSlider;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeView;
@@ -78,6 +79,10 @@ public abstract class AbstractRecorderScreenView implements RecordingView, Recor
     private JFXPopup addGesturePopup;
     private JFXPopup cnavasPopup;
     private StackPane popupStackPane; // NOPMD
+
+    // ELEVATION
+    private JFXPopup elevationPopup;
+    private JFXSlider elevationSlider;
 
     // LIVE CANVAS
     private Canvas liveCanvas;
@@ -171,6 +176,7 @@ public abstract class AbstractRecorderScreenView implements RecordingView, Recor
         this.initTabPaneListener();
         this.initScrollPane();
         this.initTreeView();
+        this.initSliders();
         this.initPopup();
         this.setDisabled();
         this.initProgressBar();
@@ -179,6 +185,21 @@ public abstract class AbstractRecorderScreenView implements RecordingView, Recor
     private void setDisabled() {
         this.startButton.setDisable(true);
         this.gestureHBox.setDisable(true);
+    }
+
+    private void initSliders() {
+        // CHECKSTYLE:OFF
+        this.elevationSlider = new JFXSlider(0, 30, 10);
+        this.elevationSlider.setMajorTickUnit(5);
+        this.elevationSlider.setSnapToTicks(true);
+        this.elevationSlider.setMinorTickCount(0);
+        this.elevationSlider.setMinHeight(50);
+        this.elevationSlider.valueProperty().addListener((oservable, oldValue, newValue) -> {
+            new Thread(() -> {
+                this.setSensorElevation(newValue.intValue());
+            }).start();
+        });
+        // CHECKSTYLE:ON
     }
 
     private void initPopup() {
@@ -216,20 +237,26 @@ public abstract class AbstractRecorderScreenView implements RecordingView, Recor
             this.cnavasPopup.hide();
         });
 
+        // ELEVATION POPUP
+        this.elevationPopup = new JFXPopup(this.elevationSlider);
     }
 
     private void initButtons() {
 
         // START AND STOP
-        this.startButton.setOnAction(e -> {
-            if (this.recorder.state()) {
-                this.stopSensor();
-                this.startButton.setTooltip(new Tooltip("Start the sensor"));
-                this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY, IconDim.MEDIUM));
+        this.startButton.setOnMouseClicked(e -> {
+            if (e.getButton().equals(MouseButton.SECONDARY)) {
+                this.elevationPopup.show(this.startButton);
             } else {
-                this.startSensor();
-                this.startButton.setTooltip(new Tooltip("Start the sensor"));
-                this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY_OFF, IconDim.MEDIUM));
+                if (this.recorder.state()) {
+                    this.stopSensor();
+                    this.startButton.setTooltip(new Tooltip("Start the sensor"));
+                    this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY, IconDim.MEDIUM));
+                } else {
+                    this.startSensor();
+                    this.startButton.setTooltip(new Tooltip("Start the sensor"));
+                    this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY_OFF, IconDim.MEDIUM));
+                }
             }
         });
 

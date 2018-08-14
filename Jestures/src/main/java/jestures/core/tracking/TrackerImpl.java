@@ -159,6 +159,16 @@ public abstract class TrackerImpl implements TrackingObserver, SensorObserver, T
         return this.sensor.state();
     }
 
+    @Override
+    public void setElevationAngle(final int angle) {
+        this.sensor.setElevationAngle(angle);
+    }
+
+    @Override
+    public int getElevationAngle() {
+        return this.sensor.getElevationAngle();
+    }
+
     /**
      * Check if the sensor is started statically.
      *

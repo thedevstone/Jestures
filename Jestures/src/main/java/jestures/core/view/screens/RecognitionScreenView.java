@@ -73,6 +73,8 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
 
     // ########### ALL TABS #############
     @FXML
+    private JFXSlider elevation;
+    @FXML
     private JFXProgressBar progressBar;
     @FXML
     private BorderPane recorderPane; // NOPMD
@@ -300,6 +302,11 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
             ViewUtilities.showNotificationPopup("Exception", "Cannot serialize user data", Duration.MEDIUM,
                     NotificationType.WARNING, null);
         }
+    }
+
+    @Override
+    public void setSensorElevation(final int angle) {
+        this.recognizer.setElevationAngle(angle);
     }
 
     // ################# TREE VIEW ###################

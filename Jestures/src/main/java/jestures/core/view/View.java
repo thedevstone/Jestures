@@ -49,4 +49,12 @@ public interface View extends ViewObserver {
      */
     void setFrameLength(FrameLength length);
 
+    /**
+     * Set the sensor elevation.
+     *
+     * @param angle
+     *            the angle
+     */
+    void setSensorElevation(int angle);
+
 }

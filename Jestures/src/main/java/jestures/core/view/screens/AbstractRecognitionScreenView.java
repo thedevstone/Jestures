@@ -38,6 +38,7 @@ import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -68,6 +69,10 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
     private XYChart.Series<Number, Number> xSeries;
     private XYChart.Series<Number, Number> ySeries;
     private JFXPopup cnavasPopup;
+
+    // ELEVATION
+    private JFXPopup elevationPopup;
+    private JFXSlider elevationSlider;
 
     // LIVE CANVAS
     private Canvas liveCanvas;
@@ -158,11 +163,10 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
         this.initChart();
         this.initScrollPane();
         this.initTreeView();
-        this.initPopup();
         this.setDisabled();
         this.initProgressBar();
-        // recognition
         this.initSliders();
+        this.initPopup();
     }
 
     private void initSliders() {
@@ -173,7 +177,6 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
                 (observable, oldValue, newValue) -> this.setUpdateRate(newValue));
         this.sliderRadius.valueProperty().addListener(
                 (observable, oldValue, newValue) -> this.setDtwRadius(newValue.doubleValue() / 10));
-
         this.sliderMinThreshold.valueProperty().addListener(
                 (observable, oldValue, newValue) -> this.setMinDtwThreashold(newValue.intValue()));
         this.sliderMaxThreshold.valueProperty().addListener(
@@ -183,6 +186,18 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
         this.sliderMatchNumber.valueProperty().addListener(
                 (observable, oldValue, newValue) -> this.setMatchNumber(newValue.intValue()));
 
+        // CHECKSTYLE:OFF
+        this.elevationSlider = new JFXSlider(0, 30, 10);
+        this.elevationSlider.setMajorTickUnit(5);
+        this.elevationSlider.setSnapToTicks(true);
+        this.elevationSlider.setMinorTickCount(0);
+        this.elevationSlider.setMinHeight(50);
+        this.elevationSlider.valueProperty().addListener((oservable, oldValue, newValue) -> {
+            new Thread(() -> {
+                this.setSensorElevation(newValue.intValue());
+            }).start();
+        });
+        // CHECKSTYLE:ON
     }
 
     private void setDisabled() {
@@ -196,19 +211,26 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
             this.cnavasPopup.hide();
         });
 
+        // ELEVATION POPUP
+        this.elevationPopup = new JFXPopup(this.elevationSlider);
+
     }
 
     private void initButtons() {
         // START AND STOP
-        this.startButton.setOnAction(e -> {
-            if (this.recognizer.state()) {
-                this.stopSensor();
-                this.startButton.setTooltip(new Tooltip("Start the sensor"));
-                this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY, IconDim.MEDIUM));
+        this.startButton.setOnMouseClicked(e -> {
+            if (e.getButton().equals(MouseButton.SECONDARY)) {
+                this.elevationPopup.show(this.startButton);
             } else {
-                this.startSensor();
-                this.startButton.setTooltip(new Tooltip("Start the sensor"));
-                this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY_OFF, IconDim.MEDIUM));
+                if (this.recognizer.state()) {
+                    this.stopSensor();
+                    this.startButton.setTooltip(new Tooltip("Start the sensor"));
+                    this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY, IconDim.MEDIUM));
+                } else {
+                    this.startSensor();
+                    this.startButton.setTooltip(new Tooltip("Start the sensor"));
+                    this.startButton.setGraphic(ViewUtilities.iconSetter(Material.VISIBILITY_OFF, IconDim.MEDIUM));
+                }
             }
         });
 
