@@ -53,7 +53,8 @@ import jestures.core.view.utils.ScrollPaneFactory;
 import jestures.core.view.utils.ViewUtilities;
 
 /**
- * The abstract class of the recognition view. This is a simple screen controller for a javafx fxml file.
+ * The abstract class of the recognition view. This is a simple abstract screen controller for a javafx fxml file. It is
+ * used for initialization of buttons, cavnvas, list-view etc
  *
  */
 
@@ -198,7 +199,6 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
     }
 
     private void initButtons() {
-
         // START AND STOP
         this.startButton.setOnAction(e -> {
             if (this.recognizer.state()) {

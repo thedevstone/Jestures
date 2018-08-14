@@ -21,7 +21,7 @@ package jestures.sensor;
  */
 public enum Joint {
     /**
-     * Main joints.
+     * A joint is a body part that can be tracked by the Sensor.
      */
     RIGHT_HAND, LEFT_HAND, RIGHT_FOOT, LEFT_FOOT;
 }

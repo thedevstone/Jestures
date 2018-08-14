@@ -26,7 +26,7 @@ import jestures.sensor.Sensor;
 import jestures.sensor.SensorObserver;
 
 /**
- * Kinect sensor from Microsoft.
+ * Kinect sensor from Microsoft. A very basic configuration for the sensor.
  */
 public class Kinect implements KinectObserver, Sensor {
     private final KinectAdapter kinectAdapter;
@@ -100,6 +100,17 @@ public class Kinect implements KinectObserver, Sensor {
     @Override
     public boolean state() {
         return this.state;
+    }
+
+    /**
+     * Set the elevation angle of the kinect.
+     *
+     * @param angle
+     *            the angle
+     */
+    public void setElevationAngle(final int angle) {
+
+        this.kinectAdapter.setElevationAngle(angle);
     }
 
 }

@@ -21,7 +21,7 @@ import javax.swing.text.html.CSS;
 import javafx.fxml.FXML;
 
 /**
- * Enumerator of the .fxml resources for the view.
+ * Enumerator of the .fxml resources. An FXMLScreen contains fxml and css paths for the specific screen.
  *
  */
 public enum FXMLScreens {
