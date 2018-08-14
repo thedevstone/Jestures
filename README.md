@@ -49,7 +49,7 @@ repositories {
 Reference the repository from this location using:
 ```gradle
 dependencies {
-    compile 'com.github.giulianini:jestures:1.0.0'
+    compile 'com.github.giulianini.jestures:jestures:1.0.0'
 }
 ```
 
@@ -58,7 +58,7 @@ dependencies {
 #### How to Include In Maven Project
 ```xml
 <dependency>
-  <groupId>com.github.giulianini</groupId>
+  <groupId>com.github.giulianini.jestures</groupId>
   <artifactId>jestures</artifactId>
   <version>1.0.0</version>
   <type>pom</type>
@@ -69,8 +69,8 @@ dependencies {
 
 #### How to Include In Ivy Project
 ```xml
-<dependency org='com.github.giulianini' name='jestures' rev='1.0.0'>
-  <artifact name='jestures' ext='pom' />
+<dependency org='com.github.giulianini.jestures' name='jestures' rev='1.0.0'>
+  <artifact name='jestures' ext='pom' ></artifact>
 </dependency>
 ```
 
