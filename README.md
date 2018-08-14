@@ -25,11 +25,6 @@
 ## Javadocs 
 If you need to access the documentation for any stable version, [javadoc.io](https://www.javadoc.io/doc/com.github.giulianini.track4j/track4j/) is probably the right place to search in.
 
-## Demo
-Run the demo with:
-
-    gradlew run
-
 ## Build
 To build Jestures, execute the following command:
 
@@ -37,6 +32,19 @@ To build Jestures, execute the following command:
 
 **NOTE** : Jestures uses JavaFx so it may not work on older version of Java.
 
+## Demo
+Run the demo with:
+    
+    cd Jestures_Recorder
+    gradlew run
+
+## Gesture Recorder Tool
+Run the demo with:
+
+    cd Jestures_Demo
+    gradlew run
+
+## Adding Jestures to your build
 ### Gradle
 
 #### How to Include In Gradle Project
