@@ -1,24 +1,14 @@
-buildscript {
-	repositories {
-	    jcenter()
-	    mavenCentral()
-	}
-	dependencies {
-    }
-}
-
 plugins {
     id "com.jfrog.bintray" version "1.7.3"
     id 'com.jfrog.artifactory' version '4.5.2'
 }
 
-allprojects {
-	apply plugin: 'java-library'
-	apply plugin: 'java'
-	apply plugin: 'maven'
-	apply plugin: 'maven-publish'
-	apply plugin: 'signing'
-}
+
+apply plugin: 'java-library'
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
 
 group = project_group
 archivesBaseName = project_artifact
@@ -80,13 +70,10 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'log4j:log4j:1.2.17'
     compile 'com.github.haifengl:smile-core:1.5.1'
-    
     compile 'com.jfoenix:jfoenix:8.0.4' // Java 8
-
 	compile 'org.kordamp.ikonli:ikonli-core:1.7.0'
 	compile 'org.kordamp.ikonli:ikonli-javafx:1.7.0'
     compile 'org.kordamp.ikonli:ikonli-material-pack:1.7.0'
-
     compile 'eu.hansolo.enzo:Enzo:0.3.6'
     compile 'com.google.code.gson:gson:2.8.4' 
 }
@@ -102,7 +89,6 @@ sourceSets {
         
     }
 }
-
 
 
 //BINTRAY
@@ -123,7 +109,7 @@ bintray {
         issueTrackerUrl = "https://github.com/$project.your_github_name/$project.project_name/issues"
         vcsUrl = "https://github.com/$your_github_name/${project.project_name}.git"
         githubRepo = "$your_github_name/$project.project_name"
-    	githubReleaseNotesFile = 'Releasenotes.md'
+    	//githubReleaseNotesFile = 'Releasenotes.md'
         version {
             name = project.project_version
             vcsTag = project.project_version
@@ -186,7 +172,6 @@ publishing {
 	        	classifier 'all'
 	      	}
             
-            
             pom {
 		        packaging 'jar'
 		        withXml {
@@ -200,32 +185,34 @@ publishing {
 						
 						builder.licenses {
 						    builder.license {
-						      builder.name 'The Apache Software License, Version 2.0'
-						      builder.url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+						      builder.name project.project_license
+						      builder.url project.project_license_url
 						      builder.distribution 'repo'
 						    }
 						}
+						
 						builder.scm {
-						    builder.url 'scm:svn:http://github.com/Giulianini/Track4J'
-						    builder.connection 'scm:svn:http://github.com/Giulianini/Track4J.git'
-						    builder.developerConnection 'scm:svn:ssh://github.com/Giulianini/Track4J.git'
+						    builder.url "scm:svn:http://github.com/$project.your_github_name/$project.project_name"
+						    builder.connection "scm:svn:http://github.com/$your_github_name/${project.project_name}.git"
+						    builder.developerConnection "scm:svn:ssh://github.com/$your_github_name/${project.project_name}.git"
 						}
+						
 						builder.developers {
 						    builder.developer {
 						      builder.name 'Luca Giulianini'
 						      builder.email 'luca.giulianini@studio.unibo.it'
 						    }
-						
 						}
 						
 						// maven central publishing optionals
 						builder.issueManagement {
 						  builder.system 'github'
-						  builder.url 'https://github.com/p6spy/p6spy/issues'
+						  builder.url "https://github.com/$project.your_github_name/$project.project_name/issues"
 						}
+						
 						builder.ciManagement {
 						  builder.system 'Travis CI'
-						  builder.url 'https://travis-ci.org/p6spy/p6spy'
+						  builder.url "https://travis-ci.org/$project.your_github_name/$project.project_name"
 						}
 		        	}		    
         		}
@@ -235,14 +222,11 @@ publishing {
 }
 
 publishing {
-  
             if (!version.toString().endsWith('-SNAPSHOT'))
    				 publish.dependsOn bintrayUpload
 			else if (version.toString().endsWith('-SNAPSHOT'))
     			publish.dependsOn artifactoryPublish
 }
-
-
 
 signing {
 	required { gradle.taskGraph.hasTask("uploadArchives") }
