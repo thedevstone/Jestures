@@ -108,7 +108,7 @@ bintray {
         issueTrackerUrl = "https://github.com/$project.your_github_name/$project.project_name/issues"
         vcsUrl = "https://github.com/$your_github_name/${project.project_name}.git"
         githubRepo = "$your_github_name/$project.project_name"
-    	//githubReleaseNotesFile = 'Releasenotes.md'
+    	githubReleaseNotesFile = 'Releasenotes.md'
         version {
             name = project.project_version
             vcsTag = project.project_version
