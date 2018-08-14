@@ -74,17 +74,20 @@ dependencies {
 </dependency>
 ```
 
-## How can I use Track4J?
+## How can I use Jestures?
 
-### Set Up
+### Set Up The Framework
 1. 	Install the [__Kinect SDK__ ](https://www.microsoft.com/en-us/download/confirmation.aspx?id=40278)
 1. 	Download natives - [Natives dll for Kinect](https://drive.google.com/open?id=1Dpvs71O2dN6AxnTrMUGLAIDJkp0y8YXD)
 1. 	Put __ufdw_j4k_**bit.dll_ Natives into __HOME/.Jestures/native__. Jestures will find them.
 1. 
 	* **Build**  
-	You can download the source code of the library and build it as mentioned previously. Building Jestures will generate Jestures.jar under the Track4J/build/libs folder. To use Jestures, import Jestures.jar into your project and start tracking your body :).
+	You can download the source code of the library and build it as mentioned previously. Building Jestures will generate Jestures.jar under the Track4J/build/libs folder. To use Jestures, import Jestures.jar into your project and start recognizing gestures :).
 	* **Import the dependency**  
 	Include the dependency for your build system.
+ 
+ ### Start The Recorder Tool
+ 1.	Follow the step above and the recorder tool must work with your kinect version.
  
 ### Code
 
