@@ -8,12 +8,12 @@
 ![GitHub repo size in bytes](https://img.shields.io/github/repo-size/Giulianini/Jestures.svg)
 ---
 
-# Track4J
+# Jestures
 
 ## A simple framework for gesture recognition in Java.
 
 <h1 align="center">
-    <img src="/pic/Track4J.png">
+    <img src="/pic/Jestures.png">
 </h1>
 
 
@@ -31,11 +31,11 @@ Run the demo with:
     gradlew run
 
 ## Build
-To build JFoenix, execute the following command:
+To build Jestures, execute the following command:
 
     gradlew build
 
-**NOTE** : Track4j uses JavaFx so it may not work on older version of Java.
+**NOTE** : Jestures uses JavaFx so it may not work on older version of Java.
 
 ### Gradle
 
@@ -49,7 +49,7 @@ repositories {
 Reference the repository from this location using:
 ```gradle
 dependencies {
-    compile 'com.github.giulianini:track4j:1.0.0'
+    compile 'com.github.giulianini:jestures:1.0.0'
 }
 ```
 
@@ -59,7 +59,7 @@ dependencies {
 ```xml
 <dependency>
   <groupId>com.github.giulianini</groupId>
-  <artifactId>track4j</artifactId>
+  <artifactId>jestures</artifactId>
   <version>1.0.0</version>
   <type>pom</type>
 </dependency>
@@ -69,8 +69,8 @@ dependencies {
 
 #### How to Include In Ivy Project
 ```xml
-<dependency org='com.github.giulianini' name='track4j' rev='1.0.0'>
-  <artifact name='track4j' ext='pom' />
+<dependency org='com.github.giulianini' name='jestures' rev='1.0.0'>
+  <artifact name='jestures' ext='pom' />
 </dependency>
 ```
 
@@ -79,16 +79,16 @@ dependencies {
 ### Set Up
 1. 	Install the [__Kinect SDK__ ](https://www.microsoft.com/en-us/download/confirmation.aspx?id=40278)
 1. 	Download natives - [Natives dll for Kinect](https://drive.google.com/open?id=1Dpvs71O2dN6AxnTrMUGLAIDJkp0y8YXD)
-1. 	Put __ufdw_j4k_**bit.dll_ Natives into __HOME/.Track4J/native__. Track4J will find them.
+1. 	Put __ufdw_j4k_**bit.dll_ Natives into __HOME/.Jestures/native__. Jestures will find them.
 1. 
 	* **Build**  
-	You can download the source code of the library and build it as mentioned previously. Building Track4J will generate Track4J.jar under the Track4J/build/libs folder. To use Track4J, import Track4J.jar into your project and start tracking your body :).
+	You can download the source code of the library and build it as mentioned previously. Building Jestures will generate Jestures.jar under the Track4J/build/libs folder. To use Jestures, import Jestures.jar into your project and start tracking your body :).
 	* **Import the dependency**  
 	Include the dependency for your build system.
  
 ### Code
 
-#### Start the Tracker
+#### Tracker only
 ```java
 	final Sensor sensor = new Kinect(Joint.RIGHT_HAND, KinectSensors.SKELETON_ONLY, KinectVersion.KINECT1);
         final Tracking tracker = Tracker.getInstance();
@@ -97,23 +97,32 @@ dependencies {
         tracker.setOnJointTracked(new JointListener(){
 	....});
 ```
+
+#### Start the Recognizer
+```java
+	final Sensor sensor = new Kinect(Joint.RIGHT_HAND, KinectSensors.SKELETON_ONLY, KinectVersion.KINECT1);
+        final Recognition recognizer = Recognizer.getInstance();
+        recognizer.attacheSensor(sensor);
+	recognizer.startSensor();
+        recognizer.setOnGestureRecognized(System.out::println);
+```
+
 #### Start via UI
 
 ```java
 	final Sensor sensor = new Kinect(Joint.RIGHT_HAND, KinectSensors.SKELETON_ONLY, KinectVersion.KINECT1);
-        final Tracking tracker = Tracker.getInstance();
-        tracker.attacheSensor(sensor);
-	final View view = new TrackerView(tracker);
-        tracker.attacheUI(view);
-        tracker.setOnJointTracked(new JointListener(){
-	....});
+        final Recognition recognizer = Recognizer.getInstance();
+        recognizer.attacheSensor(sensor);
+        final RecognitionView view = new RecognitionScreenView(recognizer);
+        recognizer.attacheUI(view);
+        recognizer.setOnGestureRecognized(System.out::println);
 ```
 #### Define your own UI
 
 ```java
  public class Gui extends AbstractView {
-        public Gui(Tracking tracker) {
-            super(tracker);
+        public Gui(Recognition recognizer) {
+            super(recognizer);
             // TODO Auto-generated constructor stub
         }
         @Override
@@ -124,6 +133,7 @@ dependencies {
         public void notifyOnFeatureVectorEvent() {
             // TODO Auto-generated method stub   
         }
+	..... A lot of methods to implements
     }
 ```
 
@@ -187,8 +197,7 @@ The project has been developed using Eclipse, and can be easily imported in such
   * Apply (you should probably rename the formatter settings).
 
 ## Screenshots
-![Track4J](/pic/track4j.gif)
-![Track4J](/pic/derivative.gif)
+
 
 ## License
 [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)
