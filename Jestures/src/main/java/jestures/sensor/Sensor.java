@@ -17,7 +17,7 @@
 package jestures.sensor;
 
 /**
- * The @link{Sensor} class. It rapresents a general sensor that can be attached to the framework.
+ * It represents a general sensor that can be attached to the framework.
  * <p>
  * Sensors may be Kinect, LipMotion ecc. If your sensor is not present please contact me.
  */
@@ -26,7 +26,7 @@ public interface Sensor {
      * Start the sensor with the default configuration setted in the constructor specific sensor.
      *
      * @throws SensorException
-     *             if the sensor encurres in problems during starting phase.
+     *             if the sensor encurred in problems during starting phase.
      *
      * @throws IllegalSensorStateException
      *             if sensor is started outside recognition
@@ -45,7 +45,7 @@ public interface Sensor {
     void stopSensor() throws SensorException, IllegalSensorStateException;
 
     /**
-     * Attache the recognizer.
+     * Attache the tracker.
      *
      * @param recognizer
      *            the {@link SensorObserver}
@@ -58,4 +58,19 @@ public interface Sensor {
      * @return <code>true</code> if it's on
      */
     boolean state();
+
+    /**
+     * Set the elevation angle of the sensor.
+     *
+     * @param angle
+     *            the angle
+     */
+    void setElevationAngle(int angle);
+
+    /**
+     * Get the elevation angle.
+     *
+     * @return the elevation angle
+     */
+    int getElevationAngle();
 }

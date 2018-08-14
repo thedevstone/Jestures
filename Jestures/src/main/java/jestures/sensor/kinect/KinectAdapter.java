@@ -16,10 +16,12 @@
 
 package jestures.sensor.kinect;
 
+import java.io.IOException;
 import java.util.stream.IntStream;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.apache.log4j.Logger;
 
 import edu.ufl.digitalworlds.j4k.J4KSDK;
 import edu.ufl.digitalworlds.j4k.Skeleton;
@@ -27,11 +29,17 @@ import jestures.core.file.FileManager;
 import jestures.sensor.Joint;
 
 /**
- * The @link{KinectAdapter} class. It adaps kinect J4KSDK to this framework.
+ * An adapter tries to make our sensor suitable with the J4KSDK library.
  */
 class KinectAdapter extends J4KSDK implements KinectInterfaceAdapter {
+    private static final Logger LOG = Logger.getLogger(KinectAdapter.class);
     static {
-        FileManager.createLibSubFolder();
+        FileManager.createKinectNativeFolderLib();
+        try {
+            FileManager.getAllUserFolder();
+        } catch (final IOException e) {
+            KinectAdapter.LOG.error(e);
+        }
     }
     private KinectObserver kinect;
     private boolean first;
@@ -107,7 +115,7 @@ class KinectAdapter extends J4KSDK implements KinectInterfaceAdapter {
                 final double[] doubleAcceleration = new double[3];
                 final float[] floatAccleration = this.getAccelerometerReading();
                 IntStream.range(0, floatAccleration.length)
-                        .forEach(index -> doubleAcceleration[index] = floatAccleration[index]);
+                         .forEach(index -> doubleAcceleration[index] = floatAccleration[index]);
                 acceleration = new Vector3D(doubleAcceleration);
 
                 // NOTIFY

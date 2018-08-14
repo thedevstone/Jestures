@@ -15,6 +15,7 @@
  *******************************************************************************/
 package jestures.core.codification;
 
+import java.util.ArrayList;
 import java.util.Queue;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
@@ -24,16 +25,19 @@ import com.google.common.collect.EvictingQueue;
 import jestures.core.tracking.TrackingObserver;
 
 /**
- * The @link{DerivativeCodifier} class.
+ * A derivative codifier takes absolute vectors and create a list of theirs derivatives.
+ * <p>
+ * For example (2, 0) (3, 5) (3, 6) become (1, 5) (0, 1) and so on.
  */
 public class DerivativeCodifier implements Codifier {
-    private final Queue<Vector2D> featureVector;
+    private Queue<Vector2D> featureVector;
     private Vector2D oldVector;
     private Vector2D derivative; // NOPMD
     private Vector2D startingVector;
     private int frame;
-    private FrameLenght frameLength;
+    private FrameLength frameLength;
     private TrackingObserver recognizer;
+    private static final Codification CODIFICATION = Codification.DERIVATIVE;
 
     /**
      * The @link{DerivativeCodifier.java} constructor.
@@ -41,11 +45,16 @@ public class DerivativeCodifier implements Codifier {
      * @param frames
      *            the gesture's duration in frame
      */
-    public DerivativeCodifier(final FrameLenght frames) {
-        this.featureVector = EvictingQueue.create(FrameLenght.THREE_SECONDS.getFrameNumber());
+    public DerivativeCodifier(final FrameLength frames) {
+        this.featureVector = EvictingQueue.create(frames.getFrameNumber());
         this.oldVector = new Vector2D(0, 0);
         this.frame = 0;
         this.frameLength = frames;
+    }
+
+    @Override
+    public Codification getCodificationType() {
+        return DerivativeCodifier.CODIFICATION;
     }
 
     @Override
@@ -59,11 +68,12 @@ public class DerivativeCodifier implements Codifier {
             this.startingVector = newVector;
         }
         if (this.frame > this.frameLength.getFrameNumber() - 1) {
+            this.recognizer.notifyOnFeatureVectorEvent(new ArrayList<Vector2D>(this.featureVector));
             this.resetFrame();
-            this.recognizer.notifyOnFeatureVectorEvent(this.featureVector);
         } else {
-            this.incrementFrame();
-            this.recognizer.notifyOnFrameChange(this.frame, this.derivative, this.startingVector.subtract(newVector));
+            this.recognizer.notifyOnFrameChange(this.frame, this.featureVector, this.derivative,
+                    this.startingVector.subtract(newVector));
+            this.frame++;
         }
     }
 
@@ -73,7 +83,7 @@ public class DerivativeCodifier implements Codifier {
     }
 
     @Override
-    public void attacheCoreRecognizer(final TrackingObserver recognizer) {
+    public void attacheTracker(final TrackingObserver recognizer) {
         this.recognizer = recognizer;
     }
 
@@ -82,22 +92,10 @@ public class DerivativeCodifier implements Codifier {
         this.frame = 0;
     }
 
-    private synchronized void incrementFrame() {
-        this.frame++;
-    }
-
-    /**
-     * Get the gesture lenght.
-     *
-     * @return the {@link FrameLenght}
-     */
-    public FrameLenght getGestureLenght() {
-        return this.frameLength;
-    }
-
     @Override
-    public void setFrameLength(final FrameLenght length) {
+    public synchronized void setFrameLength(final FrameLength length) {
         this.frameLength = length;
+        this.featureVector = EvictingQueue.create(length.getFrameNumber());
     }
 
 }

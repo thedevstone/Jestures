@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXProgressBar?>
+<?import com.jfoenix.controls.JFXScrollPane?>
+<?import com.jfoenix.controls.JFXSlider?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXToolbar?>
+<?import com.jfoenix.controls.JFXTreeView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="recorderPane" minHeight="800.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <StackPane id="tabStackPane" fx:id="tabStackPane" BorderPane.alignment="CENTER">
+         <children>
+            <JFXTabPane id="tab-pane" fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                  <Tab>
+                    <content>
+                      <JFXScrollPane id="userScrollPane" fx:id="userScrollPane">
+                         <children>  
+	                        <BorderPane id="userBorderPane" fx:id="userBorderPane">
+	                           <top>
+                                    <StackPane fx:id="userStackPane" BorderPane.alignment="CENTER">
+                                       <children>
+      	                              <HBox id="userHBox" fx:id="userHBox" alignment="CENTER" maxHeight="40.0" maxWidth="175.0" spacing="10.0" StackPane.alignment="CENTER">
+      	                                 <children>
+      	                                    <JFXComboBox id="exercise-combo-box" fx:id="selectUserCombo" focusColor="#405aa800" promptText="Select User" translateX="10.0" unFocusColor="#4d4d4d00">
+                                                   <HBox.margin>
+                                                      <Insets />
+                                                   </HBox.margin>
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                </JFXComboBox>
+      	                                 </children>
+      	                              </HBox>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </StackPane>
+	                           </top>
+                                 <bottom>
+      	                              <JFXTreeView fx:id="treeView" BorderPane.alignment="CENTER" />
+                                 </bottom>
+	                        </BorderPane>
+                          </children>
+                       </JFXScrollPane>
+                    </content>
+                  </Tab>
+                <Tab>
+                     <content>
+                        <StackPane id="canvas-pane" fx:id="liveCanvasStackPane" prefHeight="150.0" prefWidth="200.0" />
+                     </content>
+                </Tab>
+                <Tab>
+                     <content>
+                        <VBox id="chart-pane" fx:id="vbox" alignment="CENTER" />
+                     </content>
+                </Tab>
+                  <Tab>
+                     <content>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+                           <top>
+                              <Label text="RECOGNITION SETTINGS" BorderPane.alignment="CENTER">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                                 <BorderPane.margin>
+                                    <Insets top="10.0" />
+                                 </BorderPane.margin>
+                              </Label>
+                           </top>
+                           <center>
+                              <VBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <JFXComboBox id="exercise-combo-box" fx:id="udpateRateCombo" focusColor="#405aa800" promptText="Update Rate" unFocusColor="#4d4d4d00" />
+                                    <Label text="Accuracy">
+                                       <VBox.margin>
+                                          <Insets top="30.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <JFXSlider fx:id="sliderRadius" blockIncrement="0.0" majorTickUnit="1.0" max="10.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </JFXSlider>
+                                    <Label text="Minimun Threshold">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="30.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <JFXSlider fx:id="sliderMinThreshold" blockIncrement="0.0" majorTickUnit="100.0" max="2000.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </JFXSlider>
+                                    <Label text="Maximun Threshold">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="30.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <JFXSlider fx:id="sliderMaxThreshold" blockIncrement="100.0" majorTickUnit="100.0" max="5000.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </JFXSlider>
+                                    <Label text="Time Separation">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="30.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <JFXSlider fx:id="sliderTimeSeparation" majorTickUnit="100.0" max="1000.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </JFXSlider>
+                                    <Label text="Match Number">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets top="30.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <JFXSlider fx:id="sliderMatchNumber" majorTickUnit="1.0" max="10.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </JFXSlider>
+                                 </children>
+                                 <BorderPane.margin>
+                                    <Insets top="50.0" />
+                                 </BorderPane.margin>
+                              </VBox>
+                           </center>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <padding>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                           </padding>
+                           <bottom>
+                              <JFXButton fx:id="saveSettingsButton" buttonType="RAISED" BorderPane.alignment="CENTER" />
+                           </bottom></BorderPane>
+                     </content>
+                  </Tab>
+              </tabs>
+            </JFXTabPane>
+         </children>
+      </StackPane>
+   </center>
+   <bottom>
+      <VBox BorderPane.alignment="CENTER">
+         <children>
+            <JFXProgressBar id="progressBar" fx:id="progressBar" />
+            <JFXToolbar fx:id="toolbar" minHeight="50.0">
+               <right>
+                  <JFXButton id="start-button" fx:id="startButton" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" />
+               </right>
+               <padding>
+                  <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <left>
+                  <JFXComboBox id="exercise-combo-box" fx:id="frameLengthCombo" focusColor="#405aa800" minWidth="150.0" promptText="Frame Length" unFocusColor="#4d4d4d00" BorderPane.alignment="CENTER" />
+               </left>
+            </JFXToolbar>
+         </children>
+      </VBox>
+   </bottom>
+</BorderPane>

@@ -17,7 +17,7 @@
 package jestures.sensor.kinect;
 
 /**
- * The @link{KinectSensorType} class.
+ * A Kinect sensor comes with different settings.
  */
 public enum KinectSensors {
     /**
@@ -29,7 +29,7 @@ public enum KinectSensors {
     private final int type;
 
     /**
-     * The @link{KinectSensorType.java} constructor.
+     * The constructor.
      *
      * @param kinectType
      *            the kinect type
@@ -39,9 +39,9 @@ public enum KinectSensors {
     }
 
     /**
-     * Get the @link{type}.
+     * Get the sensor type..
      *
-     * @return the @link{type}
+     * @return the sensor type
      */
     public int getStartingSensors() {
         return this.type;

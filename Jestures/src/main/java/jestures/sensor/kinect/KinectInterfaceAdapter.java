@@ -17,26 +17,27 @@
 package jestures.sensor.kinect;
 
 /**
- * Interface for other kind of kinect SKD.
+ * Interface for other kind of kinect SDK. This interface hides library details from user.
  */
 interface KinectInterfaceAdapter {
     /**
      * Attache kinect instance for notification.
      *
      * @param kinect
-     *            the {@link KinectObserver}
+     *            the KinectObserver
      */
     void attacheKinect(KinectObserver kinect);
 
     /**
-     * Start the {@link KinectObserver}.
+     * Start the Kinect.
      *
-     * @param kinectStartingSensors
-     *            the {@link KinectSensors}
-     * @param kinectVersion
-     *            the {@link KinectVersion}
      */
     void start();
+
+    /**
+     * Stops the Kinect.
+     */
+    void stop();
 
     /**
      * Print Sensor info.

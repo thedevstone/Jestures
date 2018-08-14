@@ -20,7 +20,7 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 /**
- * The @link{ObservableRecognizer} class.
+ * The observer pattern for the sensor. The Tracker observes the sensor and the sensor notify the tracker.
  */
 public interface SensorObserver {
     /**

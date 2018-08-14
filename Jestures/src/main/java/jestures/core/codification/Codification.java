@@ -16,7 +16,7 @@
 package jestures.core.codification;
 
 /**
- * The @link{Codification} class.
+ * The codification type. By default the codification is derivative but other type of codification can be created.
  */
 public enum Codification {
     /**

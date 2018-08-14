@@ -17,7 +17,7 @@
 package jestures.sensor;
 
 /**
- * The @link{SensorException} class.
+ * This exception is thrown when a problem occour during sensor start and stop.
  */
 public class SensorException extends Exception {
 

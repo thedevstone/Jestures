@@ -19,17 +19,28 @@ import java.util.Queue;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-import jestures.core.tracking.Tracker;
+import jestures.core.tracking.TrackerImpl;
 import jestures.core.tracking.TrackingObserver;
 
 /**
- * The @link{Codifier} class.
+ * A Codifier take absolute vector in space (vector2D or vector3D) and transforms them in a relative way.
+ * <p>
+ * This can be done in a derivative way or using other type of codification, for example a starting point codification
+ * where every vector is subtracted by the first vector of the list.
  */
 public interface Codifier {
+
+    /**
+     * Get the {@link Codification}.
+     *
+     * @return the {@link Codification} type
+     */
+    Codification getCodificationType();
+
     /**
      * Codify the body joint according to class specification. This performs discretization on skeleton stream.
      * <p>
-     * Codification can be derivative or on vectorial space.
+     * Codification can be derivative or on starting point.
      *
      * @param newVector
      *            the primary {@link Vector2D} joint according to sensor settings
@@ -45,12 +56,12 @@ public interface Codifier {
     Queue<Vector2D> extractFeatureVector();
 
     /**
-     * Attache the {@link Tracker} for feeback notification.
+     * Attache the {@link TrackerImpl} for feedback notification.
      *
      * @param recognizer
-     *            the {@link Tracker}
+     *            the {@link TrackerImpl}
      */
-    void attacheCoreRecognizer(TrackingObserver recognizer);
+    void attacheTracker(TrackingObserver recognizer);
 
     /**
      * Reset the frame for starting a new gesture.
@@ -58,10 +69,10 @@ public interface Codifier {
     void resetFrame();
 
     /**
-     * Set the frame length.
-     * 
+     * Set the frame length or FPS.
+     *
      * @param length
-     *            the {@link FrameLenght}.
+     *            the {@link FrameLength}.
      */
-    void setFrameLength(FrameLenght length);
+    void setFrameLength(FrameLength length);
 }

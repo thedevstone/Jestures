@@ -19,14 +19,14 @@ package jestures.sensor.kinect;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-import jestures.core.tracking.Tracker;
+import jestures.core.tracking.TrackerImpl;
 import jestures.sensor.IllegalSensorStateException;
 import jestures.sensor.Joint;
 import jestures.sensor.Sensor;
 import jestures.sensor.SensorObserver;
 
 /**
- * The @link{Kinect} class.
+ * Kinect sensor from Microsoft. A very basic configuration for the sensor.
  */
 public class Kinect implements KinectObserver, Sensor {
     private final KinectAdapter kinectAdapter;
@@ -73,22 +73,23 @@ public class Kinect implements KinectObserver, Sensor {
 
     @Override
     public void startSensor() throws IllegalSensorStateException {
-        if (Tracker.getInstance().isStarted()) {
+        if (!TrackerImpl.checkStarted()) {
+            throw new IllegalSensorStateException();
+        } else {
             this.kinectAdapter.start();
             this.state = true;
-        } else {
-            throw new IllegalSensorStateException();
         }
     }
 
     @Override
     public void stopSensor() throws IllegalSensorStateException {
-        if (!Tracker.getInstance().isStarted()) {
+        if (TrackerImpl.checkStarted()) {
+            throw new IllegalSensorStateException();
+        } else {
             this.kinectAdapter.stop();
             this.state = false;
-        } else {
-            throw new IllegalSensorStateException();
         }
+
     }
 
     @Override
@@ -99,6 +100,16 @@ public class Kinect implements KinectObserver, Sensor {
     @Override
     public boolean state() {
         return this.state;
+    }
+
+    @Override
+    public void setElevationAngle(final int angle) {
+        this.kinectAdapter.setElevationAngle(angle);
+    }
+
+    @Override
+    public int getElevationAngle() {
+        return this.kinectAdapter.getElevationAngle();
     }
 
 }

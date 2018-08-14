@@ -1,55 +1,40 @@
-/**
+/*******************************************************************************
+ * Copyright (c) 2018 Giulianini Luca
  *
- */
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *******************************************************************************/
 package jestures.core.view;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-import jestures.core.codification.FrameLenght;
-import jestures.core.tracking.Tracking;
+import jestures.core.recognition.Recognition;
+import jestures.core.tracking.Tracker;
 
 /**
- * The @link{AbstractView} class.
+ * A simple skeleton view. Extends it to create your own view.
  */
-public abstract class AbstractView implements View {
-    private final Tracking tracker;
-    private FrameLenght frameLength;
+public abstract class AbstractView implements RecognitionView {
+    private final Recognition recognizer; // NOPMD
 
     /**
      * The @link{AbstractView.java} constructor.
      *
-     * @param tracker
-     *            the {@link Tracking} tracker
+     * @param recognizer
+     *            the {@link Tracker} recognizer
      */
-    public AbstractView(final Tracking tracker) {
-        this.tracker = tracker;
-    }
-
-    @Override
-    public FrameLenght getFrameLength() {
-        return this.frameLength;
-    }
-
-    @Override
-    public void setFrameLength(final FrameLenght length) {
-        this.frameLength = length;
-        this.tracker.setFrameLength(length);
-        System.out.println(length);
-    }
-
-    @Override
-    public void startSensor() {
-        this.tracker.startSensor();
-    }
-
-    @Override
-    public void stopSensor() {
-        this.tracker.stopSensor();
-    }
-
-    @Override
-    public Tracking getTracker() {
-        return this.tracker;
+    public AbstractView(final Recognition recognizer) {
+        this.recognizer = recognizer;
+        this.recognizer.getClass();
     }
 
     @Override

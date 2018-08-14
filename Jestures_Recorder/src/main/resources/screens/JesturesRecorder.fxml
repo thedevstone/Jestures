@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXProgressBar?>
+<?import com.jfoenix.controls.JFXScrollPane?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXToolbar?>
+<?import com.jfoenix.controls.JFXTreeView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="recorderPane" minHeight="800.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <StackPane id="tabStackPane" fx:id="tabStackPane" BorderPane.alignment="CENTER">
+         <children>
+            <JFXTabPane id="tab-pane" fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                  <Tab>
+                    <content>
+                      <JFXScrollPane id="userScrollPane" fx:id="userScrollPane">
+                         <children>  
+	                        <BorderPane id="userBorderPane" fx:id="userBorderPane">
+	                           <top>
+                                    <StackPane fx:id="userStackPane" BorderPane.alignment="CENTER">
+                                       <children>
+      	                              <HBox id="userHBox" fx:id="userHBox" alignment="CENTER" maxHeight="40.0" maxWidth="175.0" spacing="10.0" StackPane.alignment="CENTER">
+      	                                 <children>
+      	                                    <JFXComboBox id="exercise-combo-box" fx:id="selectUserCombo" focusColor="#405aa800" promptText="Select User" translateX="10.0" unFocusColor="#4d4d4d00">
+                                                   <HBox.margin>
+                                                      <Insets />
+                                                   </HBox.margin>
+                                                   <padding>
+                                                      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                                   </padding>
+                                                </JFXComboBox>
+      	                                    <JFXButton id="userButton" fx:id="createUserButton" buttonType="RAISED" prefHeight="40.0" prefWidth="40.0" ripplerFill="#6989e178" translateX="5.0" />
+      	                                 </children>
+      	                              </HBox>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </StackPane>
+	                           </top>
+                                 <bottom>
+      	                              <JFXTreeView fx:id="treeView" BorderPane.alignment="CENTER" />
+                                 </bottom>
+	                        </BorderPane>
+                          </children>
+                       </JFXScrollPane>
+                    </content>
+                  </Tab>
+                <Tab>
+                     <content>
+                        <StackPane id="canvas-pane" fx:id="liveCanvasStackPane" prefHeight="150.0" prefWidth="200.0" />
+                     </content>
+                </Tab>
+                <Tab>
+                     <content>
+                        <VBox id="chart-pane" fx:id="vbox" alignment="CENTER" />
+                     </content>
+                </Tab>
+                  <Tab>
+                    <content>
+          				<AnchorPane fx:id="listViewAnchorPane">
+                           <children>
+                              <JFXScrollPane id="featureVectorScrollPane" fx:id="scrollPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <JFXListView id="list-view-feature" fx:id="listView" />
+                                 </children>
+                              </JFXScrollPane>
+                              <JFXButton id="clearButton" fx:id="clearListViewButton" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+                              <JFXButton fx:id="addAllListViewButton" AnchorPane.bottomAnchor="60.0" AnchorPane.rightAnchor="10.0" />
+                           </children>
+      					</AnchorPane> 
+                    </content>
+                  </Tab>
+              </tabs>
+            </JFXTabPane>
+         </children>
+      </StackPane>
+   </center>
+   <bottom>
+      <VBox BorderPane.alignment="CENTER">
+         <children>
+            <JFXProgressBar fx:id="progressBar" />
+            <JFXToolbar fx:id="toolbar" minHeight="50.0">
+               <right>
+                  <JFXButton id="start-button" fx:id="startButton" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" translateY="10.0" />
+               </right>
+               <padding>
+                  <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <left>
+                  <HBox id="gestureHBox" fx:id="gestureHBox" alignment="CENTER" maxWidth="230.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <JFXComboBox id="exercise-combo-box" fx:id="gestureComboBox" focusColor="#405aa800" promptText="SELECT GESTURE" unFocusColor="#4d4d4d00" />
+                        <JFXButton fx:id="addGestureButton" buttonType="RAISED" />
+                        <JFXButton fx:id="removeGestureButton" buttonType="RAISED" />
+                     </children>
+                  </HBox>
+               </left>
+               <center>
+                  <JFXComboBox id="exercise-combo-box" fx:id="frameLengthCombo" focusColor="#405aa800" minWidth="150.0" promptText="Frame Length" unFocusColor="#4d4d4d00" BorderPane.alignment="CENTER" />
+               </center>
+            </JFXToolbar>
+         </children>
+      </VBox>
+   </bottom>
+</BorderPane>

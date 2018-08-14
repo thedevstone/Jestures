@@ -25,7 +25,7 @@ public enum FeatureExtractionFrequency {
     /**
      * Gestures duration in frame. 30 FPS base
      */
-    TEN_SECOND(10), TWENTY_SECONDS(20), THIRTY_SECONDS(30);
+    FPS_10(10), FPS_20(20), FPS_30(30);
 
     private int frequencyNumber;
 

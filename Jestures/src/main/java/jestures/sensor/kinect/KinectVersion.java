@@ -17,7 +17,7 @@
 package jestures.sensor.kinect;
 
 /**
- * The @link{KinectVersion} class.
+ * Kinect version.
  */
 public enum KinectVersion {
 
@@ -33,7 +33,7 @@ public enum KinectVersion {
     private byte version;
 
     /**
-     * The @link{KinectVersion.java} constructor.
+     * The constructor.
      *
      * @param kinectVersion
      *            the kinect version
@@ -43,9 +43,9 @@ public enum KinectVersion {
     }
 
     /**
-     * Get the @link{version}.
+     * Get the version.
      *
-     * @return the @link{version}
+     * @return the version
      */
     public byte getVersion() {
         return this.version;

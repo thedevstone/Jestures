@@ -1,63 +1,60 @@
+/*******************************************************************************
+ * Copyright (c) 2018 Giulianini Luca
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *******************************************************************************/
 package jestures.core.view;
 
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-
-import jestures.core.codification.FrameLenght;
-import jestures.core.tracking.Tracking;
+import jestures.core.codification.FrameLength;
+import jestures.core.tracking.Tracker;
 
 /**
- *
- *
+ * A view that performs all basic tasks.
  */
-public interface View {
+public interface View extends ViewObserver {
 
     /**
-     * Update view on frame event.
+     * Start the {@link Tracker}.
+     */
+    void startSensor();
+
+    /**
+     * Stop the {@link Tracker}.
+     */
+    void stopSensor();
+
+    /**
+     * Load the userProfile.
      *
-     * @param frame
-     *            the frame
-     * @param derivative
-     *            the {@link Vector2D} derivative
-     * @param path
-     *            the {@link Vector2D} gesture path
+     * @param name
+     *            the String name
      */
-    void notifyOnFrameChange(int frame, Vector2D derivative, Vector2D path);
-
-    /**
-     * Update view on feature vector event.
-     */
-    void notifyOnFeatureVectorEvent();
+    void loadUserProfile(String name);
 
     /**
      * Set the frame Length.
      *
      * @param length
-     *            the {@link FrameLenght}
+     *            the {@link FrameLength}
      */
-    void setFrameLength(FrameLenght length);
+    void setFrameLength(FrameLength length);
 
     /**
-     * Start the {@link Tracking}.
-     */
-    void startSensor();
-
-    /**
-     * Stop the {@link Tracking}.
-     */
-    void stopSensor();
-
-    /**
-     * Get the tracker.
+     * Set the sensor elevation.
      *
-     * @return the {@link Tracking} tracker
+     * @param angle
+     *            the angle
      */
-    Tracking getTracker();
-
-    /**
-     * Get the {@link FrameLenght} for tracking.
-     *
-     * @return the {@link FrameLenght}
-     */
-    FrameLenght getFrameLength();
+    void setSensorElevation(int angle);
 
 }

@@ -20,7 +20,8 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 /**
- * The @link{ObservableKinect} class. Kinect Adapter notify Kinect throw this interface.
+ * Kinect observer. The Kinect observes the Kinect Adapter and the kinect Adapter notify the kinect when a new vector is
+ * available.
  */
 interface KinectObserver {
     /**
