@@ -68,6 +68,7 @@ public interface Recorder extends Tracker {
      * @throws IOException
      *             if
      * @throws FileNotFoundException
+     *             the {@link FileNotFoundException}
      */
     boolean createUserProfile(String name) throws IOException;
 
