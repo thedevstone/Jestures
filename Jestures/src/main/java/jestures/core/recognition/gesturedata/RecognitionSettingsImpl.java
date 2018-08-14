@@ -17,8 +17,6 @@ package jestures.core.recognition.gesturedata;
 
 import java.io.Serializable;
 
-import org.apache.log4j.Logger;
-
 import jestures.core.recognition.UpdateRate;
 import smile.math.distance.DynamicTimeWarping;
 
@@ -33,7 +31,7 @@ public class RecognitionSettingsImpl implements Serializable, RecognitionSetting
      */
     private static final long serialVersionUID = -698249799317303588L;
 
-    private static final Logger LOG = Logger.getLogger(RecognitionSettingsImpl.class);
+    // private static final Logger LOG = Logger.getLogger(RecognitionSettingsImpl.class);
     private UpdateRate updateRate;
     private double dtwRadius;
     private int minDTWThreashold;
@@ -126,7 +124,6 @@ public class RecognitionSettingsImpl implements Serializable, RecognitionSetting
     public void setMinDtwThreashold(final int minDTWThreashold) {
         if (minDTWThreashold >= 0) {
             this.minDTWThreashold = minDTWThreashold;
-            RecognitionSettingsImpl.LOG.debug(this.minDTWThreashold);
         } else {
             throw new IllegalStateException("Min threshold must be greater than 0");
         }
@@ -158,7 +155,6 @@ public class RecognitionSettingsImpl implements Serializable, RecognitionSetting
     public void setMaxDtwThreashold(final int maxDtwThreashold) {
         if (maxDtwThreashold >= 0) {
             this.maxDTWThreashold = maxDtwThreashold;
-            RecognitionSettingsImpl.LOG.debug(this.maxDTWThreashold);
         } else {
             throw new IllegalStateException("Min threshold must be greater than 0");
         }
@@ -209,7 +205,6 @@ public class RecognitionSettingsImpl implements Serializable, RecognitionSetting
     public void setMinTimeSeparation(final int minTimeSeparation) {
         if (minTimeSeparation >= 0 && minTimeSeparation < 1000) {
             this.minTimeSeparation = minTimeSeparation;
-            RecognitionSettingsImpl.LOG.debug(this.minTimeSeparation);
         } else {
             throw new IllegalStateException("Time must be greater than 0 and less than 1000");
         }
@@ -235,7 +230,6 @@ public class RecognitionSettingsImpl implements Serializable, RecognitionSetting
     public void setMatchNumber(final int matchNumber) {
         if (matchNumber >= 0) {
             this.matchNumber = matchNumber;
-            RecognitionSettingsImpl.LOG.debug(this.matchNumber);
         } else {
             throw new IllegalStateException("Match number must be greater than 0");
         }

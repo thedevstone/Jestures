@@ -1,19 +1,18 @@
 plugins {
-    id "com.jfrog.bintray" version "1.7.3"
+    id 'com.jfrog.bintray' version '1.7.3'
     id 'com.jfrog.artifactory' version '4.5.2'
+    id 'java-library'
+    id 'java'
+    id 'maven'
+    id 'maven-publish'
+    id 'signing'
 }
-
-
-apply plugin: 'java-library'
-apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'maven-publish'
-apply plugin: 'signing'
 
 group = project_group
 archivesBaseName = project_artifact
 version = project.project_version
 
+//TASKS
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allSource
@@ -158,7 +157,6 @@ publishing {
             groupId project_group
             artifactId project_artifact
             version project.project_version
-            
             
             artifact sourcesJar {
 	        	classifier 'sources'

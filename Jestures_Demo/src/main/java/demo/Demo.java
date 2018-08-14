@@ -84,6 +84,10 @@ public class Demo {
 
             }
         });
+        recognizer.setOnGestureRecognized(t -> {
+            System.out.println(t);
+        });
+
     }
 
 }

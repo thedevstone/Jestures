@@ -13,31 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-
-package jestures.core.view;
-
-import jestures.core.recognition.gesturedata.RecognitionSettings;
-import jestures.core.recognition.gesturedata.RecognitionSettingsImpl;
+package jestures.core.recognition;
 
 /**
- * Pattern obsrver that extends the view obersver.
- *
+ * Interface that generate gesture events.
  */
-public interface RecognitionViewObserver extends ViewObserver {
-
-    /**
-     * Update the recognition settings.
-     *
-     * @param settings
-     *            the {@link RecognitionSettings}
-     */
-    void updateSettings(RecognitionSettingsImpl settings);
-
+public interface GestureListener {
     /**
      * Triggered when a gesture is recognized.
      *
      * @param gestureName
-     *            the gesture name
+     *            the String gesture name
      */
     void onGestureRecognized(String gestureName);
+
 }

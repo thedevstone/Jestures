@@ -1,12 +1,12 @@
 plugins {
     id "com.jfrog.bintray" version "1.7.3"
     id 'com.jfrog.artifactory' version '4.5.2'
+    id 'java'
+    id 'application'
+    id 'maven'
+    id 'maven-publish'
+    id 'signing'
 }
-apply plugin: 'application'
-apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'maven-publish'
-apply plugin: 'signing'
 
 mainClassName = 'recorder.controller.Main'
 
@@ -15,6 +15,7 @@ group = project_group
 archivesBaseName = project_artifact
 version = project.project_version
 
+//TASKS
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
     from sourceSets.main.allSource

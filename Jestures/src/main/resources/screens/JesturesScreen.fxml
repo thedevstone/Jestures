@@ -83,7 +83,7 @@
                            <center>
                               <VBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">
                                  <children>
-                                    <JFXComboBox fx:id="udpateRateCombo" focusColor="#405aa800" promptText="Update Rate" unFocusColor="#4d4d4d00" />
+                                    <JFXComboBox id="exercise-combo-box" fx:id="udpateRateCombo" focusColor="#405aa800" promptText="Update Rate" unFocusColor="#4d4d4d00" />
                                     <Label text="Accuracy">
                                        <VBox.margin>
                                           <Insets top="30.0" />

@@ -211,6 +211,14 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
         });
     }
 
+    @Override
+    public void onGestureRecognized(final String gestureName) {
+        Platform.runLater(() -> {
+            ViewUtilities.showSnackBar((Pane) this.recorderPane.getCenter(), gestureName, Duration.MEDIUM,
+                    DimDialogs.MEDIUM, null);
+        });
+    }
+
     // ############################################## TO TRACKER (VIEW) ###################################
     @Override
     public void startSensor() {
@@ -358,5 +366,4 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
         PlatformImpl.startup(() -> {
         });
     }
-
 }

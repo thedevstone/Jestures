@@ -62,6 +62,14 @@ public interface Recognition extends Tracker {
     List<List<Vector2D>> getGestureDataset(String gestureName);
 
     /**
+     * Attache the listener.
+     *
+     * @param listener
+     *            the listener
+     */
+    void setOnGestureRecognized(GestureListener listener);
+
+    /**
      * Set the {@link DynamicTimeWarping} radius.
      *
      * @param radius

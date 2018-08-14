@@ -29,7 +29,6 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-import org.apache.log4j.Logger;
 
 import com.google.common.base.Functions;
 import com.google.gson.JsonSyntaxException;
@@ -38,8 +37,8 @@ import javafx.util.Pair;
 import jestures.core.recognition.gesturedata.RecognitionSettingsImpl;
 import jestures.core.serialization.Serializer;
 import jestures.core.serialization.UserManager;
-import jestures.core.tracking.TrackerImpl;
 import jestures.core.tracking.Tracker;
+import jestures.core.tracking.TrackerImpl;
 import jestures.core.view.RecognitionViewObserver;
 import jestures.core.view.screens.RecognitionScreenView;
 import smile.math.distance.DynamicTimeWarping;
@@ -49,10 +48,11 @@ import smile.math.distance.DynamicTimeWarping;
  *
  */
 public final class Recognizer extends TrackerImpl implements Recognition {
-    private static final Logger LOG = Logger.getLogger(Recognizer.class);
+    // private static final Logger LOG = Logger.getLogger(Recognizer.class);
     private final Serializer userManager;
     private static Recognition instance;
     private final Set<RecognitionViewObserver> view;
+    private final Set<GestureListener> gestureListener;
     private Map<String, List<Vector2D[]>> userDataset;
     private long lastGestureTime;
 
@@ -63,6 +63,7 @@ public final class Recognizer extends TrackerImpl implements Recognition {
 
     private Recognizer() {
         this.view = new HashSet<>();
+        this.gestureListener = new HashSet<>();
         this.userManager = new UserManager();
         this.userDataset = null;
         this.lastGestureTime = 0;
@@ -184,8 +185,10 @@ public final class Recognizer extends TrackerImpl implements Recognition {
                  .stream()
                  .filter(k -> k.getValue() > this.recognitionSettings.getMatchNumber()) // MATCH NUMBER
                  .max(Comparator.comparing(Entry::getValue))
-                 .ifPresent(t -> Recognizer.LOG.debug(t.getKey()));
-
+                 .ifPresent(t -> {
+                     this.gestureListener.forEach(k -> k.onGestureRecognized(t.getKey()));
+                     this.view.forEach(k -> k.onGestureRecognized(t.getKey()));
+                 });
     }
 
     @Override
@@ -227,6 +230,11 @@ public final class Recognizer extends TrackerImpl implements Recognition {
     public void setMatchNumber(final int matchNumber) {
         this.recognitionSettings.setMatchNumber(matchNumber);
 
+    }
+
+    @Override
+    public void setOnGestureRecognized(final GestureListener listener) {
+        this.gestureListener.add(listener);
     }
 
 }
