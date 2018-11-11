@@ -221,6 +221,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     @Override
     public void startSensor() {
         this.selectUserCombo.setDisable(true);
+        this.gestureHBox.setDisable(true);
         this.recorder.startSensor();
     }
 
@@ -229,6 +230,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
         this.clearCanvasAndChart();
         this.recorder.stopSensor();
         this.selectUserCombo.setDisable(false);
+        this.gestureHBox.setDisable(false);
     }
 
     @Override
@@ -317,6 +319,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
                 Duration.MEDIUM, DimDialogs.SMALL, null);
 
         this.createGestureTreeView(this.recorder.getUserName());
+        this.startButton.setDisable(true);
     }
 
     /**

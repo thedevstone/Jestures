@@ -94,7 +94,6 @@ public final class RecorderImpl extends TrackerImpl implements Recorder {
     public void notifyOnFrameChange(final int frame, final Queue<Vector2D> featureVector, final Vector2D derivative,
             final Vector2D distanceVector) {
         this.view.forEach(t -> t.notifyOnFrameChange(frame, derivative, distanceVector));
-
     }
 
     @Override
