@@ -70,7 +70,7 @@ public interface Serializer {
      *
      * @return the {@link Map} of all gestures data
      */
-    Map<String, List<Vector2D[]>> getDatasetForRecognition();
+    Map<Integer, List<Vector2D[]>> getDatasetForRecognition(Map<Integer, String> gestureNameMapping);
 
     /**
      * Get all template (feature vectors) for the selected gesture.

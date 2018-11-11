@@ -72,9 +72,10 @@ public class UserManager implements Serializer {
     }
 
     @Override
-    public Map<String, List<Vector2D[]>> getDatasetForRecognition() {
+    public Map<Integer, List<Vector2D[]>> getDatasetForRecognition(final Map<Integer, String> gestureKeyToStringMapping) {
         final Map<String, List<List<Vector2D>>> tempMap = this.userData.getAllGesturesData();
-        final Map<String, List<Vector2D[]>> mappaOut = new HashMap<>();
+        final Map<Integer, List<Vector2D[]>> mappaOut = new HashMap<>();
+        int gestureKey = 0;
         for (final String elem : tempMap.keySet()) {
             final List<Vector2D[]> newGestureDataset = new ArrayList<>();
             for (final List<Vector2D> gestureDataset : tempMap.get(elem)) {
@@ -82,7 +83,9 @@ public class UserManager implements Serializer {
                 gestureDataset.toArray(newGesture);
                 newGestureDataset.add(newGesture);
             }
-            mappaOut.put(elem, newGestureDataset);
+            mappaOut.put(gestureKey, newGestureDataset);
+            gestureKeyToStringMapping.put(gestureKey, elem);
+            gestureKey++;
         }
         return mappaOut;
     }

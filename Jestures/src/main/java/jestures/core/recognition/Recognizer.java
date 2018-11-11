@@ -18,19 +18,17 @@ package jestures.core.recognition;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.math3.stat.StatUtils;
 
-import com.google.common.base.Functions;
 import com.google.gson.JsonSyntaxException;
 
 import javafx.util.Pair;
@@ -53,7 +51,8 @@ public final class Recognizer extends TrackerImpl implements Recognition {
     private static Recognition instance;
     private final Set<RecognitionViewObserver> view;
     private final Set<GestureListener> gestureListener;
-    private Map<String, List<Vector2D[]>> userDataset;
+    private Map<Integer, List<Vector2D[]>> userDataset;
+    private final Map<Integer, String> intToStringMapping;
     private long lastGestureTime;
 
     // RECOGNITION
@@ -64,6 +63,7 @@ public final class Recognizer extends TrackerImpl implements Recognition {
     private Recognizer() {
         this.view = new HashSet<>();
         this.gestureListener = new HashSet<>();
+        this.intToStringMapping = new HashMap<>();
         this.userManager = new UserManager();
         this.userDataset = null;
         this.lastGestureTime = 0;
@@ -137,7 +137,7 @@ public final class Recognizer extends TrackerImpl implements Recognition {
     @Override
     public boolean loadUserProfile(final String name) throws FileNotFoundException, IOException, JsonSyntaxException {
         final boolean userExists = this.userManager.loadOrCreateNewUser(name);
-        this.userDataset = this.userManager.getDatasetForRecognition();
+        this.userDataset = this.userManager.getDatasetForRecognition(this.intToStringMapping);
         this.recognitionSettings = this.userManager.getRecognitionSettings();
         this.view.forEach(t -> t.updateSettings(this.recognitionSettings));
         return userExists;
@@ -161,13 +161,13 @@ public final class Recognizer extends TrackerImpl implements Recognition {
     // ############################################# TRACKER #########################################
 
     private void recognize(final Vector2D... featureVector) {
-        final List<Pair<Double, String>> distances = new ArrayList<>();
-        for (final String gestureName : this.userDataset.keySet()) {
-            for (final Vector2D[] gestureTemplate : this.userDataset.get(gestureName)) {
+        final List<Pair<Double, Integer>> distances = new ArrayList<>();
+        for (final Integer gestureKey : this.userDataset.keySet()) {
+            for (final Vector2D[] gestureTemplate : this.userDataset.get(gestureKey)) {
                 final double dtwDist = this.dtw.d(gestureTemplate, featureVector);
                 if (dtwDist < this.recognitionSettings.getMaxDTWThreashold()
                         && dtwDist > this.recognitionSettings.getMinDtwThreashold()) {
-                    distances.add(new Pair<Double, String>(dtwDist, gestureName));
+                    distances.add(new Pair<Double, Integer>(dtwDist, gestureKey));
                 }
             }
         }
@@ -178,17 +178,16 @@ public final class Recognizer extends TrackerImpl implements Recognition {
         } else {
             this.gestureRecognized = true;
         }
-        distances.stream()
-                 .map(t -> t.getValue())
-                 .collect(Collectors.groupingBy(Functions.identity(), Collectors.counting()))
-                 .entrySet()
-                 .stream()
-                 .filter(k -> k.getValue() > this.recognitionSettings.getMatchNumber()) // MATCH NUMBER
-                 .max(Comparator.comparing(Entry::getValue))
-                 .ifPresent(t -> {
-                     this.gestureListener.forEach(k -> k.onGestureRecognized(t.getKey()));
-                     this.view.forEach(k -> k.onGestureRecognized(t.getKey()));
-                 });
+
+        // KNN
+        distances.sort((a, b) -> a.getKey().compareTo(b.getKey()));
+        final double[] kNearestNeighbour = new double[100];
+        if (distances.size() > this.recognitionSettings.getMatchNumber()) {
+            for (int i = 0; i < this.recognitionSettings.getMatchNumber(); i++) {
+                kNearestNeighbour[i] = distances.get(i).getKey() + 0.0;
+            }
+            System.out.println(this.intToStringMapping.get((int) StatUtils.mode(kNearestNeighbour)[0]));
+        }
     }
 
     @Override
