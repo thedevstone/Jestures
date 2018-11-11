@@ -52,7 +52,7 @@ public final class Recognizer extends TrackerImpl implements Recognition {
     private final Set<RecognitionViewObserver> view;
     private final Set<GestureListener> gestureListener;
     private Map<Integer, List<Vector2D[]>> userDataset;
-    private final Map<Integer, String> intToStringMapping;
+    private final Map<Integer, String> intToStringGestureMapping;
     private long lastGestureTime;
 
     // RECOGNITION
@@ -63,7 +63,7 @@ public final class Recognizer extends TrackerImpl implements Recognition {
     private Recognizer() {
         this.view = new HashSet<>();
         this.gestureListener = new HashSet<>();
-        this.intToStringMapping = new HashMap<>();
+        this.intToStringGestureMapping = new HashMap<>();
         this.userManager = new UserManager();
         this.userDataset = null;
         this.lastGestureTime = 0;
@@ -137,7 +137,8 @@ public final class Recognizer extends TrackerImpl implements Recognition {
     @Override
     public boolean loadUserProfile(final String name) throws FileNotFoundException, IOException, JsonSyntaxException {
         final boolean userExists = this.userManager.loadOrCreateNewUser(name);
-        this.userDataset = this.userManager.getDatasetForRecognition(this.intToStringMapping);
+        this.intToStringGestureMapping.clear();
+        this.userDataset = this.userManager.getDatasetForRecognition(this.intToStringGestureMapping);
         this.recognitionSettings = this.userManager.getRecognitionSettings();
         this.view.forEach(t -> t.updateSettings(this.recognitionSettings));
         return userExists;
@@ -172,21 +173,20 @@ public final class Recognizer extends TrackerImpl implements Recognition {
             }
         }
 
-        if (distances.isEmpty()) {
-            // Recognizer.LOG.debug("NO GESURES");
-            this.gestureRecognized = false;
-        } else {
-            this.gestureRecognized = true;
-        }
-
-        // KNN
-        distances.sort((a, b) -> a.getKey().compareTo(b.getKey()));
-        final double[] kNearestNeighbour = new double[100];
         if (distances.size() > this.recognitionSettings.getMatchNumber()) {
+            // KNN
+            distances.sort((a, b) -> a.getKey().compareTo(b.getKey()));
+            final double[] kNearestNeighbor = new double[this.recognitionSettings.getMatchNumber()];
             for (int i = 0; i < this.recognitionSettings.getMatchNumber(); i++) {
-                kNearestNeighbour[i] = distances.get(i).getKey() + 0.0;
+                kNearestNeighbor[i] = distances.get(i).getValue() + 0.0;
             }
-            System.out.println(this.intToStringMapping.get((int) StatUtils.mode(kNearestNeighbour)[0]));
+            this.gestureRecognized = true;
+            final String gesture = this.intToStringGestureMapping.get((int) StatUtils.mode(kNearestNeighbor)[0]);
+            this.gestureListener.forEach(t -> t.onGestureRecognized(gesture));
+            this.view.forEach(t -> t.onGestureRecognized(gesture));
+        } else {
+            // NO GESTURE
+            this.gestureRecognized = false;
         }
     }
 

@@ -105,7 +105,7 @@
                                           <Insets top="30.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <JFXSlider fx:id="sliderMinThreshold" blockIncrement="0.0" majorTickUnit="100.0" max="2000.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true">
+                                    <JFXSlider fx:id="sliderMinThreshold" blockIncrement="0.0" max="1000.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true">
                                        <VBox.margin>
                                           <Insets top="10.0" />
                                        </VBox.margin>
@@ -118,7 +118,7 @@
                                           <Insets top="30.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <JFXSlider fx:id="sliderMaxThreshold" blockIncrement="100.0" majorTickUnit="100.0" max="5000.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true">
+                                    <JFXSlider fx:id="sliderMaxThreshold" blockIncrement="25.0" max="1000.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true">
                                        <VBox.margin>
                                           <Insets top="10.0" />
                                        </VBox.margin>
