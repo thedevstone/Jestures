@@ -180,7 +180,7 @@ public class UserManager implements Serializer {
     // ################################ SERIALIZE AND DESERIALIZE ####################
     private void deserializeUser(final String name) throws FileNotFoundException, IOException, JsonSyntaxException {
         // IF USER IS SO STUPID TO DELETE FOLDER WHILE RUNNING
-        final Reader reader = new FileReader(FileManager.getUserDir(name) + LibPaths.USER_DATASET_FILE);
+        final Reader reader = new FileReader(FileManager.getUserDir(name) + LibPaths.USER_DATASET_FILE.getDirName());
         this.userData = this.gson.fromJson(reader, UserDataImpl.class);
         reader.close();
     }
@@ -189,7 +189,7 @@ public class UserManager implements Serializer {
         // IF USER IS SO STUPID TO DELETE FOLDER WHILE RUNNING, CHECK IF DIRECTORY IS DELETED
         FileManager.createUserFolder(this.userData.getUserName());
         final Writer writer = new FileWriter(
-                FileManager.getUserDir(this.userData.getUserName()) + LibPaths.USER_DATASET_FILE, false);
+                FileManager.getUserDir(this.userData.getUserName()) + LibPaths.USER_DATASET_FILE.getDirName(), false);
         this.gson.toJson(this.userData, writer);
         writer.flush();
         writer.close();
