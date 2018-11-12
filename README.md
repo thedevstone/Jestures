@@ -22,8 +22,8 @@
 
 ## Download
 * Released builds are available from - [Bintray](https://bintray.com/giulianini/maven/Jestures/_latestVersion)
-* Released builds are available from - [Maven Central](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A"com.github.giulianini.track4j"%20AND%20a%3A"track4j")
-* Snapshot builds are available from - [Artifactory](http://oss.jfrog.org/oss-snapshot-local/com/github/giulianini/track4j/track4j/0.1.6-SNAPSHOT/)
+* Released builds are available from - [Maven Central](https://search.maven.org/search?q=g:com.github.giulianini.jestures)
+* Snapshot builds are available from - [Artifactory](http://oss.jfrog.org/oss-snapshot-local/com/github/giulianini/jestures/)
 
 ## Javadocs 
 If you need to access the documentation for any stable version, [javadoc.io](https://www.javadoc.io/doc/com.github.giulianini.track4j/track4j/) is probably the right place to search in.
