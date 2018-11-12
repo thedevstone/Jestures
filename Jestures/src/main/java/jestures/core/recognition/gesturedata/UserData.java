@@ -22,7 +22,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import jestures.core.codification.Codification;
 import jestures.core.codification.DerivativeCodifier;
-import jestures.core.codification.FrameLength;
+import jestures.core.codification.GestureLength;
 
 /**
  *
@@ -53,14 +53,14 @@ public interface UserData {
      * @param length
      *            the length
      */
-    void setGestureLength(FrameLength length);
+    void setGestureLength(GestureLength length);
 
     /**
      * Get the gesture length.
      *
      * @return the length
      */
-    FrameLength getGestureLength();
+    GestureLength getGestureLength();
 
     /**
      * Get the {@link RecognitionSettings}.

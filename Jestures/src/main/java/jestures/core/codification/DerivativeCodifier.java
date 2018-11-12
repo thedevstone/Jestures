@@ -35,7 +35,7 @@ public class DerivativeCodifier implements Codifier {
     private Vector2D derivative; // NOPMD
     private Vector2D startingVector;
     private int frame;
-    private FrameLength frameLength;
+    private GestureLength frameLength;
     private TrackingObserver recognizer;
     private static final Codification CODIFICATION = Codification.DERIVATIVE;
 
@@ -45,7 +45,7 @@ public class DerivativeCodifier implements Codifier {
      * @param frames
      *            the gesture's duration in frame
      */
-    public DerivativeCodifier(final FrameLength frames) {
+    public DerivativeCodifier(final GestureLength frames) {
         this.featureVector = EvictingQueue.create(frames.getFrameNumber());
         this.oldVector = new Vector2D(0, 0);
         this.frame = 0;
@@ -93,7 +93,7 @@ public class DerivativeCodifier implements Codifier {
     }
 
     @Override
-    public synchronized void setFrameLength(final FrameLength length) {
+    public synchronized void setFrameLength(final GestureLength length) {
         this.frameLength = length;
         this.featureVector = EvictingQueue.create(length.getFrameNumber());
     }

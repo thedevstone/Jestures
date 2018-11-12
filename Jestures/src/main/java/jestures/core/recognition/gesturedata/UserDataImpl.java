@@ -25,7 +25,7 @@ import java.util.Map;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.apache.log4j.Logger;
 
-import jestures.core.codification.FrameLength;
+import jestures.core.codification.GestureLength;
 import jestures.core.recognition.UpdateRate;
 
 /**
@@ -40,7 +40,7 @@ public class UserDataImpl implements UserData, Serializable {
     private static final int DEFAULT_TIME_SEP = 500;
     private static final int DEFAULT_MATCH = 3;
 
-    private static final FrameLength DEFAULT_GESTURE_LENGTH = FrameLength.FPS_30;
+    private static final GestureLength DEFAULT_GESTURE_LENGTH = GestureLength.FPS_30;
     /**
      *
      */
@@ -51,7 +51,7 @@ public class UserDataImpl implements UserData, Serializable {
      *
      */
     private String userName;
-    private FrameLength gestureLength;
+    private GestureLength gestureLength;
     private RecognitionSettingsImpl recognitionSettings;
     private final Map<String, List<List<Vector2D>>> gestures;
     private static final Logger LOG = Logger.getLogger(UserDataImpl.class);
@@ -82,17 +82,19 @@ public class UserDataImpl implements UserData, Serializable {
         return this.userName;
     }
 
+    // CHECKSTYLE:OFF
     @Override
-    public void setGestureLength(final FrameLength length) {
+    public void setGestureLength(final GestureLength length) {
         if (this.gestures.keySet().isEmpty()) {
             this.gestureLength = length;
+        } else if (this.gestureLength.equals(length)) {
         } else {
             throw new IllegalStateException("Cannot have different gesture length");
         }
     }
 
     @Override
-    public FrameLength getGestureLength() {
+    public GestureLength getGestureLength() {
         return this.gestureLength;
     }
 

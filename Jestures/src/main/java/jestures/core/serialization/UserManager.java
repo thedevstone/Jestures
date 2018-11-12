@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
-import jestures.core.codification.FrameLength;
+import jestures.core.codification.GestureLength;
 import jestures.core.file.FileManager;
 import jestures.core.recognition.gesturedata.RecognitionSettingsImpl;
 import jestures.core.recognition.gesturedata.UserData;
@@ -62,13 +62,13 @@ public class UserManager implements Serializer {
     }
 
     @Override
-    public void setGestureLength(final FrameLength length) throws IOException, IllegalStateException {
+    public void setGestureLength(final GestureLength length) throws IOException, IllegalStateException {
         this.userData.setGestureLength(length);
         this.serializeUser();
     }
 
     @Override
-    public FrameLength getGestureLength() {
+    public GestureLength getGestureLength() {
         return this.userData.getGestureLength();
     }
 

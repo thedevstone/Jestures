@@ -72,7 +72,7 @@ public interface Codifier {
      * Set the frame length or FPS.
      *
      * @param length
-     *            the {@link FrameLength}.
+     *            the {@link GestureLength}.
      */
-    void setFrameLength(FrameLength length);
+    void setFrameLength(GestureLength length);
 }

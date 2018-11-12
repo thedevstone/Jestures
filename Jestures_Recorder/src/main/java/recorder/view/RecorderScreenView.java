@@ -50,7 +50,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import jestures.core.codification.FrameLength;
+import jestures.core.codification.GestureLength;
 import jestures.core.file.FileManager;
 import jestures.core.recognition.gesturedata.DefaultGesture;
 import jestures.core.view.enums.DialogsType.DimDialogs;
@@ -68,7 +68,7 @@ import recorder.controller.Recorder;
 public class RecorderScreenView extends AbstractRecorderScreenView implements RecordingView {
     private static final Logger LOG = Logger.getLogger(RecorderScreenView.class);
     private final Recorder recorder;
-    private int frameLength;
+    private GestureLength gestureLength;
 
     // VIEW
     private Stage stage; // NOPMD
@@ -100,7 +100,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     @FXML
     private JFXComboBox<String> selectUserCombo;
     @FXML
-    private ComboBox<FrameLength> frameLengthCombo;
+    private ComboBox<GestureLength> frameLengthCombo;
 
     // ########### TAB 2 #############
 
@@ -119,7 +119,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     public RecorderScreenView(final Recorder recorder) {
         super(recorder);
         this.recorder = recorder;
-        this.frameLength = recorder.getFrameLength().getFrameNumber();
+        this.gestureLength = recorder.getFrameLength();
         // CREATE AND SET THE CONTROLLER. INIT THE BORDER PANE
         Platform.runLater(() -> {
             final FXMLLoader loader = new FXMLLoader();
@@ -172,7 +172,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
 
             this.getLiveContext().fillOval(-path.getX() + this.getLiveCanvas().getWidth() / 2,
                     path.getY() + this.getLiveCanvas().getHeight() / 2, 10, 10);
-            this.progressBar.setProgress(frame / (this.frameLength + 0.0));
+            this.progressBar.setProgress(frame / (this.gestureLength.getFrameNumber() + 0.0));
         });
     }
 
@@ -198,11 +198,6 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
         });
     }
 
-    @Override
-    public FrameLength getFrameLength() {
-        return this.recorder.getUserGestureLength();
-    }
-
     // ###################################### FROM RECORDER (REC VIEW OBSERVER) ##################################
 
     @Override
@@ -218,6 +213,14 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
                         DimDialogs.SMALL, null);
             });
         }
+    }
+
+    @Override
+    public void setGuiGestureLenght(final GestureLength gestureLength) {
+        Platform.runLater(() -> {
+            this.frameLengthCombo.setValue(gestureLength);
+            this.gestureLength = gestureLength;
+        });
     }
 
     // ############################################## TO TRACKER ###################################
@@ -237,14 +240,15 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     }
 
     @Override
-    public void setFrameLength(final FrameLength length) {
+    public void setUserGestureLength(final GestureLength length) {
         try {
             this.recorder.setUserGestureLength(length);
             this.setChart(length.getFrameNumber(), length.getFrameNumber());
-            this.frameLength = length.getFrameNumber();
+            this.gestureLength = length;
         } catch (final Exception e) {
-            ViewUtilities.showNotificationPopup("Gesture Length Error", e.getMessage() + ": " + this.getFrameLength(),
+            ViewUtilities.showNotificationPopup("Gesture Length Error", e.getMessage() + ": " + this.gestureLength,
                     Duration.MEDIUM, NotificationType.WARNING, null);
+            this.frameLengthCombo.getSelectionModel().select(this.recorder.getUserGestureLength());
         }
     }
 
@@ -264,7 +268,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     public void createUserProfile(final String username) {
         try {
             if (!this.recorder.createUserProfile(username)) {
-                this.setFrameLength(this.recorder.getUserGestureLength());
+                this.setUserGestureLength(this.recorder.getUserGestureLength());
                 ViewUtilities.showNotificationPopup("Cannot create User", username + " already exists", Duration.MEDIUM,
                         NotificationType.WARNING, null);
             } else {
@@ -331,7 +335,6 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
         this.createGestureTreeView(this.recorder.getUserName());
         this.startButton.setDisable(true);
         this.frameLengthCombo.setDisable(false);
-        this.frameLengthCombo.getSelectionModel().select(this.getFrameLength());
     }
 
     /**

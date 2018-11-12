@@ -42,7 +42,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import jestures.core.codification.FrameLength;
+import jestures.core.codification.GestureLength;
 import jestures.core.file.FileManager;
 import jestures.core.recognition.Recognition;
 import jestures.core.recognition.UpdateRate;
@@ -62,7 +62,7 @@ import jestures.core.view.utils.ViewUtilities;
 public class RecognitionScreenView extends AbstractRecognitionScreenView {
     private static final Logger LOG = Logger.getLogger(RecognitionScreenView.class);
     private final Recognition recognizer;
-    private final int frameLength;
+    private GestureLength gestureLength;
 
     // VIEW
     private Stage stage; // NOPMD
@@ -120,7 +120,7 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
     public RecognitionScreenView(final Recognition recognizer) {
         super(recognizer);
         this.recognizer = recognizer;
-        this.frameLength = recognizer.getFrameLength().getFrameNumber();
+        this.gestureLength = recognizer.getFrameLength();
 
         // CREATE AND SET THE CONTROLLER. INIT THE BORDER PANE
         Platform.runLater(() -> {
@@ -173,7 +173,7 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
 
             this.getLiveContext().fillOval(-path.getX() + this.getLiveCanvas().getWidth() / 2,
                     path.getY() + this.getLiveCanvas().getHeight() / 2, 10, 10);
-            this.progressBar.setProgress(frame / (this.frameLength + 0.0));
+            this.progressBar.setProgress(frame / (this.gestureLength.getFrameNumber() + 0.0));
         });
     }
 
@@ -218,7 +218,7 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
     }
 
     @Override
-    public void setGestureLengthLabel(final FrameLength length) {
+    public void setGestureLengthLabel(final GestureLength length) {
         this.labelGestureLength.setText("Gesture length: " + length.getFrameNumber());
     }
 
@@ -255,6 +255,8 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
         ViewUtilities.showSnackBar((Pane) this.recorderPane.getCenter(), "Database loaded and Gesture updated!",
                 Duration.MEDIUM, DimDialogs.SMALL, null);
         this.createGestureTreeView(this.recognizer.getUserName());
+        this.gestureLength = this.recognizer.getUserGestureLength();
+        this.setChart(this.gestureLength.getFrameNumber(), this.gestureLength.getFrameNumber());
         this.startButton.setDisable(false);
     }
 

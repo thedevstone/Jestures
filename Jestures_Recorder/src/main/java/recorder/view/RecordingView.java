@@ -15,7 +15,7 @@
  *******************************************************************************/
 package recorder.view;
 
-import jestures.core.codification.FrameLength;
+import jestures.core.codification.GestureLength;
 import jestures.core.view.View;
 
 /**
@@ -80,18 +80,11 @@ public interface RecordingView extends View, RecordingViewObserver {
     void deleteGesture();
 
     /**
-     * Get the {@link FrameLength} for tracking.
-     *
-     * @return the {@link FrameLength}
-     */
-    FrameLength getFrameLength();
-
-    /**
      * Set the frame Length.
      *
      * @param length
-     *            the {@link FrameLength}
+     *            the {@link GestureLength}
      */
-    void setFrameLength(FrameLength length);
+    void setUserGestureLength(GestureLength length);
 
 }

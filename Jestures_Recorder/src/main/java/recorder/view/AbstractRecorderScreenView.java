@@ -48,7 +48,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import jestures.core.codification.FrameLength;
+import jestures.core.codification.GestureLength;
 import jestures.core.recognition.gesturedata.DefaultGesture;
 import jestures.core.view.enums.DialogsType.DimDialogs;
 import jestures.core.view.enums.IconDim;
@@ -111,7 +111,7 @@ public abstract class AbstractRecorderScreenView implements RecordingView, Recor
     @FXML
     private VBox vbox;
     @FXML
-    private ComboBox<FrameLength> frameLengthCombo;
+    private ComboBox<GestureLength> frameLengthCombo;
     @FXML
     private JFXButton addGestureButton;
     @FXML
@@ -362,10 +362,10 @@ public abstract class AbstractRecorderScreenView implements RecordingView, Recor
 
     private void initCombos() {
         JFXDepthManager.setDepth(this.gestureHBox, 1);
-        this.frameLengthCombo.setOnAction(t -> this.setFrameLength(this.frameLengthCombo.getValue()));
-        this.frameLengthCombo.getItems().add(FrameLength.FPS_30);
-        this.frameLengthCombo.getItems().add(FrameLength.FPS_20);
-        this.frameLengthCombo.getItems().add(FrameLength.FPS_10);
+        this.frameLengthCombo.setOnAction(t -> this.setUserGestureLength(this.frameLengthCombo.getValue()));
+        this.frameLengthCombo.getItems().add(GestureLength.FPS_30);
+        this.frameLengthCombo.getItems().add(GestureLength.FPS_20);
+        this.frameLengthCombo.getItems().add(GestureLength.FPS_10);
         // this.frameLengthCombo.getSelectionModel().select(this.getFrameLength());
         JFXDepthManager.setDepth(this.frameLengthCombo, 4);
 

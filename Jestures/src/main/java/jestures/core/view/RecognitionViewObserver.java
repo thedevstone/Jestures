@@ -16,7 +16,7 @@
 
 package jestures.core.view;
 
-import jestures.core.codification.FrameLength;
+import jestures.core.codification.GestureLength;
 import jestures.core.recognition.gesturedata.RecognitionSettings;
 import jestures.core.recognition.gesturedata.RecognitionSettingsImpl;
 
@@ -46,7 +46,7 @@ public interface RecognitionViewObserver extends ViewObserver {
      * Set the frame Length.
      *
      * @param length
-     *            the {@link FrameLength}
+     *            the {@link GestureLength}
      */
-    void setGestureLengthLabel(FrameLength length);
+    void setGestureLengthLabel(GestureLength length);
 }

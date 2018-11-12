@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.List;
 
 import jestures.core.codification.Codification;
-import jestures.core.codification.FrameLength;
+import jestures.core.codification.GestureLength;
 import jestures.sensor.Sensor;
 
 /**
@@ -73,7 +73,7 @@ public interface Tracker {
      * @throws IOException
      *             IOexception
      */
-    void setFrameLength(FrameLength length) throws IOException;
+    void setFrameLength(GestureLength length) throws IOException;
 
     /**
      * Get all user gestures.
@@ -94,7 +94,7 @@ public interface Tracker {
      *
      * @return the frame length in frame
      */
-    FrameLength getFrameLength();
+    GestureLength getFrameLength();
 
     /**
      * Start the sensor.

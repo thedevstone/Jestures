@@ -24,7 +24,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import com.google.gson.JsonIOException;
 
-import jestures.core.codification.FrameLength;
+import jestures.core.codification.GestureLength;
 import jestures.core.recognition.gesturedata.RecognitionSettings;
 import jestures.core.recognition.gesturedata.RecognitionSettingsImpl;
 
@@ -48,14 +48,14 @@ public interface Serializer {
      * @throws IOException
      *             the {@link IOException}
      */
-    void setGestureLength(FrameLength length) throws IOException;
+    void setGestureLength(GestureLength length) throws IOException;
 
     /**
      * Get the gesture length.
      *
      * @return the length
      */
-    FrameLength getGestureLength();
+    GestureLength getGestureLength();
 
     /**
      * Get the {@link RecognitionSettings}.

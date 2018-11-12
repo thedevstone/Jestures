@@ -17,6 +17,7 @@ package recorder.view;
 
 import javax.swing.plaf.TreeUI;
 
+import jestures.core.codification.GestureLength;
 import jestures.core.view.ViewObserver;
 
 /**
@@ -33,4 +34,12 @@ public interface RecordingViewObserver extends ViewObserver {
      *            {@link TreeUI} if is recording
      */
     void setRecording(boolean isRecording);
+
+    /**
+     * Set the gesture length.
+     * 
+     * @param gestureLength
+     *            the gesture length
+     */
+    void setGuiGestureLenght(GestureLength gestureLength);
 }

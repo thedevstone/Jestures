@@ -24,7 +24,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import com.google.gson.JsonIOException;
 
-import jestures.core.codification.FrameLength;
+import jestures.core.codification.GestureLength;
 import jestures.core.tracking.Tracker;
 import recorder.view.RecordingView;
 import recorder.view.RecordingViewObserver;
@@ -57,7 +57,7 @@ public interface Recorder extends Tracker {
      *
      * @return the gesture length
      */
-    FrameLength getUserGestureLength();
+    GestureLength getUserGestureLength();
 
     /**
      * Set the user gesture length.
@@ -67,7 +67,7 @@ public interface Recorder extends Tracker {
      * @throws IOException
      *             ioexception
      */
-    void setUserGestureLength(FrameLength length) throws IOException;
+    void setUserGestureLength(GestureLength length) throws IOException;
 
     /**
      * Delete the user profile.
