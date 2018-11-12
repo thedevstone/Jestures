@@ -1,12 +1,14 @@
 [![Build Status](https://travis-ci.org/Giulianini/Jestures.svg?branch=master)](https://travis-ci.org/Giulianini/Jestures)
 [![PyPI - License](https://img.shields.io/github/license/Giulianini/Jestures.svg)](https://github.com/Giulianini/Jestures/blob/master/LICENSE.txt)
-[![Bintray](https://img.shields.io/bintray/v/giulianini/maven/Jestures.svg)](https://bintray.com/giulianini/maven/Jestures/_latestVersion)
-[ ![Download](https://api.bintray.com/packages/giulianini/maven/Jestures/images/download.svg) ](https://bintray.com/giulianini/maven/Jestures/_latestVersion)
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.giulianini.jestures/jestures/Jestures.svg)](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A"com.github.giulianini.track4j"%20AND%20a%3A"track4j")
+ [ ![Download](https://api.bintray.com/packages/giulianini/maven/Jestures/images/download.svg?version=0.0.2) ](https://bintray.com/giulianini/maven/Jestures/0.0.2/link)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.giulianini.jestures/jestures.svg)](https://search.maven.org/search?q=g:com.github.giulianini.jestures)
+[![Javadocs](https://www.javadoc.io/badge/com.github.giulianini.jestures/jestures.svg)](https://www.javadoc.io/doc/com.github.giulianini.jestures/jestures)
 ![GitHub issues](https://img.shields.io/github/issues/Giulianini/Jestures.svg)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Giulianini/Jestures.svg)
 ![Maintenance](https://img.shields.io/maintenance/yes/2018.svg)
 ![GitHub repo size in bytes](https://img.shields.io/github/repo-size/Giulianini/Jestures.svg)
+![GitHub contributors](https://img.shields.io/github/contributors/Giulianini/Jestures.svg)
+
 ---
 
 # Jestures
