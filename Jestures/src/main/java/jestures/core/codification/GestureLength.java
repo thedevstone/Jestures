@@ -23,7 +23,7 @@ public enum GestureLength {
     /**
      * Gestures duration in frame. 30 FPS base
      */
-    FPS_30(30), FPS_20(20), FPS_10(10);
+    FRAME_30(30), FRAME_60(60), FRAME_90(90);
 
     private int frameNumber;
 

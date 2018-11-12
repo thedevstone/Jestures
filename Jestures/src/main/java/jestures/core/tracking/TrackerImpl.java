@@ -49,7 +49,7 @@ public abstract class TrackerImpl implements TrackingObserver, SensorObserver, T
      * The costructor for the tracker.
      */
     public TrackerImpl() {
-        this(Codification.DERIVATIVE, GestureLength.FPS_30);
+        this(Codification.DERIVATIVE, GestureLength.FRAME_30);
     }
 
     private TrackerImpl(final Codification codificationType, final GestureLength gestureLenght) {

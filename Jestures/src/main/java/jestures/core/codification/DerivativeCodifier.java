@@ -30,17 +30,43 @@ import jestures.core.tracking.TrackingObserver;
  * For example (2, 0) (3, 5) (3, 6) become (1, 5) (0, 1) and so on.
  */
 public class DerivativeCodifier implements Codifier {
+    /**
+     * The queue that gather all the derivative vectors. This represents a gesture, so a sequence of positions in time.
+     */
     private Queue<Vector2D> featureVector;
+    /**
+     * Old vector for derivative calculus.
+     */
     private Vector2D oldVector;
+    /**
+     * Last derivative vector.
+     */
     private Vector2D derivative; // NOPMD
+    /**
+     * Starting vector for other representations
+     */
     private Vector2D startingVector;
+    /**
+     * Frame count.
+     */
     private int frame;
-    private GestureLength frameLength;
+    /**
+     * The gesture length.
+     */
+    private GestureLength gestureLength;
+    /**
+     * Tracker that gets notified when a feature vector (gesture is ready)
+     */
     private TrackingObserver recognizer;
+    /**
+     * Type of codification
+     */
     private static final Codification CODIFICATION = Codification.DERIVATIVE;
 
     /**
      * The @link{DerivativeCodifier.java} constructor.
+     * <p>
+     * Create the evicting queue, the first vector to be differentiated and set the frame at zero.
      *
      * @param frames
      *            the gesture's duration in frame
@@ -49,7 +75,7 @@ public class DerivativeCodifier implements Codifier {
         this.featureVector = EvictingQueue.create(frames.getFrameNumber());
         this.oldVector = new Vector2D(0, 0);
         this.frame = 0;
-        this.frameLength = frames;
+        this.gestureLength = frames;
     }
 
     @Override
@@ -59,18 +85,22 @@ public class DerivativeCodifier implements Codifier {
 
     @Override
     public void codifyOnSkeletonChange(final Vector2D newVector) {
-        // CALCOLO DERIVATA
+        // derivative calculus
         this.derivative = newVector.subtract(this.oldVector);
+        // vector is added to the queue
         this.featureVector.offer(this.derivative);
+        // swap
         this.oldVector = newVector;
-        // SE SONO ALLA FINE RESETTO
+        // if it's the first frame reset the starting vector
         if (this.frame == 0) {
             this.startingVector = newVector;
         }
-        if (this.frame > this.frameLength.getFrameNumber() - 1) {
+        // if reached the gesture length notify the recognizer with a new gesture.
+        if (this.frame > this.gestureLength.getFrameNumber() - 1) {
             this.recognizer.notifyOnFeatureVectorEvent(new ArrayList<Vector2D>(this.featureVector));
             this.resetFrame();
         } else {
+            // notify the recognizer so the view with a new frame
             this.recognizer.notifyOnFrameChange(this.frame, this.featureVector, this.derivative,
                     this.startingVector.subtract(newVector));
             this.frame++;
@@ -94,7 +124,7 @@ public class DerivativeCodifier implements Codifier {
 
     @Override
     public synchronized void setFrameLength(final GestureLength length) {
-        this.frameLength = length;
+        this.gestureLength = length;
         this.featureVector = EvictingQueue.create(length.getFrameNumber());
     }
 

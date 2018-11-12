@@ -23,7 +23,7 @@ import jestures.core.tracking.TrackerImpl;
 import jestures.core.tracking.TrackingObserver;
 
 /**
- * A Codifier take absolute vector in space (vector2D or vector3D) and transforms them in a relative way.
+ * A Codifier take absolute vector (vector2D or vector3D) and transforms them in a relative way.
  * <p>
  * This can be done in a derivative way or using other type of codification, for example a starting point codification
  * where every vector is subtracted by the first vector of the list.

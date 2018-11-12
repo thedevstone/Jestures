@@ -34,6 +34,7 @@ import com.google.gson.JsonSyntaxException;
 
 import jestures.core.codification.GestureLength;
 import jestures.core.file.FileManager;
+import jestures.core.file.LibPaths;
 import jestures.core.recognition.gesturedata.RecognitionSettingsImpl;
 import jestures.core.recognition.gesturedata.UserData;
 import jestures.core.recognition.gesturedata.UserDataImpl;
@@ -44,7 +45,13 @@ import jestures.core.recognition.gesturedata.UserDataImpl;
  */
 public class UserManager implements Serializer {
     private static final Logger LOG = Logger.getLogger(UserManager.class);
+    /**
+     * User data that get serialized in a json file
+     */
     private UserData userData;
+    /**
+     * Google library for serialization
+     */
     private final Gson gson;
 
     /**
@@ -86,6 +93,7 @@ public class UserManager implements Serializer {
     @Override
     public Map<Integer, List<Vector2D[]>> getDatasetForRecognition(
             final Map<Integer, String> gestureKeyToStringMapping) {
+        // Craete a map of vectors and another map for gesture Integer-String mapping
         final Map<String, List<List<Vector2D>>> tempMap = this.userData.getAllGesturesData();
         final Map<Integer, List<Vector2D[]>> mappaOut = new HashMap<>();
         int gestureKey = 0;
@@ -121,7 +129,6 @@ public class UserManager implements Serializer {
     @Override
     public boolean createUserProfile(final String name) throws IOException {
         final boolean userNotExists = FileManager.createUserFolder(name);
-        // SE C'E' GIA' NON CREARLO
         if (userNotExists) {
             this.userData = new UserDataImpl(name);
             this.serializeUser();
@@ -173,7 +180,7 @@ public class UserManager implements Serializer {
     // ################################ SERIALIZE AND DESERIALIZE ####################
     private void deserializeUser(final String name) throws FileNotFoundException, IOException, JsonSyntaxException {
         // IF USER IS SO STUPID TO DELETE FOLDER WHILE RUNNING
-        final Reader reader = new FileReader(FileManager.getUserDir(name) + "UserData.json");
+        final Reader reader = new FileReader(FileManager.getUserDir(name) + LibPaths.USER_DATASET_FILE);
         this.userData = this.gson.fromJson(reader, UserDataImpl.class);
         reader.close();
     }
@@ -181,8 +188,8 @@ public class UserManager implements Serializer {
     private void serializeUser() throws IOException {
         // IF USER IS SO STUPID TO DELETE FOLDER WHILE RUNNING, CHECK IF DIRECTORY IS DELETED
         FileManager.createUserFolder(this.userData.getUserName());
-        final Writer writer = new FileWriter(FileManager.getUserDir(this.userData.getUserName()) + "UserData.json",
-                false);
+        final Writer writer = new FileWriter(
+                FileManager.getUserDir(this.userData.getUserName()) + LibPaths.USER_DATASET_FILE, false);
         this.gson.toJson(this.userData, writer);
         writer.flush();
         writer.close();

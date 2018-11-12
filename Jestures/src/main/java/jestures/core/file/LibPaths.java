@@ -27,7 +27,11 @@ public enum LibPaths {
     /**
      * Native.
      */
-    NATIVE_DIR("native"), USER("users");
+    NATIVE_DIR("native"), USER("users"),
+    /**
+     * Jesture user file name.
+     */
+    USER_DATASET_FILE("UserData.json");
 
     private String pathNative;
 

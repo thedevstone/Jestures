@@ -28,6 +28,7 @@ import java.util.Set;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.apache.commons.math3.stat.StatUtils;
+import org.apache.log4j.Logger;
 
 import com.google.gson.JsonSyntaxException;
 
@@ -47,18 +48,47 @@ import smile.math.distance.DynamicTimeWarping;
  *
  */
 public final class Recognizer extends TrackerImpl implements Recognition {
-    // private static final Logger LOG = Logger.getLogger(Recognizer.class);
+    private static final Logger LOG = Logger.getLogger(Recognizer.class);
+    /**
+     * Access to user serialization and deserialization.
+     */
     private final Serializer userManager;
+    /**
+     * Singleton.
+     */
     private static Recognition instance;
+    /**
+     * Recognition view. Set of observer.
+     */
     private final Set<RecognitionViewObserver> view;
+    /**
+     * Set of gesture observer.
+     */
     private final Set<GestureListener> gestureListener;
+    /**
+     * User dataset of gsetures. Deserialized and loaded in memory. Reduced memory cost.
+     */
     private Map<Integer, List<Vector2D[]>> userDataset;
+    /**
+     * Temporary map that stores the mapping from integer to gesture name
+     */
     private final Map<Integer, String> intToStringGestureMapping;
+    /**
+     * The time passed after the last gesture has been recognized
+     */
     private long lastGestureTime;
 
-    // RECOGNITION
+    /**
+     * Dynamic Time Warping algorithm
+     */
     private final DynamicTimeWarping<Vector2D> dtw;
+    /**
+     * User recognition settings
+     */
     private RecognitionSettingsImpl recognitionSettings;
+    /**
+     * <code>true</code> if the last gesture has been recognized
+     */
     private boolean gestureRecognized;
 
     private Recognizer() {
@@ -68,7 +98,6 @@ public final class Recognizer extends TrackerImpl implements Recognition {
         this.userManager = new UserManager();
         this.userDataset = null;
         this.lastGestureTime = 0;
-        // RECOGNITION
         this.recognitionSettings = new RecognitionSettingsImpl(UpdateRate.FPS_10, 0, 0, 0, 0, 0);
         this.dtw = new DynamicTimeWarping<Vector2D>((a, b) -> a.distance(b), this.recognitionSettings.getDtwRadius());
         RecognitionScreenView.startFxThread();
@@ -110,17 +139,25 @@ public final class Recognizer extends TrackerImpl implements Recognition {
     @Override
     public void notifyOnFrameChange(final int frame, final Queue<Vector2D> featureVector, final Vector2D derivative,
             final Vector2D distanceVector) {
+        // super call for simple hand tracking
         super.notifyOnFrameChange(frame, featureVector, derivative, distanceVector);
+        // view update
         this.view.forEach(t -> t.notifyOnFrameChange(frame, derivative, distanceVector));
-        // QUI SI INNESTA IL RICONOSCIMENTO
+        // When the actual frame is a multiple of the recognition update time, recognition can be performed
         if ((frame + 1) % this.recognitionSettings.getUpdateRate().getFrameNumber() == 0) {
+            // conversion from list to array. Library need arrays
             final Vector2D[] arrayFeatureVector = new Vector2D[featureVector.size()];
             featureVector.toArray(arrayFeatureVector);
+            // Starting timer
             final long currentSec = System.currentTimeMillis();
+            // If the last gesture has been recognized and timer was over then recognition can occur
             if (this.gestureRecognized
                     && currentSec - this.lastGestureTime > this.recognitionSettings.getMinTimeSeparation()) {
+                // timer is reset
                 this.lastGestureTime = currentSec;
+                // start recognition
                 this.recognize(arrayFeatureVector);
+                // if gesture was not recognized you don't have to wait
             } else if (!this.gestureRecognized) {
                 this.lastGestureTime = currentSec;
                 this.recognize(arrayFeatureVector);
@@ -137,11 +174,17 @@ public final class Recognizer extends TrackerImpl implements Recognition {
     // ############################################# TRACKER #########################################
     @Override
     public boolean loadUserProfile(final String name) throws FileNotFoundException, IOException, JsonSyntaxException {
+        // Load the user or create a new one
         final boolean userExists = this.userManager.loadOrCreateNewUser(name);
+        // Clear old mapping
         this.intToStringGestureMapping.clear();
+        // Load gesture dataset
         this.userDataset = this.userManager.getDatasetForRecognition(this.intToStringGestureMapping);
+        // Load user settings
         this.recognitionSettings = this.userManager.getRecognitionSettings();
+        // Load the new gesture length
         this.setFrameLength(this.getUserGestureLength());
+        // Update view with user settings and update label gesture length
         this.view.forEach(t -> {
             t.updateSettings(this.recognitionSettings);
             t.setGestureLengthLabel(this.getUserGestureLength());
@@ -169,13 +212,23 @@ public final class Recognizer extends TrackerImpl implements Recognition {
         return this.userManager.getUserName();
     }
 
-    // ############################################# TRACKER #########################################
+    // ############################################# RECOGNIZER #########################################
 
+    /**
+     * The core of recognition.
+     *
+     * @param featureVector
+     *            the gesture
+     */
     private void recognize(final Vector2D... featureVector) {
+        // Array of distances
         final List<Pair<Double, Integer>> distances = new ArrayList<>();
+        // Get the distances from every template and save in the array
         for (final Integer gestureKey : this.userDataset.keySet()) {
             for (final Vector2D[] gestureTemplate : this.userDataset.get(gestureKey)) {
+                // Distance calculated with DTW
                 final double dtwDist = this.dtw.d(gestureTemplate, featureVector);
+                // Threshold prevent unreasonable cpu calc
                 if (dtwDist < this.recognitionSettings.getMaxDTWThreashold()
                         && dtwDist > this.recognitionSettings.getMinDtwThreashold()) {
                     distances.add(new Pair<Double, Integer>(dtwDist, gestureKey));
@@ -183,17 +236,26 @@ public final class Recognizer extends TrackerImpl implements Recognition {
             }
         }
 
+        /**
+         * Knn algorithm. Take the nearest k vector from our feature vector and return the associated gesture
+         *
+         */
         if (distances.size() > this.recognitionSettings.getMatchNumber()) {
-            // KNN
+            // Shorter distances first
             distances.sort((a, b) -> a.getKey().compareTo(b.getKey()));
+            // Array of double with the distances
             final double[] kNearestNeighbor = new double[this.recognitionSettings.getMatchNumber()];
+            // Fill the array
             for (int i = 0; i < this.recognitionSettings.getMatchNumber(); i++) {
                 kNearestNeighbor[i] = distances.get(i).getValue() + 0.0;
             }
-            this.gestureRecognized = true;
+            // Get gseture name
             final String gesture = this.intToStringGestureMapping.get((int) StatUtils.mode(kNearestNeighbor)[0]);
+            // Notification
             this.gestureListener.forEach(t -> t.onGestureRecognized(gesture));
             this.view.forEach(t -> t.onGestureRecognized(gesture));
+
+            this.gestureRecognized = true;
         } else {
             // NO GESTURE
             this.gestureRecognized = false;
@@ -226,6 +288,7 @@ public final class Recognizer extends TrackerImpl implements Recognition {
         if (this.getFrameLength().getFrameNumber() % updateRate.getFrameNumber() == 0) {
             this.recognitionSettings.setUpdateRate(updateRate);
         } else {
+            Recognizer.LOG.error("Update rate must be a MCD of frame rate");
             throw new IllegalStateException("Update rate must be a MCD of frame rate");
         }
     }

@@ -27,7 +27,7 @@ import jestures.core.view.RecognitionViewObserver;
 import smile.math.distance.DynamicTimeWarping;
 
 /**
- * Interface for recognition. Recognition is based on Dynamic Time Warping algorithm.
+ * Interface for recognition. Recognition is based on Dynamic Time Warping algorithm and Knn.
  *
  */
 public interface Recognition extends Tracker {
@@ -127,6 +127,8 @@ public interface Recognition extends Tracker {
 
     /**
      * Set the minimum number of gesture that have to match the template to get a gesture recognized.
+     * <p>
+     * Set the k of the Knn algorithm. K represents the nearest neighbor, in other way the nearest feature vector
      *
      * @param matchNumber
      *            the number of templates.

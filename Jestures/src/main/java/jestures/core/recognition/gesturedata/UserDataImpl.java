@@ -33,6 +33,9 @@ import jestures.core.recognition.UpdateRate;
  *
  */
 public class UserDataImpl implements UserData, Serializable {
+    /**
+     * Settings
+     */
     private static final UpdateRate DEFAULT_UPDATE = UpdateRate.FPS_10;
     private static final double DEFAULT_RADIUS = 0.5;
     private static final int DEFAULT_MIN_TRESHOLD = 300;
@@ -40,9 +43,9 @@ public class UserDataImpl implements UserData, Serializable {
     private static final int DEFAULT_TIME_SEP = 500;
     private static final int DEFAULT_MATCH = 3;
 
-    private static final GestureLength DEFAULT_GESTURE_LENGTH = GestureLength.FPS_30;
+    private static final GestureLength DEFAULT_GESTURE_LENGTH = GestureLength.FRAME_30;
     /**
-     *
+     * Uid
      */
     private static final long serialVersionUID = -5499772829046871767L;
     /**
@@ -51,8 +54,17 @@ public class UserDataImpl implements UserData, Serializable {
      *
      */
     private String userName;
+    /**
+     * User Gesture length
+     */
     private GestureLength gestureLength;
+    /**
+     * User Recognition settings
+     */
     private RecognitionSettingsImpl recognitionSettings;
+    /**
+     * Dataset
+     */
     private final Map<String, List<List<Vector2D>>> gestures;
     private static final Logger LOG = Logger.getLogger(UserDataImpl.class);
 

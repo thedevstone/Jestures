@@ -363,9 +363,9 @@ public abstract class AbstractRecorderScreenView implements RecordingView, Recor
     private void initCombos() {
         JFXDepthManager.setDepth(this.gestureHBox, 1);
         this.frameLengthCombo.setOnAction(t -> this.setUserGestureLength(this.frameLengthCombo.getValue()));
-        this.frameLengthCombo.getItems().add(GestureLength.FPS_30);
-        this.frameLengthCombo.getItems().add(GestureLength.FPS_20);
-        this.frameLengthCombo.getItems().add(GestureLength.FPS_10);
+        this.frameLengthCombo.getItems().add(GestureLength.FRAME_30);
+        this.frameLengthCombo.getItems().add(GestureLength.FRAME_60);
+        this.frameLengthCombo.getItems().add(GestureLength.FRAME_90);
         // this.frameLengthCombo.getSelectionModel().select(this.getFrameLength());
         JFXDepthManager.setDepth(this.frameLengthCombo, 4);
 

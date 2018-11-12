@@ -41,7 +41,7 @@ public final class FileManager {
      */
     private FileManager() {
     }
-    // ##################################### FOLDER CREATION ################################
+    // ############################# PRIVATE METHOD FOR FOLDER CREATION AND DELETION ################################
 
     private static boolean createDirectory(final String folder) throws IOException {
         if (!FileManager.checkIfFolderExists(folder)) {

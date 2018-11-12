@@ -42,16 +42,31 @@ import recorder.view.RecordingViewObserver;
  */
 
 public final class RecorderImpl extends TrackerImpl implements Recorder {
+    /**
+     * User manager
+     */
     private final Serializer userManager;
+    /**
+     * Instance
+     */
     private static Recorder instance;
+    /**
+     * Set of observable view connected
+     */
     private final Set<RecordingViewObserver> view;
+    /**
+     * Flag for recording
+     */
     private boolean isRecording;
-    private final List<List<Vector2D>> listOfFeatureVector;
+    /**
+     * Temporary cache for recorded feature vectors
+     */
+    private final List<List<Vector2D>> listOfRecordedFeatureVector;
 
     private static final int THREASHOLD = 50;
 
     private RecorderImpl() {
-        this.listOfFeatureVector = new ArrayList<>();
+        this.listOfRecordedFeatureVector = new ArrayList<>();
         this.userManager = new UserManager();
         this.view = new HashSet<>();
         RecognitionScreenView.startFxThread();
@@ -83,6 +98,7 @@ public final class RecorderImpl extends TrackerImpl implements Recorder {
     @Override
     public void notifyOnSkeletonChange(final Vector2D primaryJoint, final Vector2D secondaryJoint) {
         super.notifyOnSkeletonChange(primaryJoint, secondaryJoint);
+        // Check if user is recording
         this.secJointTrigger(primaryJoint, secondaryJoint);
     }
 
@@ -94,14 +110,16 @@ public final class RecorderImpl extends TrackerImpl implements Recorder {
     @Override
     public void notifyOnFrameChange(final int frame, final Queue<Vector2D> featureVector, final Vector2D derivative,
             final Vector2D distanceVector) {
+        // Updates view on every frame
         this.view.forEach(t -> t.notifyOnFrameChange(frame, derivative, distanceVector));
     }
 
     @Override
     public void notifyOnFeatureVectorEvent(final List<Vector2D> featureVector) {
+        // If the user is recording and a new feature vector is available that the feature vector is saved in cache
         if (this.isRecording) {
             this.view.forEach(t -> t.notifyOnFeatureVectorEvent());
-            this.listOfFeatureVector.add(Collections.unmodifiableList(featureVector));
+            this.listOfRecordedFeatureVector.add(Collections.unmodifiableList(featureVector));
         }
     }
 
@@ -109,12 +127,12 @@ public final class RecorderImpl extends TrackerImpl implements Recorder {
 
     @Override
     public void deleteRecordedFeatureVector(final int index) {
-        this.listOfFeatureVector.remove(index);
+        this.listOfRecordedFeatureVector.remove(index);
     }
 
     @Override
     public void clearRecordedDataset() {
-        this.listOfFeatureVector.clear();
+        this.listOfRecordedFeatureVector.clear();
     }
 
     // #################### USER MANAGER #####################
@@ -168,13 +186,13 @@ public final class RecorderImpl extends TrackerImpl implements Recorder {
 
     @Override
     public void addFeatureVector(final String gesture, final int index) throws IOException {
-        this.userManager.addFeatureVectorAndSerialize(gesture, this.listOfFeatureVector.get(index));
+        this.userManager.addFeatureVectorAndSerialize(gesture, this.listOfRecordedFeatureVector.get(index));
 
     }
 
     @Override
     public void addAllFeatureVectors(final String gesture) throws IOException {
-        this.userManager.addAllFeatureVectorsAndSerialize(gesture, this.listOfFeatureVector);
+        this.userManager.addAllFeatureVectorsAndSerialize(gesture, this.listOfRecordedFeatureVector);
     }
 
     @Override
@@ -190,6 +208,7 @@ public final class RecorderImpl extends TrackerImpl implements Recorder {
     // ############################################## INSTANCE METHODS ###################################
 
     private void secJointTrigger(final Vector2D primaryJoint, final Vector2D secondaryJoint) {
+        // If the secondary hand is above the primnary sholder than recording can start
         if (secondaryJoint.getY() > primaryJoint.getY() + RecorderImpl.THREASHOLD && !this.isRecording) {
             this.isRecording = true;
             this.view.forEach(t -> t.setRecording(true));

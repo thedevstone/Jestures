@@ -61,7 +61,13 @@ import jestures.core.view.utils.ViewUtilities;
 @SuppressWarnings("restriction")
 public class RecognitionScreenView extends AbstractRecognitionScreenView {
     private static final Logger LOG = Logger.getLogger(RecognitionScreenView.class);
+    /**
+     * Recognizer
+     */
     private final Recognition recognizer;
+    /**
+     * Gesture length
+     */
     private GestureLength gestureLength;
 
     // VIEW
@@ -165,28 +171,33 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
     @Override
     public void notifyOnFrameChange(final int frame, final Vector2D derivative, final Vector2D path) {
         Platform.runLater(() -> {
+            // When it's the first frame it reset the canvas.
             if (frame == 0) {
                 this.clearCanvasAndChart();
             }
+            // fill the chart with data
             this.getxSeries().getData().add(new XYChart.Data<Number, Number>(frame, (int) derivative.getX()));
             this.getySeries().getData().add(new XYChart.Data<Number, Number>(frame, (int) derivative.getY()));
-
+            // Draw oval on canvas
             this.getLiveContext().fillOval(-path.getX() + this.getLiveCanvas().getWidth() / 2,
                     path.getY() + this.getLiveCanvas().getHeight() / 2, 10, 10);
+            // Move the progress bar
             this.progressBar.setProgress(frame / (this.gestureLength.getFrameNumber() + 0.0));
         });
     }
 
     @Override
     public void notifyOnFeatureVectorEvent() {
-
+        // When a gesture is ready
     }
 
     @Override
     public void refreshUsers() {
         Platform.runLater(() -> {
             try {
+                // clear all users
                 this.selectUserCombo.getItems().clear();
+                // reload the users
                 FileManager.getAllUserFolder().stream().forEachOrdered(t -> this.selectUserCombo.getItems().add(t));
             } catch (final IOException e) {
                 ViewUtilities.showNotificationPopup("Exception", "Cannot read user data", Duration.MEDIUM,
@@ -211,6 +222,7 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
 
     @Override
     public void onGestureRecognized(final String gestureName) {
+        // Snack bar with the gesture name
         Platform.runLater(() -> {
             ViewUtilities.showSnackBar((Pane) this.recorderPane.getCenter(), gestureName, Duration.MEDIUM,
                     DimDialogs.MEDIUM, null);
@@ -219,6 +231,7 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
 
     @Override
     public void setGestureLengthLabel(final GestureLength length) {
+        // Set the label with the gesture length
         this.labelGestureLength.setText("Gesture length: " + length.getFrameNumber());
     }
 
@@ -241,6 +254,7 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
     @Override
     public void loadUserProfile(final String name) {
         try {
+            // Load the actual user
             this.recognizer.loadUserProfile(name);
         } catch (final IOException e1) {
             ViewUtilities.showNotificationPopup("User Dataset not found", "Regenerating it", Duration.MEDIUM, // NOPMD
@@ -250,12 +264,16 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
                     Duration.MEDIUM, // NOPMD
                     NotificationType.ERROR, t -> e2.printStackTrace());
         }
+        // Set User name in scroll bar
         ((Label) this.userScrollPane.getBottomBar().getChildren().get(0)).setText(name);
-        // LOAD USER GESTURES
+        // Load user gestures
         ViewUtilities.showSnackBar((Pane) this.recorderPane.getCenter(), "Database loaded and Gesture updated!",
                 Duration.MEDIUM, DimDialogs.SMALL, null);
+        // Create the gesture tree representation.
         this.createGestureTreeView(this.recognizer.getUserName());
+        // Initialize the gesture length.
         this.gestureLength = this.recognizer.getUserGestureLength();
+        // Initialize Charts
         this.setChart(this.gestureLength.getFrameNumber(), this.gestureLength.getFrameNumber());
         this.startButton.setDisable(false);
     }
@@ -309,12 +327,16 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
     // CANVAS GESTURE
     @Override
     public void drawSavedGestureOnCanvas(final TreeItem<String> gestureItem, final int templateIndex) {
+        // Get the specific gesture from dataset (list of 2D points)
         final List<Vector2D> template = this.recognizer.getGestureDataset(gestureItem.getValue()).get(templateIndex);
+        // Reset the canvas
         this.getUserCanvasContext().clearRect(0, 0, this.getLiveCanvas().getWidth(), this.getLiveCanvas().getHeight());
+        // Redraw oval for every point. Now it's a derivative representation
         for (final Vector2D path : template) {
             this.getUserCanvasContext().fillOval(-path.getX() + this.getLiveCanvas().getWidth() / 2,
                     path.getY() + this.getLiveCanvas().getHeight() / 2, 10, 10);
         }
+        // Show the Canvas in a pop up
         this.getCnavasPopup().show(this.recorderPane);
 
     }
@@ -331,7 +353,7 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
     }
 
     private void createGestureTreeView(final String root) {
-        // REGENERATE TREVIEW FOR USER
+        // Create the treeview in a recursive way
         this.root = new TreeItem<String>(root);
         this.root.setExpanded(true);
         this.treeView.setRoot(this.root);
