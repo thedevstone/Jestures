@@ -17,8 +17,6 @@ package jestures.core.view;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
-import jestures.core.codification.FrameLength;
-
 /**
  * Observer for view. The view can be notified by external class when an event occurs.
  *
@@ -42,13 +40,6 @@ public interface ViewObserver {
      *
      */
     void notifyOnFeatureVectorEvent();
-
-    /**
-     * Get the {@link FrameLength} for tracking.
-     *
-     * @return the {@link FrameLength}
-     */
-    FrameLength getFrameLength();
 
     /**
      * Load the Users.

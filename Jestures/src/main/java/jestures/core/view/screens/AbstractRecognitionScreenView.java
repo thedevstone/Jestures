@@ -35,7 +35,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeItem;
 import javafx.scene.input.MouseButton;
@@ -44,7 +43,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import jestures.core.codification.FrameLength;
 import jestures.core.recognition.Recognition;
 import jestures.core.recognition.UpdateRate;
 import jestures.core.view.AbstractView;
@@ -95,8 +93,6 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
     private StackPane tabStackPane;
     @FXML
     private VBox vbox;
-    @FXML
-    private ComboBox<FrameLength> frameLengthCombo;
 
     // ########### TAB 1 #############
     @FXML
@@ -284,13 +280,6 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
     }
 
     private void initCombos() {
-        this.frameLengthCombo.setOnAction(t -> this.setFrameLength(this.frameLengthCombo.getValue()));
-        this.frameLengthCombo.getItems().add(FrameLength.FPS_30);
-        this.frameLengthCombo.getItems().add(FrameLength.FPS_20);
-        this.frameLengthCombo.getItems().add(FrameLength.FPS_10);
-        this.frameLengthCombo.getSelectionModel().select(this.getFrameLength());
-        JFXDepthManager.setDepth(this.frameLengthCombo, 4);
-
         // USER COMBOBOX
         Collections.sort(this.selectUserCombo.getItems());
         this.selectUserCombo.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {

@@ -41,6 +41,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.image.Image;
@@ -98,6 +99,8 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     private BorderPane userBorderPane; // NOPMD
     @FXML
     private JFXComboBox<String> selectUserCombo;
+    @FXML
+    private ComboBox<FrameLength> frameLengthCombo;
 
     // ########### TAB 2 #############
 
@@ -197,7 +200,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
 
     @Override
     public FrameLength getFrameLength() {
-        return this.recorder.getFrameLength();
+        return this.recorder.getUserGestureLength();
     }
 
     // ###################################### FROM RECORDER (REC VIEW OBSERVER) ##################################
@@ -235,9 +238,14 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
 
     @Override
     public void setFrameLength(final FrameLength length) {
-        this.recorder.setFrameLength(length);
-        this.setChart(length.getFrameNumber(), length.getFrameNumber());
-        this.frameLength = length.getFrameNumber();
+        try {
+            this.recorder.setUserGestureLength(length);
+            this.setChart(length.getFrameNumber(), length.getFrameNumber());
+            this.frameLength = length.getFrameNumber();
+        } catch (final Exception e) {
+            ViewUtilities.showNotificationPopup("Gesture Length Error", e.getMessage() + ": " + this.getFrameLength(),
+                    Duration.MEDIUM, NotificationType.WARNING, null);
+        }
     }
 
     @Override
@@ -256,6 +264,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     public void createUserProfile(final String username) {
         try {
             if (!this.recorder.createUserProfile(username)) {
+                this.setFrameLength(this.recorder.getUserGestureLength());
                 ViewUtilities.showNotificationPopup("Cannot create User", username + " already exists", Duration.MEDIUM,
                         NotificationType.WARNING, null);
             } else {
@@ -263,6 +272,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
                         NotificationType.SUCCESS, null);
                 // IF USER IS LOADED CORRECLY ENABLE BUTTONS
                 this.gestureHBox.setDisable(false);
+                this.frameLengthCombo.setDisable(false);
                 this.refreshUsers();
                 this.selectUserCombo.getSelectionModel().select(username);
             }
@@ -320,6 +330,8 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
 
         this.createGestureTreeView(this.recorder.getUserName());
         this.startButton.setDisable(true);
+        this.frameLengthCombo.setDisable(false);
+        this.frameLengthCombo.getSelectionModel().select(this.getFrameLength());
     }
 
     /**

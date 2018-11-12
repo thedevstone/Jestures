@@ -185,6 +185,7 @@ public abstract class AbstractRecorderScreenView implements RecordingView, Recor
     private void setDisabled() {
         this.startButton.setDisable(true);
         this.gestureHBox.setDisable(true);
+        this.frameLengthCombo.setDisable(true);
     }
 
     private void initSliders() {
@@ -365,7 +366,7 @@ public abstract class AbstractRecorderScreenView implements RecordingView, Recor
         this.frameLengthCombo.getItems().add(FrameLength.FPS_30);
         this.frameLengthCombo.getItems().add(FrameLength.FPS_20);
         this.frameLengthCombo.getItems().add(FrameLength.FPS_10);
-        this.frameLengthCombo.getSelectionModel().select(this.getFrameLength());
+        // this.frameLengthCombo.getSelectionModel().select(this.getFrameLength());
         JFXDepthManager.setDepth(this.frameLengthCombo, 4);
 
         // GESTURE COMBOBOX

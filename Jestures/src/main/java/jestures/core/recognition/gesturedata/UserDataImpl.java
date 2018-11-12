@@ -25,6 +25,7 @@ import java.util.Map;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.apache.log4j.Logger;
 
+import jestures.core.codification.FrameLength;
 import jestures.core.recognition.UpdateRate;
 
 /**
@@ -38,6 +39,8 @@ public class UserDataImpl implements UserData, Serializable {
     private static final int DEFAULT_MAX_TRESHOLD = 700;
     private static final int DEFAULT_TIME_SEP = 500;
     private static final int DEFAULT_MATCH = 3;
+
+    private static final FrameLength DEFAULT_GESTURE_LENGTH = FrameLength.FPS_30;
     /**
      *
      */
@@ -48,6 +51,7 @@ public class UserDataImpl implements UserData, Serializable {
      *
      */
     private String userName;
+    private FrameLength gestureLength;
     private RecognitionSettingsImpl recognitionSettings;
     private final Map<String, List<List<Vector2D>>> gestures;
     private static final Logger LOG = Logger.getLogger(UserDataImpl.class);
@@ -60,6 +64,7 @@ public class UserDataImpl implements UserData, Serializable {
      */
     public UserDataImpl(final String name) {
         this.userName = name;
+        this.gestureLength = UserDataImpl.DEFAULT_GESTURE_LENGTH;
         this.recognitionSettings = new RecognitionSettingsImpl(UserDataImpl.DEFAULT_UPDATE, UserDataImpl.DEFAULT_RADIUS,
                 UserDataImpl.DEFAULT_MIN_TRESHOLD, UserDataImpl.DEFAULT_MAX_TRESHOLD, UserDataImpl.DEFAULT_TIME_SEP,
                 UserDataImpl.DEFAULT_MATCH);
@@ -75,6 +80,20 @@ public class UserDataImpl implements UserData, Serializable {
     @Override
     public String getUserName() {
         return this.userName;
+    }
+
+    @Override
+    public void setGestureLength(final FrameLength length) {
+        if (this.gestures.keySet().isEmpty()) {
+            this.gestureLength = length;
+        } else {
+            throw new IllegalStateException("Cannot have different gesture length");
+        }
+    }
+
+    @Override
+    public FrameLength getGestureLength() {
+        return this.gestureLength;
     }
 
     @Override
@@ -136,5 +155,4 @@ public class UserDataImpl implements UserData, Serializable {
     public String toString() {
         return "User name: " + this.userName + "\n" + "Gestures: " + this.gestures;
     }
-
 }

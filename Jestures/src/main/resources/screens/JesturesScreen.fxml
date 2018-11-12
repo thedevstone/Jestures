@@ -183,7 +183,7 @@
                   <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
                </padding>
                <left>
-                  <JFXComboBox id="exercise-combo-box" fx:id="frameLengthCombo" focusColor="#405aa800" minWidth="150.0" promptText="Frame Length" unFocusColor="#4d4d4d00" BorderPane.alignment="CENTER" />
+                  <Label id="labelGestureLength" fx:id="labelGestureLength" minWidth="100.0" BorderPane.alignment="CENTER" />
                </left>
             </JFXToolbar>
          </children>

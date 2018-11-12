@@ -15,6 +15,7 @@
  *******************************************************************************/
 package jestures.core.tracking;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Queue;
@@ -144,7 +145,7 @@ public abstract class TrackerImpl implements TrackingObserver, SensorObserver, T
     }
 
     @Override
-    public void setFrameLength(final FrameLength length) {
+    public void setFrameLength(final FrameLength length) throws IOException {
         this.frameLength = length;
         this.codifier.setFrameLength(length);
     }

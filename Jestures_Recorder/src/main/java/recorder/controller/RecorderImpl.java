@@ -29,6 +29,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import com.google.gson.JsonSyntaxException;
 
+import jestures.core.codification.FrameLength;
 import jestures.core.serialization.Serializer;
 import jestures.core.serialization.UserManager;
 import jestures.core.tracking.Tracker;
@@ -119,6 +120,17 @@ public final class RecorderImpl extends TrackerImpl implements Recorder {
     // #################### USER MANAGER #####################
 
     @Override
+    public FrameLength getUserGestureLength() {
+        return this.userManager.getGestureLength();
+    }
+
+    @Override
+    public void setUserGestureLength(final FrameLength length) throws IOException {
+        this.userManager.setGestureLength(length);
+        super.setFrameLength(length);
+    }
+
+    @Override
     public String getUserName() {
         return this.userManager.getUserName();
     }
@@ -140,12 +152,16 @@ public final class RecorderImpl extends TrackerImpl implements Recorder {
 
     @Override
     public boolean createUserProfile(final String name) throws IOException {
-        return this.userManager.createUserProfile(name);
+        final boolean val = this.userManager.createUserProfile(name);
+        this.setFrameLength(this.getFrameLength());
+        return val;
     }
 
     @Override
     public boolean loadUserProfile(final String name) throws FileNotFoundException, IOException, JsonSyntaxException {
-        return this.userManager.loadOrCreateNewUser(name);
+        final boolean val = this.userManager.loadOrCreateNewUser(name);
+        this.setFrameLength(this.getFrameLength());
+        return val;
     }
 
     @Override

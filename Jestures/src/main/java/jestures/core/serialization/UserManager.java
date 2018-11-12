@@ -32,6 +32,7 @@ import org.apache.log4j.Logger;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import jestures.core.codification.FrameLength;
 import jestures.core.file.FileManager;
 import jestures.core.recognition.gesturedata.RecognitionSettingsImpl;
 import jestures.core.recognition.gesturedata.UserData;
@@ -61,6 +62,17 @@ public class UserManager implements Serializer {
     }
 
     @Override
+    public void setGestureLength(final FrameLength length) throws IOException, IllegalStateException {
+        this.userData.setGestureLength(length);
+        this.serializeUser();
+    }
+
+    @Override
+    public FrameLength getGestureLength() {
+        return this.userData.getGestureLength();
+    }
+
+    @Override
     public RecognitionSettingsImpl getRecognitionSettings() {
         return this.userData.getRecognitionSettings();
     }
@@ -72,7 +84,8 @@ public class UserManager implements Serializer {
     }
 
     @Override
-    public Map<Integer, List<Vector2D[]>> getDatasetForRecognition(final Map<Integer, String> gestureKeyToStringMapping) {
+    public Map<Integer, List<Vector2D[]>> getDatasetForRecognition(
+            final Map<Integer, String> gestureKeyToStringMapping) {
         final Map<String, List<List<Vector2D>>> tempMap = this.userData.getAllGesturesData();
         final Map<Integer, List<Vector2D[]>> mappaOut = new HashMap<>();
         int gestureKey = 0;

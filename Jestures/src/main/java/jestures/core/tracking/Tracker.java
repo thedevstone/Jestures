@@ -16,6 +16,7 @@
 
 package jestures.core.tracking;
 
+import java.io.IOException;
 import java.util.List;
 
 import jestures.core.codification.Codification;
@@ -69,8 +70,10 @@ public interface Tracker {
      *
      * @param length
      *            the length
+     * @throws IOException
+     *             IOexception
      */
-    void setFrameLength(FrameLength length);
+    void setFrameLength(FrameLength length) throws IOException;
 
     /**
      * Get all user gestures.

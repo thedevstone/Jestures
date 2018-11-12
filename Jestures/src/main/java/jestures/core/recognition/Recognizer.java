@@ -32,6 +32,7 @@ import org.apache.commons.math3.stat.StatUtils;
 import com.google.gson.JsonSyntaxException;
 
 import javafx.util.Pair;
+import jestures.core.codification.FrameLength;
 import jestures.core.recognition.gesturedata.RecognitionSettingsImpl;
 import jestures.core.serialization.Serializer;
 import jestures.core.serialization.UserManager;
@@ -140,8 +141,17 @@ public final class Recognizer extends TrackerImpl implements Recognition {
         this.intToStringGestureMapping.clear();
         this.userDataset = this.userManager.getDatasetForRecognition(this.intToStringGestureMapping);
         this.recognitionSettings = this.userManager.getRecognitionSettings();
-        this.view.forEach(t -> t.updateSettings(this.recognitionSettings));
+        this.setFrameLength(this.getUserGestureLength());
+        this.view.forEach(t -> {
+            t.updateSettings(this.recognitionSettings);
+            t.setGestureLengthLabel(this.getUserGestureLength());
+        });
         return userExists;
+    }
+
+    @Override
+    public FrameLength getUserGestureLength() {
+        return this.userManager.getGestureLength();
     }
 
     @Override

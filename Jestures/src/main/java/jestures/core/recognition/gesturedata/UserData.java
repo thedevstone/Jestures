@@ -22,6 +22,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import jestures.core.codification.Codification;
 import jestures.core.codification.DerivativeCodifier;
+import jestures.core.codification.FrameLength;
 
 /**
  *
@@ -45,6 +46,21 @@ public interface UserData {
      * @return the String name
      */
     String getUserName();
+
+    /**
+     * Set the gesture length.
+     *
+     * @param length
+     *            the length
+     */
+    void setGestureLength(FrameLength length);
+
+    /**
+     * Get the gesture length.
+     *
+     * @return the length
+     */
+    FrameLength getGestureLength();
 
     /**
      * Get the {@link RecognitionSettings}.

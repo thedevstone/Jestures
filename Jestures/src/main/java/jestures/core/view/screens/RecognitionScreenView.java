@@ -62,7 +62,7 @@ import jestures.core.view.utils.ViewUtilities;
 public class RecognitionScreenView extends AbstractRecognitionScreenView {
     private static final Logger LOG = Logger.getLogger(RecognitionScreenView.class);
     private final Recognition recognizer;
-    private int frameLength;
+    private final int frameLength;
 
     // VIEW
     private Stage stage; // NOPMD
@@ -80,6 +80,8 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
     private JFXButton startButton;
     @FXML
     private JFXScrollPane userScrollPane;
+    @FXML
+    private Label labelGestureLength;
     // ########### TAB 1 #############
     @FXML
     private JFXTreeView<String> treeView;
@@ -119,6 +121,7 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
         super(recognizer);
         this.recognizer = recognizer;
         this.frameLength = recognizer.getFrameLength().getFrameNumber();
+
         // CREATE AND SET THE CONTROLLER. INIT THE BORDER PANE
         Platform.runLater(() -> {
             final FXMLLoader loader = new FXMLLoader();
@@ -192,11 +195,6 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
         });
     }
 
-    @Override
-    public FrameLength getFrameLength() {
-        return this.recognizer.getFrameLength();
-    }
-
     // ############################## FROM RECOGNIZER (RECOGNITION VIEW OBSERVER )##########################
     // TAB 4
     @Override
@@ -219,6 +217,11 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
         });
     }
 
+    @Override
+    public void setGestureLengthLabel(final FrameLength length) {
+        this.labelGestureLength.setText("Gesture length: " + length.getFrameNumber());
+    }
+
     // ############################################## TO TRACKER (VIEW) ###################################
     @Override
     public void startSensor() {
@@ -231,13 +234,6 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
         this.clearCanvasAndChart();
         this.recognizer.stopSensor();
         this.selectUserCombo.setDisable(false);
-    }
-
-    @Override
-    public void setFrameLength(final FrameLength length) {
-        this.recognizer.setFrameLength(length);
-        this.setChart(length.getFrameNumber(), length.getFrameNumber());
-        this.frameLength = length.getFrameNumber();
     }
 
     // ######################################## TO RECOGNIZER (RECOGNITION VIEW) ###################################
