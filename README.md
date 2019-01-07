@@ -211,7 +211,10 @@ The project has been developed using Eclipse, and can be easily imported in such
   * Apply (you should probably rename the formatter settings).
 
 ## Screenshots
-
+![Track4J](/pic/recorder.gif)
+![Track4J](/pic/dataset.gif)
+![Track4J](/pic/recognizer_canvas.gif)
+![Track4J](/pic/recognizer_derivative.gif)
 
 ## License
 [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)
