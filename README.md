@@ -5,7 +5,7 @@
 [![Javadocs](https://www.javadoc.io/badge/com.github.giulianini.jestures/jestures.svg)](https://www.javadoc.io/doc/com.github.giulianini.jestures/jestures)
 ![GitHub issues](https://img.shields.io/github/issues/Giulianini/Jestures.svg)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Giulianini/Jestures.svg)
-![Maintenance](https://img.shields.io/maintenance/yes/2018.svg)
+![Maintenance](https://img.shields.io/maintenance/yes/2019.svg)
 ![GitHub repo size in bytes](https://img.shields.io/github/repo-size/Giulianini/Jestures.svg)
 ![GitHub contributors](https://img.shields.io/github/contributors/Giulianini/Jestures.svg)
 
