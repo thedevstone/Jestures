@@ -1,17 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2018 Giulianini Luca
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Copyright (c) 2018 Giulianini Luca Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+ * this file except in compliance with the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing permissions and limitations under the
+ * License.
  *******************************************************************************/
 package jestures.core.serialization;
 
@@ -41,16 +34,15 @@ import jestures.core.recognition.gesturedata.UserDataImpl;
 
 /**
  * A User Manager is a serializer that manage all user data and templates.
- *
  */
 public class UserManager implements Serializer {
     private static final Logger LOG = Logger.getLogger(UserManager.class);
     /**
-     * User data that get serialized in a json file
+     * User data that get serialized in a json file.
      */
     private UserData userData;
     /**
-     * Google library for serialization
+     * Google library for serialization.
      */
     private final Gson gson;
 
@@ -64,34 +56,34 @@ public class UserManager implements Serializer {
     }
 
     @Override
-    public String getUserName() {
+    public final String getUserName() {
         return this.userData.getUserName();
     }
 
     @Override
-    public void setGestureLength(final GestureLength length) throws IOException, IllegalStateException {
+    public final void setGestureLength(final GestureLength length) throws IOException, IllegalStateException {
         this.userData.setGestureLength(length);
         this.serializeUser();
     }
 
     @Override
-    public GestureLength getGestureLength() {
+    public final GestureLength getGestureLength() {
         return this.userData.getGestureLength();
     }
 
     @Override
-    public RecognitionSettingsImpl getRecognitionSettings() {
+    public final RecognitionSettingsImpl getRecognitionSettings() {
         return this.userData.getRecognitionSettings();
     }
 
     @Override
-    public void setRecognitionSettings(final RecognitionSettingsImpl recognitionSettings) throws IOException {
+    public final void setRecognitionSettings(final RecognitionSettingsImpl recognitionSettings) throws IOException {
         this.userData.setRecognitionSettings(recognitionSettings);
         this.serializeUser();
     }
 
     @Override
-    public Map<Integer, List<Vector2D[]>> getDatasetForRecognition(
+    public final Map<Integer, List<Vector2D[]>> getDatasetForRecognition(
             final Map<Integer, String> gestureKeyToStringMapping) {
         // Craete a map of vectors and another map for gesture Integer-String mapping
         final Map<String, List<List<Vector2D>>> tempMap = this.userData.getAllGesturesData();
@@ -112,22 +104,22 @@ public class UserManager implements Serializer {
     }
 
     @Override
-    public List<String> getAllUserGestures() {
+    public final List<String> getAllUserGestures() {
         return this.userData.getAllUserGestures();
     }
 
     @Override
-    public List<List<Vector2D>> getGestureDataset(final String gestureName) {
+    public final List<List<Vector2D>> getGestureDataset(final String gestureName) {
         return this.userData.getGestureDataset(gestureName);
     }
 
     @Override
-    public void deleteUserProfile() throws IOException {
+    public final void deleteUserProfile() throws IOException {
         FileManager.deleteUserFolder(this.userData.getUserName());
     }
 
     @Override
-    public boolean createUserProfile(final String name) throws IOException {
+    public final boolean createUserProfile(final String name) throws IOException {
         final boolean userNotExists = FileManager.createUserFolder(name);
         if (userNotExists) {
             this.userData = new UserDataImpl(name);
@@ -137,7 +129,7 @@ public class UserManager implements Serializer {
     }
 
     @Override
-    public boolean loadOrCreateNewUser(final String name)
+    public final boolean loadOrCreateNewUser(final String name)
             throws FileNotFoundException, IOException, JsonSyntaxException {
         try {
             this.deserializeUser(name);
@@ -152,27 +144,27 @@ public class UserManager implements Serializer {
     }
 
     @Override
-    public void addFeatureVectorAndSerialize(final String gestureName, final List<Vector2D> featureVector)
+    public final void addFeatureVectorAndSerialize(final String gestureName, final List<Vector2D> featureVector)
             throws IOException {
         this.userData.addGestureFeatureVector(gestureName, featureVector);
         this.serializeUser();
     }
 
     @Override
-    public void addAllFeatureVectorsAndSerialize(final String gestureName, final List<List<Vector2D>> featureVector)
-            throws IOException {
+    public final void addAllFeatureVectorsAndSerialize(final String gestureName,
+            final List<List<Vector2D>> featureVector) throws IOException {
         this.userData.addAllGestureFeatureVector(gestureName, featureVector);
         this.serializeUser();
     }
 
     @Override
-    public void deleteGestureDataset(final String gestureName) throws IOException {
+    public final void deleteGestureDataset(final String gestureName) throws IOException {
         this.userData.deleteGestureDataset(gestureName);
         this.serializeUser();
     }
 
     @Override
-    public void deleteGestureFeatureVector(final String gestureName, final int index) {
+    public final void deleteGestureFeatureVector(final String gestureName, final int index) {
         this.userData.deleteGestureFeatureVector(gestureName, index);
 
     }
