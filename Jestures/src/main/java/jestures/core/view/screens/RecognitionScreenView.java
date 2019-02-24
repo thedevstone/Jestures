@@ -12,7 +12,7 @@ package jestures.core.view.screens;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.log4j.Logger;
 import org.kordamp.ikonli.material.Material;
 
@@ -161,7 +161,7 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
     // ############################################## FROM TRACKER (VIEW OBSERVER) ###################################
 
     @Override
-    public final void notifyOnFrameChange(final int frame, final Vector2D derivative, final Vector2D path) {
+    public final void notifyOnFrameChange(final int frame, final Vector3D derivative, final Vector3D path) {
         Platform.runLater(() -> {
             // When it's the first frame it reset the canvas.
             if (frame == 0) {
@@ -320,11 +320,11 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
     @Override
     public final void drawSavedGestureOnCanvas(final TreeItem<String> gestureItem, final int templateIndex) {
         // Get the specific gesture from dataset (list of 2D points)
-        final List<Vector2D> template = this.recognizer.getGestureDataset(gestureItem.getValue()).get(templateIndex);
+        final List<Vector3D> template = this.recognizer.getGestureDataset(gestureItem.getValue()).get(templateIndex);
         // Reset the canvas
         this.getUserCanvasContext().clearRect(0, 0, this.getLiveCanvas().getWidth(), this.getLiveCanvas().getHeight());
         // Redraw oval for every point. Now it's a derivative representation
-        for (final Vector2D path : template) {
+        for (final Vector3D path : template) {
             this.getUserCanvasContext().fillOval(-path.getX() + this.getLiveCanvas().getWidth() / 2,
                     path.getY() + this.getLiveCanvas().getHeight() / 2, 10, 10);
         }
@@ -360,7 +360,7 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
         final TreeItem<String> item = new TreeItem<>(gestureName);
         item.setGraphic(ViewUtilities.iconSetter(Material.GESTURE, IconDim.SMALL));
         // RICORSIVA CREO TUTTO L'ALBERO
-        final List<List<Vector2D>> gestureDataset = this.recognizer.getGestureDataset(gestureName);
+        final List<List<Vector3D>> gestureDataset = this.recognizer.getGestureDataset(gestureName);
         for (int i = 0; i < gestureDataset.size(); i++) {
             this.makeTemplateBranch("Template: " + (i + 1), item);
         }

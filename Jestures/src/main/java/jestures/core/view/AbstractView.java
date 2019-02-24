@@ -15,7 +15,7 @@
  *******************************************************************************/
 package jestures.core.view;
 
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import jestures.core.recognition.Recognition;
 import jestures.core.tracking.Tracker;
@@ -38,7 +38,7 @@ public abstract class AbstractView implements RecognitionView {
     }
 
     @Override
-    public abstract void notifyOnFrameChange(int frame, Vector2D derivative, Vector2D path);
+    public abstract void notifyOnFrameChange(int frame, Vector3D derivative, Vector3D path);
 
     @Override
     public abstract void notifyOnFeatureVectorEvent();

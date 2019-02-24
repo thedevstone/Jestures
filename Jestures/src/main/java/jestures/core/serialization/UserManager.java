@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
@@ -88,16 +88,16 @@ public class UserManager implements Serializer {
     }
 
     @Override
-    public final Map<Integer, List<Vector2D[]>> getDatasetForRecognition(
+    public final Map<Integer, List<Vector3D[]>> getDatasetForRecognition(
             final Map<Integer, String> gestureKeyToStringMapping) {
         // Craete a map of vectors and another map for gesture Integer-String mapping
-        final Map<String, List<List<Vector2D>>> tempMap = this.userData.getAllGesturesData();
-        final Map<Integer, List<Vector2D[]>> mappaOut = new HashMap<>();
+        final Map<String, List<List<Vector3D>>> tempMap = this.userData.getAllGesturesData();
+        final Map<Integer, List<Vector3D[]>> mappaOut = new HashMap<>();
         int gestureKey = 0;
         for (final String elem : tempMap.keySet()) {
-            final List<Vector2D[]> newGestureDataset = new ArrayList<>();
-            for (final List<Vector2D> gestureDataset : tempMap.get(elem)) {
-                final Vector2D[] newGesture = new Vector2D[gestureDataset.size()];
+            final List<Vector3D[]> newGestureDataset = new ArrayList<>();
+            for (final List<Vector3D> gestureDataset : tempMap.get(elem)) {
+                final Vector3D[] newGesture = new Vector3D[gestureDataset.size()];
                 gestureDataset.toArray(newGesture);
                 newGestureDataset.add(newGesture);
             }
@@ -114,7 +114,7 @@ public class UserManager implements Serializer {
     }
 
     @Override
-    public final List<List<Vector2D>> getGestureDataset(final String gestureName) {
+    public final List<List<Vector3D>> getGestureDataset(final String gestureName) {
         return this.userData.getGestureDataset(gestureName);
     }
 
@@ -149,7 +149,7 @@ public class UserManager implements Serializer {
     }
 
     @Override
-    public final void addFeatureVectorAndSerialize(final String gestureName, final List<Vector2D> featureVector)
+    public final void addFeatureVectorAndSerialize(final String gestureName, final List<Vector3D> featureVector)
             throws IOException {
         this.userData.addGestureFeatureVector(gestureName, featureVector);
         this.serializeUser();
@@ -157,7 +157,7 @@ public class UserManager implements Serializer {
 
     @Override
     public final void addAllFeatureVectorsAndSerialize(final String gestureName,
-            final List<List<Vector2D>> featureVector) throws IOException {
+            final List<List<Vector3D>> featureVector) throws IOException {
         this.userData.addAllGestureFeatureVector(gestureName, featureVector);
         this.serializeUser();
     }

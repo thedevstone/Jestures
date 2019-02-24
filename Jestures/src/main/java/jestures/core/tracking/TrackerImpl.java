@@ -22,7 +22,6 @@ import java.util.Queue;
 import java.util.Set;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import jestures.core.codification.Codification;
 import jestures.core.codification.Codifier;
@@ -75,7 +74,7 @@ public abstract class TrackerImpl implements TrackingObserver, SensorObserver, T
 
     // ############################################## FROM SENSOR ###################################
     @Override
-    public void notifyOnSkeletonChange(final Vector2D primaryJoint, final Vector2D secondaryJoint) {
+    public void notifyOnSkeletonChange(final Vector3D primaryJoint, final Vector3D secondaryJoint) {
         this.codifier.codifyOnSkeletonChange(primaryJoint);
         this.jointListener.forEach(t -> t.onJointTracked(primaryJoint, secondaryJoint));
     }
@@ -87,15 +86,15 @@ public abstract class TrackerImpl implements TrackingObserver, SensorObserver, T
 
     // ############################################## FROM CODIFIER ###################################
     @Override
-    public void notifyOnFrameChange(final int frame, final Queue<Vector2D> featureVector, final Vector2D derivative,
-            final Vector2D distanceVector) {
+    public void notifyOnFrameChange(final int frame, final Queue<Vector3D> featureVector, final Vector3D derivative,
+            final Vector3D distanceVector) {
         this.jointListener.forEach(t -> t.onDerivativeJointTracked(derivative));
         this.jointListener.forEach(t -> t.onDistanceFromStartingJoint(distanceVector));
 
     }
 
     @Override
-    public void notifyOnFeatureVectorEvent(final List<Vector2D> featureVector) {
+    public void notifyOnFeatureVectorEvent(final List<Vector3D> featureVector) {
 
     }
 

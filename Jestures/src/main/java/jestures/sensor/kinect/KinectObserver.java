@@ -32,7 +32,7 @@ interface KinectObserver {
      * @param secondaryJoint
      *            the {@link Vector2D} secondary joint used in gesture recognition
      */
-    void notifyOnSkeletonChange(Vector2D primaryJoint, Vector2D secondaryJoint);
+    void notifyOnSkeletonChange(Vector3D primaryJoint, Vector3D secondaryJoint);
 
     /**
      * Notify Kinect on accelerometer change.

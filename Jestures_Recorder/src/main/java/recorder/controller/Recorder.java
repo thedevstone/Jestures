@@ -20,7 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import com.google.gson.JsonIOException;
 
@@ -50,7 +50,7 @@ public interface Recorder extends Tracker {
      *            the {@link String} gesture name
      * @return the {@link List} of feature vectors
      */
-    List<List<Vector2D>> getGestureDataset(String gestureName);
+    List<List<Vector3D>> getGestureDataset(String gestureName);
 
     /**
      * Get the user gesture length.

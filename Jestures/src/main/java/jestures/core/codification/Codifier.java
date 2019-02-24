@@ -17,6 +17,7 @@ package jestures.core.codification;
 
 import java.util.Queue;
 
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import jestures.core.tracking.TrackerImpl;
@@ -46,14 +47,14 @@ public interface Codifier {
      *            the primary {@link Vector2D} joint according to sensor settings
      *
      */
-    void codifyOnSkeletonChange(Vector2D newVector);
+    void codifyOnSkeletonChange(Vector3D newVector);
 
     /**
      * Get the feature vector.
      *
      * @return the {@link Queue} feature vector
      */
-    Queue<Vector2D> extractFeatureVector();
+    Queue<Vector3D> extractFeatureVector();
 
     /**
      * Attache the {@link TrackerImpl} for feedback notification.

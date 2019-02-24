@@ -25,7 +25,6 @@ import java.util.Queue;
 import java.util.Set;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import com.google.gson.JsonSyntaxException;
 
@@ -61,7 +60,7 @@ public final class RecorderImpl extends TrackerImpl implements Recorder {
     /**
      * Temporary cache for recorded feature vectors
      */
-    private final List<List<Vector2D>> listOfRecordedFeatureVector;
+    private final List<List<Vector3D>> listOfRecordedFeatureVector;
 
     private static final int THREASHOLD = 50;
 
@@ -96,7 +95,7 @@ public final class RecorderImpl extends TrackerImpl implements Recorder {
 
     // ############################################## FROM SENSOR ###################################
     @Override
-    public void notifyOnSkeletonChange(final Vector2D primaryJoint, final Vector2D secondaryJoint) {
+    public void notifyOnSkeletonChange(final Vector3D primaryJoint, final Vector3D secondaryJoint) {
         super.notifyOnSkeletonChange(primaryJoint, secondaryJoint);
         // Check if user is recording
         this.secJointTrigger(primaryJoint, secondaryJoint);
@@ -108,14 +107,14 @@ public final class RecorderImpl extends TrackerImpl implements Recorder {
 
     // ############################################## FROM CODIFIER ###################################
     @Override
-    public void notifyOnFrameChange(final int frame, final Queue<Vector2D> featureVector, final Vector2D derivative,
-            final Vector2D distanceVector) {
+    public void notifyOnFrameChange(final int frame, final Queue<Vector3D> featureVector, final Vector3D derivative,
+            final Vector3D distanceVector) {
         // Updates view on every frame
         this.view.forEach(t -> t.notifyOnFrameChange(frame, derivative, distanceVector));
     }
 
     @Override
-    public void notifyOnFeatureVectorEvent(final List<Vector2D> featureVector) {
+    public void notifyOnFeatureVectorEvent(final List<Vector3D> featureVector) {
         // If the user is recording and a new feature vector is available that the feature vector is saved in cache
         if (this.isRecording) {
             this.view.forEach(t -> t.notifyOnFeatureVectorEvent());
@@ -159,7 +158,7 @@ public final class RecorderImpl extends TrackerImpl implements Recorder {
     }
 
     @Override
-    public List<List<Vector2D>> getGestureDataset(final String gestureName) {
+    public List<List<Vector3D>> getGestureDataset(final String gestureName) {
         return this.userManager.getGestureDataset(gestureName);
     }
 
@@ -207,7 +206,7 @@ public final class RecorderImpl extends TrackerImpl implements Recorder {
 
     // ############################################## INSTANCE METHODS ###################################
 
-    private void secJointTrigger(final Vector2D primaryJoint, final Vector2D secondaryJoint) {
+    private void secJointTrigger(final Vector3D primaryJoint, final Vector3D secondaryJoint) {
         // If the secondary hand is above the primnary sholder than recording can start
         if (secondaryJoint.getY() > primaryJoint.getY() + RecorderImpl.THREASHOLD && !this.isRecording) {
             this.isRecording = true;

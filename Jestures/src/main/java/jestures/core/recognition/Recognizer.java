@@ -26,7 +26,6 @@ import java.util.Queue;
 import java.util.Set;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.apache.commons.math3.stat.StatUtils;
 import org.apache.log4j.Logger;
 
@@ -69,7 +68,7 @@ public final class Recognizer extends TrackerImpl implements Recognition {
     /**
      * User dataset of gsetures. Deserialized and loaded in memory. Reduced memory cost.
      */
-    private Map<Integer, List<Vector2D[]>> userDataset;
+    private Map<Integer, List<Vector3D[]>> userDataset;
     /**
      * Temporary map that stores the mapping from integer to gesture name
      */
@@ -82,7 +81,7 @@ public final class Recognizer extends TrackerImpl implements Recognition {
     /**
      * Dynamic Time Warping algorithm
      */
-    private final DynamicTimeWarping<Vector2D> dtw;
+    private final DynamicTimeWarping<Vector3D> dtw;
     /**
      * User recognition settings
      */
@@ -100,7 +99,7 @@ public final class Recognizer extends TrackerImpl implements Recognition {
         this.userDataset = null;
         this.lastGestureTime = 0;
         this.recognitionSettings = new RecognitionSettingsImpl(UpdateRate.FPS_10, 0, 0, 0, 0, 0);
-        this.dtw = new DynamicTimeWarping<Vector2D>((a, b) -> a.distance(b), this.recognitionSettings.getDtwRadius());
+        this.dtw = new DynamicTimeWarping<Vector3D>((a, b) -> a.distance(b), this.recognitionSettings.getDtwRadius());
         RecognitionScreenView.startFxThread();
     }
 
@@ -126,7 +125,7 @@ public final class Recognizer extends TrackerImpl implements Recognition {
 
     // ############################################## FROM SENSOR ###################################
     @Override
-    public void notifyOnSkeletonChange(final Vector2D primaryJoint, final Vector2D secondaryJoint) {
+    public void notifyOnSkeletonChange(final Vector3D primaryJoint, final Vector3D secondaryJoint) {
         super.notifyOnSkeletonChange(primaryJoint, secondaryJoint);
     }
 
@@ -138,8 +137,8 @@ public final class Recognizer extends TrackerImpl implements Recognition {
     // ############################################## FROM CODIFIER ###################################
 
     @Override
-    public void notifyOnFrameChange(final int frame, final Queue<Vector2D> featureVector, final Vector2D derivative,
-            final Vector2D distanceVector) {
+    public void notifyOnFrameChange(final int frame, final Queue<Vector3D> featureVector, final Vector3D derivative,
+            final Vector3D distanceVector) {
         // super call for simple hand tracking
         super.notifyOnFrameChange(frame, featureVector, derivative, distanceVector);
         // view update
@@ -147,7 +146,7 @@ public final class Recognizer extends TrackerImpl implements Recognition {
         // When the actual frame is a multiple of the recognition update time, recognition can be performed
         if ((frame + 1) % this.recognitionSettings.getUpdateRate().getFrameNumber() == 0) {
             // conversion from list to array. Library need arrays
-            final Vector2D[] arrayFeatureVector = new Vector2D[featureVector.size()];
+            final Vector3D[] arrayFeatureVector = new Vector3D[featureVector.size()];
             featureVector.toArray(arrayFeatureVector);
             // Starting timer
             final long currentSec = System.currentTimeMillis();
@@ -167,7 +166,7 @@ public final class Recognizer extends TrackerImpl implements Recognition {
     }
 
     @Override
-    public void notifyOnFeatureVectorEvent(final List<Vector2D> featureVector) {
+    public void notifyOnFeatureVectorEvent(final List<Vector3D> featureVector) {
         super.notifyOnFeatureVectorEvent(featureVector);
         this.view.forEach(t -> t.notifyOnFeatureVectorEvent());
     }
@@ -199,7 +198,7 @@ public final class Recognizer extends TrackerImpl implements Recognition {
     }
 
     @Override
-    public List<List<Vector2D>> getGestureDataset(final String gestureName) {
+    public List<List<Vector3D>> getGestureDataset(final String gestureName) {
         return this.userManager.getGestureDataset(gestureName);
     }
 
@@ -221,12 +220,12 @@ public final class Recognizer extends TrackerImpl implements Recognition {
      * @param featureVector
      *            the gesture
      */
-    private void recognize(final Vector2D... featureVector) {
+    private void recognize(final Vector3D... featureVector) {
         // Array of distances
         final List<Pair<Double, Integer>> distances = new ArrayList<>();
         // Get the distances from every template and save in the array
         for (final Integer gestureKey : this.userDataset.keySet()) {
-            for (final Vector2D[] gestureTemplate : this.userDataset.get(gestureKey)) {
+            for (final Vector3D[] gestureTemplate : this.userDataset.get(gestureKey)) {
                 // Distance calculated with DTW
                 final double dtwDist = this.dtw.d(gestureTemplate, featureVector);
                 // Threshold prevent unreasonable cpu calc

@@ -18,7 +18,7 @@ package jestures.core.codification;
 import java.util.ArrayList;
 import java.util.Queue;
 
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import com.google.common.collect.EvictingQueue;
 
@@ -33,19 +33,19 @@ public class DerivativeCodifier implements Codifier {
     /**
      * The queue that gather all the derivative vectors. This represents a gesture, so a sequence of positions in time.
      */
-    private Queue<Vector2D> featureVector;
+    private Queue<Vector3D> featureVector;
     /**
      * Old vector for derivative calculus.
      */
-    private Vector2D oldVector;
+    private Vector3D oldVector;
     /**
      * Last derivative vector.
      */
-    private Vector2D derivative; // NOPMD
+    private Vector3D derivative; // NOPMD
     /**
      * Starting vector for other representations
      */
-    private Vector2D startingVector;
+    private Vector3D startingVector;
     /**
      * Frame count.
      */
@@ -73,7 +73,7 @@ public class DerivativeCodifier implements Codifier {
      */
     public DerivativeCodifier(final GestureLength frames) {
         this.featureVector = EvictingQueue.create(frames.getFrameNumber());
-        this.oldVector = new Vector2D(0, 0);
+        this.oldVector = new Vector3D(0, 0, 0);
         this.frame = 0;
         this.gestureLength = frames;
     }
@@ -84,7 +84,7 @@ public class DerivativeCodifier implements Codifier {
     }
 
     @Override
-    public void codifyOnSkeletonChange(final Vector2D newVector) {
+    public void codifyOnSkeletonChange(final Vector3D newVector) {
         // derivative calculus
         this.derivative = newVector.subtract(this.oldVector);
         // vector is added to the queue
@@ -97,7 +97,7 @@ public class DerivativeCodifier implements Codifier {
         }
         // if reached the gesture length notify the recognizer with a new gesture.
         if (this.frame > this.gestureLength.getFrameNumber() - 1) {
-            this.recognizer.notifyOnFeatureVectorEvent(new ArrayList<Vector2D>(this.featureVector));
+            this.recognizer.notifyOnFeatureVectorEvent(new ArrayList<Vector3D>(this.featureVector));
             this.resetFrame();
         } else {
             // notify the recognizer so the view with a new frame
@@ -108,7 +108,7 @@ public class DerivativeCodifier implements Codifier {
     }
 
     @Override
-    public Queue<Vector2D> extractFeatureVector() {
+    public Queue<Vector3D> extractFeatureVector() {
         return this.featureVector;
     }
 

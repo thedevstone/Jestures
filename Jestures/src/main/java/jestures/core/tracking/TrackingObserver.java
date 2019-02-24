@@ -19,7 +19,7 @@ package jestures.core.tracking;
 import java.util.List;
 import java.util.Queue;
 
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 /**
  * A Tracking observer observes the codifier and get notified when a feature vector is ready.
@@ -31,7 +31,7 @@ public interface TrackingObserver {
      * @param list
      *            the {@link List} feature vector.
      */
-    void notifyOnFeatureVectorEvent(List<Vector2D> list);
+    void notifyOnFeatureVectorEvent(List<Vector3D> list);
 
     /**
      * Notify the {@link TrackerImpl} when a frame changes.
@@ -45,6 +45,6 @@ public interface TrackingObserver {
      * @param distanceVector
      *            the distance vector from starting frame
      */
-    void notifyOnFrameChange(int frame, Queue<Vector2D> featureVector, Vector2D derivative, Vector2D distanceVector);
+    void notifyOnFrameChange(int frame, Queue<Vector3D> featureVector, Vector3D derivative, Vector3D distanceVector);
 
 }

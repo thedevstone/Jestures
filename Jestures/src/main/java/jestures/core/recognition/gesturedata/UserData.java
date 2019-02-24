@@ -18,7 +18,7 @@ package jestures.core.recognition.gesturedata;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import jestures.core.codification.Codification;
 import jestures.core.codification.DerivativeCodifier;
@@ -91,7 +91,7 @@ public interface UserData {
      *            the {@link String} gesture name
      * @return the {@link List} of feature vectors
      */
-    List<List<Vector2D>> getGestureDataset(String gestureName);
+    List<List<Vector3D>> getGestureDataset(String gestureName);
 
     /**
      * Get a copy all feature vectors for all gestures.
@@ -100,7 +100,7 @@ public interface UserData {
      *
      * @return the {@link Map} of all gestures data
      */
-    Map<String, List<List<Vector2D>>> getAllGesturesData();
+    Map<String, List<List<Vector3D>>> getAllGesturesData();
 
     /**
      * Delete all the gesture's dataset.
@@ -128,7 +128,7 @@ public interface UserData {
      * @param gestureName
      *            the {@link String} gesture name
      */
-    void addGestureFeatureVector(String gestureName, List<Vector2D> featureVector);
+    void addGestureFeatureVector(String gestureName, List<Vector3D> featureVector);
 
     /**
      * The Feature Vector to serialize.
@@ -138,5 +138,5 @@ public interface UserData {
      * @param gestureName
      *            the {@link String} gesture name
      */
-    void addAllGestureFeatureVector(String gestureName, List<List<Vector2D>> gestureFeatureVectors);
+    void addAllGestureFeatureVector(String gestureName, List<List<Vector3D>> gestureFeatureVectors);
 }

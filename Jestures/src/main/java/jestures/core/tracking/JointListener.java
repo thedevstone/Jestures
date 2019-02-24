@@ -35,7 +35,7 @@ public interface JointListener {
      * @param secondaryJoint
      *            the {@link Vector2D} secondary joint
      */
-    void onJointTracked(Vector2D primaryJoint, Vector2D secondaryJoint);
+    void onJointTracked(Vector3D primaryJoint, Vector3D secondaryJoint);
 
     /**
      * Derivative tracking.
@@ -45,7 +45,7 @@ public interface JointListener {
      * @param derivativeJoint
      *            {@link Vector2D} derivative
      */
-    void onDerivativeJointTracked(Vector2D derivativeJoint);
+    void onDerivativeJointTracked(Vector3D derivativeJoint);
 
     /**
      * Distance between starting joint position and actual joint position. Starting position depends on
@@ -56,7 +56,7 @@ public interface JointListener {
      * @param distance
      *            the {@link Vector2D} distance
      */
-    void onDistanceFromStartingJoint(Vector2D distance);
+    void onDistanceFromStartingJoint(Vector3D distance);
 
     /**
      * Accelerometer tracking.

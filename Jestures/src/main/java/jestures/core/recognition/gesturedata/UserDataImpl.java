@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.apache.log4j.Logger;
 
@@ -65,7 +66,7 @@ public class UserDataImpl implements UserData, Serializable {
     /**
      * Dataset
      */
-    private final Map<String, List<List<Vector2D>>> gestures;
+    private final Map<String, List<List<Vector3D>>> gestures;
     private static final Logger LOG = Logger.getLogger(UserDataImpl.class);
 
     /**
@@ -126,32 +127,32 @@ public class UserDataImpl implements UserData, Serializable {
     }
 
     @Override
-    public List<List<Vector2D>> getGestureDataset(final String gestureName) {
+    public List<List<Vector3D>> getGestureDataset(final String gestureName) {
         return Collections.unmodifiableList(this.gestures.get(gestureName));
     }
 
     @Override
-    public Map<String, List<List<Vector2D>>> getAllGesturesData() {
+    public Map<String, List<List<Vector3D>>> getAllGesturesData() {
         return Collections.unmodifiableMap(this.gestures);
     }
 
     @Override
-    public void addGestureFeatureVector(final String gestureName, final List<Vector2D> featureVector) {
+    public void addGestureFeatureVector(final String gestureName, final List<Vector3D> featureVector) {
         if (this.gestures.containsKey(gestureName) && !this.gestures.get(gestureName).contains(featureVector)) {
             this.gestures.get(gestureName).add(featureVector);
         } else if (!this.gestures.containsKey(gestureName)) {
-            final List<List<Vector2D>> newFeatureVector = new ArrayList<>();
+            final List<List<Vector3D>> newFeatureVector = new ArrayList<>();
             newFeatureVector.add(featureVector);
             this.gestures.put(gestureName, newFeatureVector);
         }
     }
 
     @Override
-    public void addAllGestureFeatureVector(final String gestureName, final List<List<Vector2D>> gestureFeatureVectors) {
+    public void addAllGestureFeatureVector(final String gestureName, final List<List<Vector3D>> gestureFeatureVectors) {
         if (this.gestures.containsKey(gestureName)) {
             this.gestures.get(gestureName).addAll(gestureFeatureVectors);
         } else {
-            this.gestures.put(gestureName, new ArrayList<List<Vector2D>>(gestureFeatureVectors));
+            this.gestures.put(gestureName, new ArrayList<List<Vector3D>>(gestureFeatureVectors));
         }
     }
 

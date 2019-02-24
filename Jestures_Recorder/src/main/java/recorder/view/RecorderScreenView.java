@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.log4j.Logger;
 import org.kordamp.ikonli.material.Material;
 
@@ -154,7 +154,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     // KINECT
     // ######## TAB 2 AND 3 #########
     @Override
-    public final void notifyOnFrameChange(final int frame, final Vector2D derivative, final Vector2D path) {
+    public final void notifyOnFrameChange(final int frame, final Vector3D derivative, final Vector3D path) {
         Platform.runLater(() -> {
             if (frame == 0) {
                 this.clearCanvasAndChart();
@@ -162,8 +162,8 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
             this.getxSeries().getData().add(new XYChart.Data<Number, Number>(frame, (int) derivative.getX()));
             this.getySeries().getData().add(new XYChart.Data<Number, Number>(frame, (int) derivative.getY()));
 
-            this.getLiveContext().fillOval(-path.getX() + (this.getLiveCanvas().getWidth() / 2),
-                    path.getY() + (this.getLiveCanvas().getHeight() / 2), 10, 10);
+            this.getLiveContext().fillOval(-path.getX() + this.getLiveCanvas().getWidth() / 2,
+                    path.getY() + this.getLiveCanvas().getHeight() / 2, 10, 10);
             this.progressBar.setProgress(frame / (this.gestureLength.getFrameNumber() + 0.0));
         });
     }
@@ -356,11 +356,11 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
     // CANVAS GESTURE
     @Override
     public final void drawSavedGestureOnCanvas(final TreeItem<String> gestureItem, final int templateIndex) {
-        final List<Vector2D> template = this.recorder.getGestureDataset(gestureItem.getValue()).get(templateIndex);
+        final List<Vector3D> template = this.recorder.getGestureDataset(gestureItem.getValue()).get(templateIndex);
         this.getUserCanvasContext().clearRect(0, 0, this.getLiveCanvas().getWidth(), this.getLiveCanvas().getHeight());
-        for (final Vector2D path : template) {
-            this.getUserCanvasContext().fillOval(-path.getX() + (this.getLiveCanvas().getWidth() / 2),
-                    path.getY() + (this.getLiveCanvas().getHeight() / 2), 10, 10);
+        for (final Vector3D path : template) {
+            this.getUserCanvasContext().fillOval(-path.getX() + this.getLiveCanvas().getWidth() / 2,
+                    path.getY() + this.getLiveCanvas().getHeight() / 2, 10, 10);
         }
         this.getCnavasPopup().show(this.recorderPane);
 
@@ -414,7 +414,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
         // ON CLICK ACTION
         this.listView.setOnMouseClicked(t -> {
             final int indexClicked = this.listView.getSelectionModel().getSelectedIndex();
-            if (t.getButton().equals(MouseButton.PRIMARY) && (indexClicked != -1)) {
+            if (t.getButton().equals(MouseButton.PRIMARY) && indexClicked != -1) {
 
                 ViewUtilities.showConfirmDialog(this.scrollPane, "Save",
                         "Save the feature vector N: " + indexClicked + "?", DimDialogs.MEDIUM, (final Event event) -> {
@@ -467,7 +467,7 @@ public class RecorderScreenView extends AbstractRecorderScreenView implements Re
         final TreeItem<String> item = new TreeItem<>(gestureName);
         item.setGraphic(ViewUtilities.iconSetter(Material.GESTURE, IconDim.SMALL));
         // RICORSIVA CREO TUTTO L'ALBERO
-        final List<List<Vector2D>> gestureDataset = this.recorder.getGestureDataset(gestureName);
+        final List<List<Vector3D>> gestureDataset = this.recorder.getGestureDataset(gestureName);
         for (int i = 0; i < gestureDataset.size(); i++) {
             this.makeTemplateBranch("Template: " + (i + 1), item);
         }

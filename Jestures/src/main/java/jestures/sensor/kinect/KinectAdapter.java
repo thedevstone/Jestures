@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.stream.IntStream;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.apache.log4j.Logger;
 
 import edu.ufl.digitalworlds.j4k.J4KSDK;
@@ -84,31 +83,38 @@ class KinectAdapter extends J4KSDK implements KinectInterfaceAdapter {
             if (skeletonTracked[i] && this.first) {
                 this.first = false;
                 skeleton = Skeleton.getSkeleton(i, skeletonTracked, jointPosition, jointOrientation, jointStatus, this);
-                Vector2D joint1;
-                Vector2D joint2;
+                Vector3D joint1;
+                Vector3D joint2;
                 final Vector3D acceleration;
 
                 // JOINT WITHOUT FOOT
                 switch (this.primaryJoint) {
                 case RIGHT_HAND:
-                    joint1 = new Vector2D(
+                    joint1 = new Vector3D(
                             (int) (skeleton.get3DJoint(Skeleton.HAND_RIGHT)[0] * KinectAdapter.MULTIPLIER),
-                            (int) (skeleton.get3DJoint(Skeleton.HAND_RIGHT)[1] * KinectAdapter.MULTIPLIER));
-                    joint2 = new Vector2D((int) (skeleton.get3DJoint(Skeleton.HAND_LEFT)[0] * KinectAdapter.MULTIPLIER),
-                            (int) (skeleton.get3DJoint(Skeleton.HAND_LEFT)[1] * KinectAdapter.MULTIPLIER));
+                            (int) (skeleton.get3DJoint(Skeleton.HAND_RIGHT)[1] * KinectAdapter.MULTIPLIER),
+                            (int) (skeleton.get3DJoint(Skeleton.HAND_RIGHT)[2] * KinectAdapter.MULTIPLIER));
+                    joint2 = new Vector3D((int) (skeleton.get3DJoint(Skeleton.HAND_LEFT)[0] * KinectAdapter.MULTIPLIER),
+                            (int) (skeleton.get3DJoint(Skeleton.HAND_LEFT)[1] * KinectAdapter.MULTIPLIER),
+                            (int) (skeleton.get3DJoint(Skeleton.HAND_LEFT)[2] * KinectAdapter.MULTIPLIER));
                     break;
                 case LEFT_HAND:
-                    joint2 = new Vector2D(
+                    joint2 = new Vector3D(
                             (int) (skeleton.get3DJoint(Skeleton.HAND_RIGHT)[0] * KinectAdapter.MULTIPLIER),
-                            (int) (skeleton.get3DJoint(Skeleton.HAND_RIGHT)[1] * KinectAdapter.MULTIPLIER));
-                    joint1 = new Vector2D((int) (skeleton.get3DJoint(Skeleton.HAND_LEFT)[0] * KinectAdapter.MULTIPLIER),
-                            (int) (skeleton.get3DJoint(Skeleton.HAND_LEFT)[1] * KinectAdapter.MULTIPLIER));
+                            (int) (skeleton.get3DJoint(Skeleton.HAND_RIGHT)[1] * KinectAdapter.MULTIPLIER),
+                            (int) (skeleton.get3DJoint(Skeleton.HAND_RIGHT)[2] * KinectAdapter.MULTIPLIER));
+                    joint1 = new Vector3D((int) (skeleton.get3DJoint(Skeleton.HAND_LEFT)[0] * KinectAdapter.MULTIPLIER),
+                            (int) (skeleton.get3DJoint(Skeleton.HAND_LEFT)[1] * KinectAdapter.MULTIPLIER),
+                            (int) (skeleton.get3DJoint(Skeleton.HAND_LEFT)[2] * KinectAdapter.MULTIPLIER));
                     break;
                 default:
-                    joint1 = new Vector2D(skeleton.get3DJoint(Skeleton.HAND_RIGHT)[0],
-                            skeleton.get3DJoint(Skeleton.HAND_RIGHT)[1]);
-                    joint2 = new Vector2D(skeleton.get3DJoint(Skeleton.HAND_LEFT)[0],
-                            skeleton.get3DJoint(Skeleton.HAND_LEFT)[1]);
+                    joint1 = new Vector3D(
+                            (int) (skeleton.get3DJoint(Skeleton.HAND_RIGHT)[0] * KinectAdapter.MULTIPLIER),
+                            (int) (skeleton.get3DJoint(Skeleton.HAND_RIGHT)[1] * KinectAdapter.MULTIPLIER),
+                            (int) (skeleton.get3DJoint(Skeleton.HAND_RIGHT)[2] * KinectAdapter.MULTIPLIER));
+                    joint2 = new Vector3D((int) (skeleton.get3DJoint(Skeleton.HAND_LEFT)[0] * KinectAdapter.MULTIPLIER),
+                            (int) (skeleton.get3DJoint(Skeleton.HAND_LEFT)[1] * KinectAdapter.MULTIPLIER),
+                            (int) (skeleton.get3DJoint(Skeleton.HAND_LEFT)[2] * KinectAdapter.MULTIPLIER));
                     break;
                 }
                 // ACCLEROMETER

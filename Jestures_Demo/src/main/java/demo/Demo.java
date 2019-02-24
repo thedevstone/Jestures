@@ -16,7 +16,6 @@
 package demo;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import jestures.core.recognition.Recognition;
 import jestures.core.recognition.Recognizer;
@@ -61,19 +60,19 @@ public class Demo {
         recognizer.setOnJointTracked(new JointListener() {
 
             @Override
-            public void onJointTracked(final Vector2D primaryJoint, final Vector2D secondaryJoint) {
-                // System.out.println(primaryJoint);
-
-            }
-
-            @Override
-            public void onDistanceFromStartingJoint(final Vector2D distance) {
+            public void onJointTracked(final Vector3D primaryJoint, final Vector3D secondaryJoint) {
                 // TODO Auto-generated method stub
 
             }
 
             @Override
-            public void onDerivativeJointTracked(final Vector2D derivativeJoint) {
+            public void onDistanceFromStartingJoint(final Vector3D distance) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onDerivativeJointTracked(final Vector3D derivativeJoint) {
                 // TODO Auto-generated method stub
 
             }

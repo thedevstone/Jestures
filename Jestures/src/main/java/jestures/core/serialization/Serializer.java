@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 import com.google.gson.JsonIOException;
 
@@ -89,7 +89,7 @@ public interface Serializer {
      *            map for int to string
      * @return the {@link Map} of all gestures data
      */
-    Map<Integer, List<Vector2D[]>> getDatasetForRecognition(Map<Integer, String> gestureNameMapping);
+    Map<Integer, List<Vector3D[]>> getDatasetForRecognition(Map<Integer, String> gestureNameMapping);
 
     /**
      * Get all template (feature vectors) for the selected gesture.
@@ -98,7 +98,7 @@ public interface Serializer {
      *            the {@link String} gesture name
      * @return the {@link List} of feature vectors
      */
-    List<List<Vector2D>> getGestureDataset(String gestureName);
+    List<List<Vector3D>> getGestureDataset(String gestureName);
 
     /**
      * Delete user profile.
@@ -145,7 +145,7 @@ public interface Serializer {
      * @throws JsonIOException
      *             the {@link JsonIOException} if can't serialize
      */
-    void addFeatureVectorAndSerialize(String gestureName, List<Vector2D> featureVector) throws IOException;
+    void addFeatureVectorAndSerialize(String gestureName, List<Vector3D> featureVector) throws IOException;
 
     /**
      * Serialize all gesture feature vector.
@@ -159,7 +159,7 @@ public interface Serializer {
      * @throws JsonIOException
      *             the {@link JsonIOException} if can't serialize
      */
-    void addAllFeatureVectorsAndSerialize(String gestureName, List<List<Vector2D>> featureVector) throws IOException;
+    void addAllFeatureVectorsAndSerialize(String gestureName, List<List<Vector3D>> featureVector) throws IOException;
 
     /**
      * Delete all the gesture's dataset.

@@ -17,7 +17,6 @@
 package jestures.sensor.kinect;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import jestures.core.tracking.TrackerImpl;
 import jestures.sensor.IllegalSensorStateException;
@@ -62,7 +61,7 @@ public class Kinect implements KinectObserver, Sensor {
     }
 
     @Override
-    public void notifyOnSkeletonChange(final Vector2D primaryJoint, final Vector2D secondaryJoint) {
+    public void notifyOnSkeletonChange(final Vector3D primaryJoint, final Vector3D secondaryJoint) {
         this.tracker.notifyOnSkeletonChange(primaryJoint, secondaryJoint);
     }
 

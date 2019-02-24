@@ -31,7 +31,7 @@ public interface SensorObserver {
      * @param secondaryJoint
      *            the secondary Joint {@link Vector2D}
      */
-    void notifyOnSkeletonChange(Vector2D primaryJoint, Vector2D secondaryJoint);
+    void notifyOnSkeletonChange(Vector3D primaryJoint, Vector3D secondaryJoint);
 
     /**
      * Notify recognizer when a acceleration {@link Vector3D} is available.
