@@ -34,6 +34,7 @@ import com.google.gson.JsonSyntaxException;
 
 import javafx.util.Pair;
 import jestures.core.codification.GestureLength;
+import jestures.core.recognition.gesturedata.RecognitionSettings;
 import jestures.core.recognition.gesturedata.RecognitionSettingsImpl;
 import jestures.core.serialization.Serializer;
 import jestures.core.serialization.UserManager;
@@ -85,7 +86,7 @@ public final class Recognizer extends TrackerImpl implements Recognition {
     /**
      * User recognition settings
      */
-    private RecognitionSettingsImpl recognitionSettings;
+    private RecognitionSettings recognitionSettings;
     /**
      * <code>true</code> if the last gesture has been recognized
      */

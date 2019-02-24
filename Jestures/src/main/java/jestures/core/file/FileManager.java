@@ -54,7 +54,7 @@ public final class FileManager {
     private static void removeDirectory(final File dir) {
         if (dir.isDirectory()) {
             final File[] files = dir.listFiles();
-            if ((files != null) && (files.length > 0)) {
+            if (files != null && files.length > 0) {
                 for (final File aFile : files) {
                     FileManager.removeDirectory(aFile);
                 }
@@ -177,10 +177,11 @@ public final class FileManager {
      *             the {@link IOException}
      */
     public static List<String> getAllUserFolder() throws IOException {
-        try (Stream<Path> paths = Files
-                .walk(Paths.get(FileManager.libDir + OsUtils.getSeparator() + LibPaths.USER.getDirName()), 1)) {
-            return paths.map(p -> p.getFileName().toString()).filter(t -> !t.equals(LibPaths.USER.getDirName()))
-                    .collect(Collectors.toList());
+        try (Stream<Path> paths = Files.walk(
+                Paths.get(FileManager.libDir + OsUtils.getSeparator() + LibPaths.USER.getDirName()), 1)) {
+            return paths.map(p -> p.getFileName().toString())
+                        .filter(t -> !t.equals(LibPaths.USER.getDirName()))
+                        .collect(Collectors.toList());
         }
     }
 

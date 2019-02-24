@@ -39,7 +39,7 @@ import jestures.core.codification.GestureLength;
 import jestures.core.file.FileManager;
 import jestures.core.recognition.Recognition;
 import jestures.core.recognition.UpdateRate;
-import jestures.core.recognition.gesturedata.RecognitionSettingsImpl;
+import jestures.core.recognition.gesturedata.RecognitionSettings;
 import jestures.core.view.enums.DialogsType.DimDialogs;
 import jestures.core.view.enums.IconDim;
 import jestures.core.view.enums.NotificationType;
@@ -171,8 +171,8 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
             this.getxSeries().getData().add(new XYChart.Data<Number, Number>(frame, (int) derivative.getX()));
             this.getySeries().getData().add(new XYChart.Data<Number, Number>(frame, (int) derivative.getY()));
             // Draw oval on canvas
-            this.getLiveContext().fillOval(-path.getX() + (this.getLiveCanvas().getWidth() / 2),
-                    path.getY() + (this.getLiveCanvas().getHeight() / 2), 10, 10);
+            this.getLiveContext().fillOval(-path.getX() + this.getLiveCanvas().getWidth() / 2,
+                    path.getY() + this.getLiveCanvas().getHeight() / 2, 10, 10);
             // Move the progress bar
             this.progressBar.setProgress(frame / (this.gestureLength.getFrameNumber() + 0.0));
         });
@@ -201,7 +201,7 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
     // ############################## FROM RECOGNIZER (RECOGNITION VIEW OBSERVER )##########################
     // TAB 4
     @Override
-    public final void updateSettings(final RecognitionSettingsImpl settings) {
+    public final void updateSettings(final RecognitionSettings settings) {
         Platform.runLater(() -> {
             this.udpateRateCombo.getSelectionModel().select(settings.getUpdateRate());
             this.sliderRadius.setValue(settings.getDtwRadius() * 10);
@@ -325,8 +325,8 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
         this.getUserCanvasContext().clearRect(0, 0, this.getLiveCanvas().getWidth(), this.getLiveCanvas().getHeight());
         // Redraw oval for every point. Now it's a derivative representation
         for (final Vector2D path : template) {
-            this.getUserCanvasContext().fillOval(-path.getX() + (this.getLiveCanvas().getWidth() / 2),
-                    path.getY() + (this.getLiveCanvas().getHeight() / 2), 10, 10);
+            this.getUserCanvasContext().fillOval(-path.getX() + this.getLiveCanvas().getWidth() / 2,
+                    path.getY() + this.getLiveCanvas().getHeight() / 2, 10, 10);
         }
         // Show the Canvas in a pop up
         this.getCnavasPopup().show(this.recorderPane);

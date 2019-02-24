@@ -18,7 +18,6 @@ package jestures.core.view;
 
 import jestures.core.codification.GestureLength;
 import jestures.core.recognition.gesturedata.RecognitionSettings;
-import jestures.core.recognition.gesturedata.RecognitionSettingsImpl;
 
 /**
  * Pattern obsrver that extends the view obersver.
@@ -32,7 +31,7 @@ public interface RecognitionViewObserver extends ViewObserver {
      * @param settings
      *            the {@link RecognitionSettings}
      */
-    void updateSettings(RecognitionSettingsImpl settings);
+    void updateSettings(RecognitionSettings settings);
 
     /**
      * Triggered when a gesture is recognized.

@@ -23,11 +23,13 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
 import jestures.core.codification.GestureLength;
 import jestures.core.file.FileManager;
 import jestures.core.file.LibPaths;
+import jestures.core.recognition.gesturedata.RecognitionSettings;
 import jestures.core.recognition.gesturedata.RecognitionSettingsImpl;
 import jestures.core.recognition.gesturedata.UserData;
 import jestures.core.recognition.gesturedata.UserDataImpl;
@@ -51,7 +53,10 @@ public class UserManager implements Serializer {
      */
     public UserManager() {
         this.userData = null;
-        this.gson = new Gson();
+        this.gson = new GsonBuilder().setPrettyPrinting()
+                                     .registerTypeAdapterFactory(
+                                             new AdapterFactoryRecognitionSettings(RecognitionSettingsImpl.class))
+                                     .create();
         UserManager.LOG.getClass();
     }
 
@@ -72,12 +77,12 @@ public class UserManager implements Serializer {
     }
 
     @Override
-    public final RecognitionSettingsImpl getRecognitionSettings() {
+    public final RecognitionSettings getRecognitionSettings() {
         return this.userData.getRecognitionSettings();
     }
 
     @Override
-    public final void setRecognitionSettings(final RecognitionSettingsImpl recognitionSettings) throws IOException {
+    public final void setRecognitionSettings(final RecognitionSettings recognitionSettings) throws IOException {
         this.userData.setRecognitionSettings(recognitionSettings);
         this.serializeUser();
     }
