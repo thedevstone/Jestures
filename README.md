@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/Giulianini/Jestures.svg?branch=master)](https://travis-ci.org/Giulianini/Jestures)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](luca201194@gmail.com)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/LucaGiulianini?locale.x=it_IT)
 [![PyPI - License](https://img.shields.io/github/license/Giulianini/Jestures.svg)](https://github.com/Giulianini/Jestures/blob/master/LICENSE.txt)
  [ ![Download](https://api.bintray.com/packages/giulianini/maven/Jestures/images/download.svg?version=0.0.2) ](https://bintray.com/giulianini/maven/Jestures/0.0.2/link)
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.giulianini.jestures/jestures.svg)](https://search.maven.org/search?q=g:com.github.giulianini.jestures)
@@ -21,7 +21,7 @@
 </h1>
 
 ## Donate
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](luca201194@gmail.com)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/LucaGiulianini?locale.x=it_IT)
 
 ## Download
 * Released builds are available from - [Bintray](https://bintray.com/giulianini/maven/Jestures/_latestVersion)
