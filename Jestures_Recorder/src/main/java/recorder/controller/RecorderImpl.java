@@ -34,6 +34,7 @@ import jestures.core.serialization.UserManager;
 import jestures.core.tracking.Tracker;
 import jestures.core.tracking.TrackerImpl;
 import jestures.core.view.screens.RecognitionScreenView;
+import jestures.sensor.Sensor;
 import recorder.view.RecordingViewObserver;
 
 /**
@@ -64,7 +65,8 @@ public final class RecorderImpl extends TrackerImpl implements Recorder {
 
     private static final int THREASHOLD = 50;
 
-    private RecorderImpl() {
+    private RecorderImpl(final Sensor sensor) {
+        super(sensor);
         this.listOfRecordedFeatureVector = new ArrayList<>();
         this.userManager = new UserManager();
         this.view = new HashSet<>();
@@ -78,10 +80,27 @@ public final class RecorderImpl extends TrackerImpl implements Recorder {
      */
     public static Recorder getInstance() {
         synchronized (Tracker.class) {
-            if (RecorderImpl.instance == null) {
-                RecorderImpl.instance = new RecorderImpl();
+            if (RecorderImpl.instance != null) {
+                throw new IllegalStateException("Initialize the Recorder first");
             }
         }
+        return RecorderImpl.instance;
+    }
+
+    /**
+     * Get the instance.
+     *
+     * @param sensor
+     *            the {@link Sensor}
+     * @return the {@link Tracker} instance.
+     */
+    public static Recorder initialize(final Sensor sensor) {
+        synchronized (Tracker.class) {
+            if (RecorderImpl.instance != null) {
+                return RecorderImpl.instance;
+            }
+        }
+        RecorderImpl.instance = new RecorderImpl(sensor);
         return RecorderImpl.instance;
     }
 

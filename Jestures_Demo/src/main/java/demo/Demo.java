@@ -27,7 +27,7 @@ import jestures.sensor.Joint;
 import jestures.sensor.Sensor;
 import jestures.sensor.SensorException;
 import jestures.sensor.kinect.Kinect;
-import jestures.sensor.kinect.KinectSensors;
+import jestures.sensor.kinect.KinectSensibility;
 import jestures.sensor.kinect.KinectVersion;
 
 /**
@@ -52,11 +52,11 @@ public class Demo {
      * @throws IllegalSensorStateException
      */
     public static void main(final String[] args) throws SensorException, IllegalSensorStateException {
-        final Sensor sensor = new Kinect(Joint.RIGHT_HAND, KinectSensors.SKELETON_ONLY, KinectVersion.KINECT1);
-        final Recognition recognizer = Recognizer.getInstance();
-        recognizer.attacheSensor(sensor);
+        final Sensor sensor = Kinect.initialize(Joint.RIGHT_HAND, KinectVersion.KINECT1, KinectSensibility.LOW);
+        sensor.startSensor();
+        final Recognition recognizer = Recognizer.initialize(sensor);
         final RecognitionView view = new RecognitionScreenView(recognizer);
-        recognizer.attacheUI(view);
+        recognizer.attacheView(view);
         recognizer.setOnJointTracked(new JointListener() {
 
             @Override

@@ -44,6 +44,20 @@ public interface Recorder extends Tracker {
     void attacheUI(RecordingViewObserver view);
 
     /**
+     * Get all user gestures.
+     *
+     * @return the {@link List} of gestures
+     */
+    List<String> getAllUserGesture();
+
+    /**
+     * Get the actual user.
+     *
+     * @return the String username
+     */
+    String getUserName();
+
+    /**
      * Get all template (feature vectors) for the selected gesture.
      *
      * @param gestureName

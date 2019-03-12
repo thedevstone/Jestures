@@ -19,7 +19,7 @@ import jestures.sensor.Joint;
 import jestures.sensor.Sensor;
 import jestures.sensor.SensorException;
 import jestures.sensor.kinect.Kinect;
-import jestures.sensor.kinect.KinectSensors;
+import jestures.sensor.kinect.KinectSensibility;
 import jestures.sensor.kinect.KinectVersion;
 import recorder.view.RecorderScreenView;
 import recorder.view.RecordingView;
@@ -42,9 +42,8 @@ public final class Main {
      *             the sensor exception
      */
     public static void main(final String[] args) throws SensorException {
-        final Sensor sensor = new Kinect(Joint.RIGHT_HAND, KinectSensors.SKELETON_ONLY, KinectVersion.KINECT1);
-        final Recorder recorder = RecorderImpl.getInstance();
-        recorder.attacheSensor(sensor);
+        final Sensor sensor = Kinect.initialize(Joint.RIGHT_HAND, KinectVersion.KINECT1, KinectSensibility.MID);
+        final Recorder recorder = RecorderImpl.initialize(sensor);
         final RecordingView view = new RecorderScreenView(recorder);
         recorder.attacheUI(view);
     }

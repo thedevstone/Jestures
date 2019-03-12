@@ -23,7 +23,7 @@ import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
  * Kinect observer. The Kinect observes the Kinect Adapter and the kinect Adapter notify the kinect when a new vector is
  * available.
  */
-interface KinectObserver {
+interface KinectAdapterObserver {
     /**
      * Notify Kinect on skeleton change.
      *

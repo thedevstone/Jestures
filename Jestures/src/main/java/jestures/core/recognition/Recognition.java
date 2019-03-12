@@ -38,7 +38,7 @@ public interface Recognition extends Tracker {
      * @param view
      *            the {@link RecognitionViewObserver}
      */
-    void attacheUI(RecognitionViewObserver view);
+    void attacheView(RecognitionViewObserver view);
 
     /**
      * Load the user.
@@ -52,6 +52,20 @@ public interface Recognition extends Tracker {
      *             the {@link IOException} if can't create user folder
      */
     boolean loadUserProfile(String name) throws FileNotFoundException, IOException;
+
+    /**
+     * Get all user gestures.
+     *
+     * @return the {@link List} of gestures
+     */
+    List<String> getAllUserGesture();
+
+    /**
+     * Get the actual user.
+     *
+     * @return the String username
+     */
+    String getUserName();
 
     /**
      * Get the user gesture length.

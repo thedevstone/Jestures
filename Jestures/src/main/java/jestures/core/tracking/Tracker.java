@@ -17,11 +17,9 @@
 package jestures.core.tracking;
 
 import java.io.IOException;
-import java.util.List;
 
 import jestures.core.codification.Codification;
 import jestures.core.codification.GestureLength;
-import jestures.sensor.Sensor;
 
 /**
  * A Tracker get all vector positions, codifies them in a new relative form that can be used for more complex tasks
@@ -46,14 +44,6 @@ public interface Tracker {
     void setOnJointTracked(JointListener listener);
 
     /**
-     * Attache the {@link Sensor}.
-     *
-     * @param sensor
-     *            the {@link Sensor}
-     */
-    void attacheSensor(Sensor sensor);
-
-    /**
      * The sensor is started.
      *
      * @return <code>true</code> if the sensor is started.
@@ -74,20 +64,6 @@ public interface Tracker {
      *             IOexception
      */
     void setFrameLength(GestureLength length) throws IOException;
-
-    /**
-     * Get all user gestures.
-     *
-     * @return the {@link List} of gestures
-     */
-    List<String> getAllUserGesture();
-
-    /**
-     * Get the actual user.
-     *
-     * @return the String username
-     */
-    String getUserName();
 
     /**
      * Get the frame length.

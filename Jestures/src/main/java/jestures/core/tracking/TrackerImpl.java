@@ -37,21 +37,35 @@ import jestures.sensor.SensorObserver;
  * A general tracker that can be notified by the codifier and the sensor.
  */
 
-public abstract class TrackerImpl implements TrackingObserver, SensorObserver, Tracker {
+public class TrackerImpl implements TrackingObserver, SensorObserver, Tracker {
     private Codifier codifier;
-    private Sensor sensor;
+    private final Sensor sensor;
     private final Set<JointListener> jointListener;
     private GestureLength frameLength;
-    private static boolean started; // NOPMD
+    private static boolean started;
 
     /**
      * The costructor for the tracker.
+     *
+     * @param sensor
+     *            the sensor
      */
-    public TrackerImpl() {
-        this(Codification.DERIVATIVE, GestureLength.FRAME_30);
+    public TrackerImpl(final Sensor sensor) {
+        this(Codification.DERIVATIVE, GestureLength.FRAME_30, sensor);
     }
 
-    private TrackerImpl(final Codification codificationType, final GestureLength gestureLenght) {
+    /**
+     *
+     * Construct a sensor tracker.
+     *
+     * @param codificationType
+     *            the {@link Codification} type
+     * @param gestureLenght
+     *            the {@link GestureLength} for the codification
+     * @param sensor
+     *            the {@link Sensor}
+     */
+    public TrackerImpl(final Codification codificationType, final GestureLength gestureLenght, final Sensor sensor) {
 
         if (codificationType.equals(Codification.DERIVATIVE)) {
             this.codifier = new DerivativeCodifier(gestureLenght);
@@ -63,13 +77,9 @@ public abstract class TrackerImpl implements TrackingObserver, SensorObserver, T
         this.jointListener = new HashSet<>();
         RecognitionScreenView.startFxThread();
 
-    }
-
-    // ############################################## OBSERVER ###################################
-    @Override
-    public void attacheSensor(final Sensor sensor) {
         this.sensor = sensor;
         this.sensor.attacheTracker(this);
+
     }
 
     // ############################################## FROM SENSOR ###################################
@@ -168,15 +178,4 @@ public abstract class TrackerImpl implements TrackingObserver, SensorObserver, T
     public int getElevationAngle() {
         return this.sensor.getElevationAngle();
     }
-
-    /**
-     * Check if the sensor is started statically.
-     *
-     * @return <code>true</code> if the sensor is started
-     */
-    public static boolean checkStarted() {
-        return TrackerImpl.started;
-
-    }
-
 }

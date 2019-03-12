@@ -41,6 +41,7 @@ import jestures.core.tracking.Tracker;
 import jestures.core.tracking.TrackerImpl;
 import jestures.core.view.RecognitionViewObserver;
 import jestures.core.view.screens.RecognitionScreenView;
+import jestures.sensor.Sensor;
 import smile.math.distance.DynamicTimeWarping;
 
 /**
@@ -91,7 +92,8 @@ public final class Recognizer extends TrackerImpl implements Recognition {
      */
     private boolean gestureRecognized;
 
-    private Recognizer() {
+    private Recognizer(final Sensor sensor) {
+        super(sensor);
         this.view = new HashSet<>();
         this.gestureListener = new HashSet<>();
         this.intToStringGestureMapping = new HashMap<>();
@@ -106,19 +108,36 @@ public final class Recognizer extends TrackerImpl implements Recognition {
     /**
      * Get the instance.
      *
+     * @param sensor
+     *            the {@link Sensor}
+     * @return the {@link Tracker} instance.
+     */
+    public static Recognition initialize(final Sensor sensor) {
+        synchronized (Tracker.class) {
+            if (Recognizer.instance != null) {
+                return Recognizer.instance;
+            }
+        }
+        Recognizer.instance = new Recognizer(sensor);
+        return Recognizer.instance;
+    }
+
+    /**
+     * Get the instance.
+     *
      * @return the {@link Tracker} instance.
      */
     public static Recognition getInstance() {
         synchronized (Tracker.class) {
             if (Recognizer.instance == null) {
-                Recognizer.instance = new Recognizer();
+                throw new IllegalStateException("Initialize the recognizer first");
             }
         }
         return Recognizer.instance;
     }
 
     @Override
-    public void attacheUI(final RecognitionViewObserver view) {
+    public void attacheView(final RecognitionViewObserver view) {
         this.view.add(view);
         this.view.forEach(t -> t.refreshUsers());
     }
@@ -308,5 +327,4 @@ public final class Recognizer extends TrackerImpl implements Recognition {
     public void setOnGestureRecognized(final GestureListener listener) {
         this.gestureListener.add(listener);
     }
-
 }

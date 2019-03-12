@@ -7,10 +7,22 @@ import com.google.gson.reflect.TypeToken;
 
 import jestures.core.recognition.gesturedata.RecognitionSettings;
 
+/**
+ *
+ * The {@link AdapterFactoryRecognitionSettings} class.
+ *
+ */
 public class AdapterFactoryRecognitionSettings implements TypeAdapterFactory {
 
     private final Class<? extends RecognitionSettings> implementationClass;
 
+    /**
+     *
+     * The constructor for the class.
+     *
+     * @param impelementationClass
+     *            the implmentation class
+     */
     public AdapterFactoryRecognitionSettings(final Class<? extends RecognitionSettings> impelementationClass) {
         this.implementationClass = impelementationClass;
     }

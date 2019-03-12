@@ -28,9 +28,12 @@ public class IllegalSensorStateException extends Exception {
 
     /**
      * The @link{IllegalSensorStateException.java} constructor.
+     *
+     * @param message
+     *            the String exception message
      */
-    public IllegalSensorStateException() {
-        super("Cannot start the sensor outside recognizer. Please attache it to recognizer and start the recognition");
+    public IllegalSensorStateException(final String message) {
+        super(message);
     }
 
 }
