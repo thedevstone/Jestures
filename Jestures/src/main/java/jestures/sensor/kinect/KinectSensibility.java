@@ -21,7 +21,7 @@ public enum KinectSensibility {
     }
 
     /**
-     * Get the {@link sensibility].
+     * Get the sensibility.
      *
      * @return the sensibility
      */

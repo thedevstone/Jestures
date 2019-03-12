@@ -62,8 +62,6 @@ public final class Kinect implements KinectAdapterObserver, Sensor {
      *            <p>
      *            Higher values sensibility produce higher value vectors along with minimum hand movement
      * @return the Kinect instance
-     * @throws IllegalSensorStateException
-     *             the {@link IllegalSensorStateException} if Sensor is initialized multiple times
      */
     public static Kinect initialize(final Joint primaryJoint, final KinectVersion kinectVersion,
             final KinectSensibility sensibility) {
@@ -77,8 +75,8 @@ public final class Kinect implements KinectAdapterObserver, Sensor {
     /**
      * Initialize the Kinect default instance.
      * <p>
-     * Hand -> right hand <br>
-     * Sensibility -> Mid sensibility (1000)
+     * Right Hand <br>
+     * Mid sensibility (1000)
      *
      * @param kinectVersion
      *            the {@link Kinect} version
