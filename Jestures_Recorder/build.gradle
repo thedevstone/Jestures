@@ -7,6 +7,9 @@ plugins {
     id 'maven'
     id 'maven-publish'
     id 'signing'
+    id 'pmd'
+    id 'findbugs'
+    id 'checkstyle'
 }
 
 mainClassName = 'recorder.controller.Main'
@@ -52,6 +55,29 @@ dependencies {
     implementation "eu.hansolo.enzo:Enzo:${project.enzoVersion}"
     testImplementation "junit:junit:${project.junitVersion}"
     implementation project(':Jestures')
+}
+
+//CODE ANALISE
+checkstyle {
+    toolVersion = '8.0'
+    configFile = file('config/checkstyle/checkstyle.xml')
+}
+
+findbugs {
+    ignoreFailures = true
+    sourceSets = [sourceSets.main]
+    effort = "max"
+}
+
+pmd {
+    ignoreFailures = true
+    ruleSets = [
+            "category/java/errorprone.xml",
+            "category/java/bestpractices.xml",
+            "category/java/codestyle.xml",
+            "category/java/design.xml"
+    ]
+    //ruleSetFiles = file("config/pmd/pmd.xml")
 }
 
 //BINTRAY

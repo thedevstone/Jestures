@@ -6,6 +6,10 @@ plugins {
     id 'maven'
     id 'maven-publish'
     id 'signing'
+    id 'jacoco'
+    id 'pmd'
+    id 'findbugs'
+    id 'checkstyle'
 }
 
 group = project_group
@@ -84,6 +88,29 @@ sourceSets {
             srcDirs = ["src/main/resources"]
         }
     }
+}
+
+//CODE ANALISE
+checkstyle {
+    toolVersion = '8.0'
+    configFile = file('config/checkstyle/checkstyle.xml')
+}
+
+findbugs {
+    ignoreFailures = true
+    sourceSets = [sourceSets.main]
+    effort = "max"
+}
+
+pmd {
+    ignoreFailures = true
+    ruleSets = [
+            "category/java/errorprone.xml",
+            "category/java/bestpractices.xml",
+            "category/java/codestyle.xml",
+            "category/java/design.xml"
+    ]
+    //ruleSetFiles = file("config/pmd/pmd.xml")
 }
 
 //BINTRAY
