@@ -1,6 +1,6 @@
 plugins {
-    id 'com.jfrog.bintray' version '1.7.3'
-    id 'com.jfrog.artifactory' version '4.5.2'
+    id 'com.jfrog.bintray' version '1.8.4'
+    id "com.jfrog.artifactory" version "4.9.6"
     id 'java-library'
     id 'java'
     id 'maven'
@@ -24,8 +24,8 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 }
 
 task fatJar(type: Jar) {
-	classifier = 'all'
-	manifest {
+    classifier = 'all'
+    manifest {
         attributes 'Implementation-Title': 'Gradle Jar File Example'
     }
     baseName = project.name + '-all'
@@ -38,7 +38,7 @@ jar {
         manifest {
             if (!configurations.compile.isEmpty()) {
                 attributes(
-                        'Class-Path': configurations.localCompile.collect{it.getName()}.join(' '))
+                        'Class-Path': configurations.localCompile.collect { it.getName() }.join(' '))
             }
         }
     }
@@ -54,53 +54,54 @@ configurations {
 
 repositories {
     mavenCentral()
-   	jcenter()
-   	flatDir {
-   	    dir 'libs'
-   	}
+    jcenter()
+    flatDir {
+        dir 'libs'
+    }
 }
 
-
 dependencies {
-	//compile all jar in libs
-	localCompile fileTree(dir: 'libs', include: '*.jar')
-    compile 'org.apache.commons:commons-math3:3.6.1'
-    compile 'com.google.guava:guava:23.0'
-    testCompile 'junit:junit:4.12'
-    compile 'log4j:log4j:1.2.17'
-    compile 'com.github.haifengl:smile-core:1.5.1'
-    compile 'com.jfoenix:jfoenix:8.0.4' // Java 8
-	compile 'org.kordamp.ikonli:ikonli-core:1.7.0'
-	compile 'org.kordamp.ikonli:ikonli-javafx:1.7.0'
-    compile 'org.kordamp.ikonli:ikonli-material-pack:1.7.0'
-    compile 'eu.hansolo.enzo:Enzo:0.3.6'
-    compile 'com.google.code.gson:gson:2.8.4' 
+    localCompile fileTree(dir: 'libs', include: '*.jar')
+    implementation "org.apache.commons:commons-math3:${project.commonMathVersion}"
+    implementation "com.google.guava:guava:${project.bintrayVersion}"
+    implementation "log4j:log4j:${project.log4jVersion}"
+    implementation "com.google.code.gson:gson:${project.gsonVersion}"
+    implementation "com.github.haifengl:smile-core:${project.smile_coreVersion}"
+    implementation "com.jfoenix:jfoenix:${project.jfoenixVersion}"
+    implementation "org.kordamp.ikonli:ikonli-core:${project.ikonli_coreVersion}"
+    implementation "org.kordamp.ikonli:ikonli-javafx:${project.ikonli_javafxVersion}"
+    implementation "org.kordamp.ikonli:ikonli-material-pack:${project.ikonli_material_packVersion}"
+    implementation "eu.hansolo.enzo:Enzo:${project.enzoVersion}"
+    testImplementation "junit:junit:${project.junitVersion}"
 }
 
 sourceSets {
     main {
         java {
-            srcDirs= ["src/main/java"]
+            srcDirs = ["src/main/java"]
         }
         resources {
-            srcDirs= ["src/main/resources"]
+            srcDirs = ["src/main/resources"]
         }
-        
     }
 }
 
-
 //BINTRAY
 bintray {
-	user = project.hasProperty('bintrayUsername') ? project.property('bintrayUsername') : System.getenv('BINTRAY_USER')
-	key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_KEY')
+    user = project.hasProperty('bintrayUsername') ? project.property('bintrayUsername') : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_KEY')
 
-    
     publications = ['maven']
+
+    dryRun = false //[Default: false] Whether to run this as dry-run, without deploying
+    publish = false //[Default: false] Whether version should be auto published after an upload
+    override = false //[Default: false] Whether to override version artifacts already published
+
     pkg {
-        repo = 'maven'
+        repo = project.bintray_repo_name
         name = project.project_name
         desc = project.project_description
+        userOrg = project.bintray_project_organization
         licenses = [project.project_license_tag]
         labels = ['Jestures', 'sensor', 'kinect', 'tracking', 'Recognition', 'Gesture']
         publicDownloadNumbers = true
@@ -108,14 +109,20 @@ bintray {
         issueTrackerUrl = "https://github.com/$project.your_github_name/$project.project_name/issues"
         vcsUrl = "https://github.com/$your_github_name/${project.project_name}.git"
         githubRepo = "$your_github_name/$project.project_name"
-    	githubReleaseNotesFile = 'Releasenotes.md'
+        githubReleaseNotesFile = 'Releasenotes.md'
         version {
             name = project.project_version
             vcsTag = project.project_version
-            desc =  project.project_version
+            desc = project.project_version
             released = new Date()
             gpg {
                 sign = true
+            }
+            mavenCentralSync {
+                sync = false //[Default: true] Determines whether to sync the version to Maven Central.
+                //user = 'userToken' //OSS user token: mandatory
+                //password = 'paasword' //OSS user password: mandatory
+                //close = '1'
             }
         }
     }
@@ -135,99 +142,98 @@ artifactory {
             // The Artifactory repository key to publish to
             // when using oss.jfrog.org the credentials are from Bintray.
             if (project.version.endsWith("-SNAPSHOT")) {
-              repoKey = 'oss-snapshot-local'
+                repoKey = 'oss-snapshot-local'
             } else {
-              repoKey = 'oss-release-local' 
+                repoKey = 'oss-release-local'
             }
             username = System.getenv('BINTRAY_USER')
             password = System.getenv('BINTRAY_KEY')
         }
         defaults {
             publications 'maven'
-            properties = [ 'bintray.repo': 'giulianini/maven', 'bintray.package': 'giulianini:giulianini', 'bintray.version': project.project_version.toString() ]
+            properties = ['bintray.repo': 'giulianini/maven', 'bintray.package': 'giulianini:giulianini', 'bintray.version': project.project_version.toString()]
         }
     }
 }
-
 
 publishing {
     publications {
         maven(MavenPublication) {
             from components.java
-            groupId project_group
-            artifactId project_artifact
+            groupId project.project_group
+            artifactId project.project_artifact
             version project.project_version
-            
+
             artifact sourcesJar {
-	        	classifier 'sources'
-	      	}
-	
-		  	artifact javadocJar {
-	        	classifier 'javadoc'
-	      	}
-	      	
-	      	artifact fatJar {
-	        	classifier 'all'
-	      	}
-            
+                classifier 'sources'
+            }
+
+            artifact javadocJar {
+                classifier 'javadoc'
+            }
+
+            artifact fatJar {
+                classifier 'all'
+            }
+
             pom {
-		        packaging 'jar'
-		        withXml {
-		          	asNode().children().last() + {
-						def builder = delegate
-						
-						// maven central publishing mandatories
-						builder.name project.project_name
-						builder.description project.project_description
-						builder.url "https://github.com/$project.your_github_name/$project.project_name"
-						
-						builder.licenses {
-						    builder.license {
-						      builder.name project.project_license
-						      builder.url project.project_license_url
-						      builder.distribution 'repo'
-						    }
-						}
-						
-						builder.scm {
-						    builder.url "scm:svn:http://github.com/$project.your_github_name/$project.project_name"
-						    builder.connection "scm:svn:http://github.com/$your_github_name/${project.project_name}.git"
-						    builder.developerConnection "scm:svn:ssh://github.com/$your_github_name/${project.project_name}.git"
-						}
-						
-						builder.developers {
-						    builder.developer {
-						      builder.name 'Luca Giulianini'
-						      builder.email 'luca.giulianini@studio.unibo.it'
-						    }
-						}
-						
-						// maven central publishing optionals
-						builder.issueManagement {
-						  builder.system 'github'
-						  builder.url "https://github.com/$project.your_github_name/$project.project_name/issues"
-						}
-						
-						builder.ciManagement {
-						  builder.system 'Travis CI'
-						  builder.url "https://travis-ci.org/$project.your_github_name/$project.project_name"
-						}
-		        	}		    
-        		}
-    		}
-    	}
+                packaging 'jar'
+                withXml {
+                    asNode().children().last() + {
+                        def builder = delegate
+
+                        // maven central publishing mandatories
+                        builder.name project.project_name
+                        builder.description project.project_description
+                        builder.url "https://github.com/$project.your_github_name/$project.project_name"
+
+                        builder.licenses {
+                            builder.license {
+                                builder.name project.project_license
+                                builder.url project.project_license_url
+                                builder.distribution 'repo'
+                            }
+                        }
+
+                        builder.scm {
+                            builder.url "scm:svn:http://github.com/$project.your_github_name/$project.project_name"
+                            builder.connection "scm:svn:http://github.com/$your_github_name/${project.project_name}.git"
+                            builder.developerConnection "scm:svn:ssh://github.com/$your_github_name/${project.project_name}.git"
+                        }
+
+                        builder.developers {
+                            builder.developer {
+                                builder.name 'Luca Giulianini'
+                                builder.email 'luca.giulianini@studio.unibo.it'
+                            }
+                        }
+
+                        // maven central publishing optionals
+                        builder.issueManagement {
+                            builder.system 'github'
+                            builder.url "https://github.com/$project.your_github_name/$project.project_name/issues"
+                        }
+
+                        builder.ciManagement {
+                            builder.system 'Travis CI'
+                            builder.url "https://travis-ci.org/$project.your_github_name/$project.project_name"
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
 publishing {
-            if (!version.toString().endsWith('-SNAPSHOT'))
-   				 publish.dependsOn bintrayUpload
-			else if (version.toString().endsWith('-SNAPSHOT'))
-    			publish.dependsOn artifactoryPublish
+    if (!version.toString().endsWith('-SNAPSHOT'))
+        publish.dependsOn bintrayUpload
+    else if (version.toString().endsWith('-SNAPSHOT'))
+        publish.dependsOn artifactoryPublish
 }
 
 signing {
-	required { gradle.taskGraph.hasTask("uploadArchives") }
+    required { gradle.taskGraph.hasTask("uploadArchives") }
     sign configurations.archives
 }
 
@@ -236,7 +242,7 @@ artifacts {
 }
 
 task printVersion() {
-	println(project.project_version)  
+    println(project.project_version)
 }
 
 
