@@ -70,7 +70,6 @@ bintray {
         repo = project.bintray_repo_name
         name = project.project_name
         desc = project.project_description
-        userOrg = project.bintray_project_organization
         licenses = [project.project_license_tag]
         labels = ['Jestures', 'sensor', 'kinect', 'tracking', 'Recognition', 'Gesture']
         publicDownloadNumbers = true
