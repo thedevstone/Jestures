@@ -63,7 +63,7 @@ repositories {
 dependencies {
     localCompile fileTree(dir: 'libs', include: '*.jar')
     implementation "org.apache.commons:commons-math3:${project.commonMathVersion}"
-    implementation "com.google.guava:guava:${project.bintrayVersion}"
+    implementation "com.google.guava:guava:${project.guavaVersion}"
     implementation "log4j:log4j:${project.log4jVersion}"
     implementation "com.google.code.gson:gson:${project.gsonVersion}"
     implementation "com.github.haifengl:smile-core:${project.smile_coreVersion}"
