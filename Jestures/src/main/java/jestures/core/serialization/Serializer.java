@@ -26,7 +26,6 @@ import com.google.gson.JsonIOException;
 
 import jestures.core.codification.GestureLength;
 import jestures.core.recognition.gesturedata.RecognitionSettings;
-import jestures.core.recognition.gesturedata.RecognitionSettingsImpl;
 
 /**
  * A serializer manages all user data and settings present on file.
@@ -62,7 +61,7 @@ public interface Serializer {
      *
      * @return the settings
      */
-    RecognitionSettingsImpl getRecognitionSettings();
+    RecognitionSettings getRecognitionSettings();
 
     /**
      * Set the settings.
@@ -72,7 +71,7 @@ public interface Serializer {
      * @throws IOException
      *             the {@link IOException}
      */
-    void setRecognitionSettings(RecognitionSettingsImpl recognitionSettings) throws IOException;
+    void setRecognitionSettings(RecognitionSettings recognitionSettings) throws IOException;
 
     /**
      * Get all user gestures.
