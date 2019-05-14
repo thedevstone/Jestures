@@ -1,7 +1,8 @@
 language: java
 script:
-  - if [ "$TRAVIS_BRANCH" = "release" ]; then bash travis_build.sh; fi
-  - if [ "$TRAVIS_BRANCH" != "release" ]; then bash travis_pull_request.sh; fi
+  - if [ "$TRAVIS_BRANCH" = "release" ]; then
+    bash travis_build.sh; else
+    bash travis_pull_request.sh; fi
 before_deploy: echo Preparing for deploy
 deploy:
   - provider: releases
