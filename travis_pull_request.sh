@@ -1,4 +1,4 @@
 #!/bin/bash
 set -e
-gradle publish || gradle printVersion
+gradle build || gradle printVersion
 cp -R */build/reports/* report
