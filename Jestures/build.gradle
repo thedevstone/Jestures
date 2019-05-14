@@ -17,6 +17,13 @@ group = project_group
 archivesBaseName = project_artifact
 version = project.project_version
 
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/reports/jacocoHtml")
+    }
+}
 
 //TASKS
 task sourcesJar(type: Jar, dependsOn: classes) {
@@ -95,8 +102,8 @@ sourceSets {
 
 //CODE ANALYSIS
 check.dependsOn jacocoTestCoverageVerification
-projectReport.finalizedBy jacocoTestReport
-
+check.finalizedBy jacocoTestReport
+jacocoTestReport.finalizedBy htmlDependencyReport
 jacocoTestCoverageVerification {
     violationRules {
         rule {
