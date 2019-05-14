@@ -71,7 +71,7 @@ findbugs {
 
 pmdMain {
     ignoreFailures = true
-    ruleSets = ["category/java/errorprone.xml"]
+    //ruleSets = ["category/java/errorprone.xml"]
 }
 
 //BINTRAY
