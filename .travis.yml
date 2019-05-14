@@ -6,8 +6,7 @@ deploy:
   provider: releases
   api_key:
     secure: NNb27gzHHmJ9aCH/NuyT6iOYX+E0ubKbgRWNykpZoDMfG9OX+GLyKuMRH4aFmCdbNePJ/z8R4r2z54XbGWPCu2V900ev7bgoG1ljbyzJYm7PwJxIjyPzwYKgnYmvqRk2MYtkC/8gZyAckggBMZRtWUB+k6cfto/LWKdguv487bxcI3LH37Q3yFfiJzZ1fXJOFEBI1v+6uTdBR5Saeivq/79V22WlaCMuGHGLWiTQbXs70JVy3k5CotgUK+IZZsIkJ9z8A2tzzxUIXOeIAiW/wDqN+r6NdUXY5LrOP2zU7UxR0g3sUp5CuqwPotjSD39IZJz7Wbzr0JTUoUrmkff/51lmMMml7K1qWPQLMrdLIGrVQDMr8dM4MMicgKGRbMyvXEC1idvdPp0V51aX+AWAB7LpvkoOJx6C75N1wtPlsAiRkJWKIqtuDb9Ldc4boLnaNH/9Awvtj369STKO4u4seXvn2ibNIQLr+Ch+hbbDgcTacVupQ13aEcTE9gzSsjXqMpDL4Ss/FVhaxrjBqNfS4VRBxsMzn8OyJd9EdL7nPS6Aegw+bkiYpAylrZImzAe/Z39uW3F0ZU0Rpwqddm7NWR8f9TDs/LpkCttRFhdxTQo+RkJqnSIIoNPBOncfPBxEQGNOIcQoJnp+kcrA1JzLpeK3+Xph1VYwNG8JMquts+M=
-  file_glob: true
-  file: "${HOME}/build/${TRAVIS_REPO_SLUG}/jestures-*.jar"
+  file: "${HOME}/build/${TRAVIS_REPO_SLUG}/Jestures/build/libs/jestures*.jar"
   on:
     repo: Giulianini/Jestures
     branch: release
