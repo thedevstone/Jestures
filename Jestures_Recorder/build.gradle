@@ -11,6 +11,7 @@ plugins {
     id 'findbugs'
     id 'checkstyle'
     id 'project-report'
+    id 'jacoco'
 }
 
 mainClassName = 'recorder.controller.Main'
@@ -55,10 +56,30 @@ dependencies {
     implementation "org.kordamp.ikonli:ikonli-material-pack:${project.ikonli_material_packVersion}"
     implementation "eu.hansolo.enzo:Enzo:${project.enzoVersion}"
     testImplementation("org.junit.jupiter:junit-jupiter:${project.junitVersion}")
+    testRuntime("org.junit.jupiter:junit-jupiter-engine:${project.junitVersion}")
     implementation project(':Jestures')
 }
 
-//CODE ANALISE
+test {
+    useJUnitPlatform()
+}
+
+//CODE ANALYSIS
+check.dependsOn jacocoTestCoverageVerification
+projectReport.finalizedBy jacocoTestReport
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.1
+            }
+        }
+    }
+}
+
 checkstyle {
     toolVersion = '8.0'
     configFile = file('config/checkstyle/checkstyle.xml')

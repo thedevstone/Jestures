@@ -36,7 +36,7 @@ class FileManagerTest {
     }
 
     @Test
-    @DisplayName("A File Manager can get the user created user")
+    @DisplayName("A File Manager can get the created user")
     void getUserDir() {
         try {
             Assertions.assertEquals(FileManagerTest.USER_FOLDER, Paths.get(FileManager.getUserDir(FileManagerTest.USER_FOLDER))

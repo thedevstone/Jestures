@@ -17,6 +17,7 @@ group = project_group
 archivesBaseName = project_artifact
 version = project.project_version
 
+
 //TASKS
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
@@ -78,6 +79,7 @@ dependencies {
     implementation "org.kordamp.ikonli:ikonli-material-pack:${project.ikonli_material_packVersion}"
     implementation "eu.hansolo.enzo:Enzo:${project.enzoVersion}"
     testImplementation("org.junit.jupiter:junit-jupiter:${project.junitVersion}")
+    testRuntime("org.junit.jupiter:junit-jupiter-engine:${project.junitVersion}")
 }
 
 sourceSets {
@@ -91,7 +93,26 @@ sourceSets {
     }
 }
 
-//CODE ANALISE
+//CODE ANALYSIS
+check.dependsOn jacocoTestCoverageVerification
+projectReport.finalizedBy jacocoTestReport
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.1
+            }
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
 checkstyle {
     toolVersion = '8.0'
     configFile = file('config/checkstyle/checkstyle.xml')
