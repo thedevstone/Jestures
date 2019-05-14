@@ -54,7 +54,7 @@ dependencies {
     implementation "org.kordamp.ikonli:ikonli-javafx:${project.ikonli_javafxVersion}"
     implementation "org.kordamp.ikonli:ikonli-material-pack:${project.ikonli_material_packVersion}"
     implementation "eu.hansolo.enzo:Enzo:${project.enzoVersion}"
-    testImplementation "junit:junit:${project.junitVersion}"
+    testImplementation("org.junit.jupiter:junit-jupiter:${project.junitVersion}")
     implementation project(':Jestures')
 }
 

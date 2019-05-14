@@ -1,5 +1,5 @@
 #!/bin/bash
 set -e
-gradle check publish
+./gradlew check publish
 mkdir -p report
 cp --parent */build/reports build/reports report -R
