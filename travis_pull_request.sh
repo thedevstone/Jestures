@@ -1,4 +1,5 @@
 #!/bin/bash
 set -e
-gradle build || gradle printVersion
-cp -R */build/reports/* report
+gradle check || gradle printVersion
+cp -R Jestures/build/reports/ report
+cp -R Jestures_Recorder/build/reports/ report
