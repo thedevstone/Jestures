@@ -69,15 +69,9 @@ findbugs {
     effort = "max"
 }
 
-pmd {
+pmdMain {
     ignoreFailures = true
-    ruleSets = [
-            "category/java/errorprone.xml",
-            "category/java/bestpractices.xml",
-            "category/java/codestyle.xml",
-            "category/java/design.xml"
-    ]
-    //ruleSetFiles = file("config/pmd/pmd.xml")
+    ruleSets = ["category/java/errorprone.xml"]
 }
 
 //BINTRAY
