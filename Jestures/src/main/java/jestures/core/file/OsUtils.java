@@ -21,7 +21,7 @@ import java.util.Locale;
 /**
  * Operating system specific settings.
  */
-final class OsUtils {
+public final class OsUtils {
 
     private OsUtils() {
 
@@ -35,7 +35,7 @@ final class OsUtils {
          * Systems.
          */
         Windows, MacOS, Linux, Other
-    };
+    }
 
     // cached result of OS detection
     private static OSType detectedOS; // NOPMD
@@ -49,7 +49,7 @@ final class OsUtils {
      */
     public static OSType getOperatingSystemType() {
         if (OsUtils.detectedOS == null) {
-            final String os = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
+            String os = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
             if (os.indexOf("mac") >= 0 || os.indexOf("darwin") >= 0) {
                 OsUtils.detectedOS = OSType.MacOS;
             } else if (os.indexOf("win") >= 0) {
@@ -68,7 +68,7 @@ final class OsUtils {
      *
      * @return the separator
      */
-    public static String getSeparator() {
+    static String getSeparator() {
         if (OsUtils.separator == null) {
             OsUtils.separator = System.getProperty("file.separator");
         }
@@ -80,7 +80,7 @@ final class OsUtils {
      *
      * @return the home folder
      */
-    public static String getHomeFolder() {
+    static String getHomeFolder() {
         if (OsUtils.home == null) {
             OsUtils.home = System.getProperty("user.home");
         }
