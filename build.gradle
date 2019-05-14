@@ -1,0 +1,5 @@
+plugins {
+    id 'build-dashboard'
+}
+
+defaultTasks 'clean', 'build', 'check', 'javadoc', 'assemble', 'install', 'projectReport', 'buildDashboard', 'fatJar'

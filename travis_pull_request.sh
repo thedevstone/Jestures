@@ -1,5 +1,5 @@
 #!/bin/bash
 set -e
-gradle check || gradle printVersion
-cp -R Jestures/build/reports/ report
-cp -R Jestures_Recorder/build/reports/ report
+./gradlew check projectReport artifactoryPublish
+mkdir -p report
+cp --parent */build/reports build/reports report -R

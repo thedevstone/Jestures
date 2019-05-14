@@ -10,6 +10,7 @@ plugins {
     id 'pmd'
     id 'findbugs'
     id 'checkstyle'
+    id 'project-report'
 }
 
 mainClassName = 'recorder.controller.Main'

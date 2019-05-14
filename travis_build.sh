@@ -1,5 +1,5 @@
 #!/bin/bash
 set -e
-gradle publish || gradle printVersion
-cp -R Jestures/build/reports/ report
-cp -R Jestures_Recorder/build/reports/ report
+gradle check publish
+mkdir -p report
+cp --parent */build/reports build/reports report -R
