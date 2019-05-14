@@ -18,3 +18,6 @@ deploy:
     skip_cleanup: true
     project: "./Jestures/report"
     domain: jestures-reports.surge.sh
+    on:
+      repo: Giulianini/Jestures
+      branch: release
