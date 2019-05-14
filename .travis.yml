@@ -16,8 +16,8 @@ deploy:
       branch: release
   - provider: surge
     skip_cleanup: true
-    project: "./Jestures/report"
+    project: "./report"
     domain: jestures-reports.surge.sh
     on:
       repo: Giulianini/Jestures
-      branch: release
+      all_branches: true
