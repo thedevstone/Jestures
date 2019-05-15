@@ -195,12 +195,14 @@ The project has been developed using Eclipse, and can be easily imported in such
     *   If not already selected, in "Work with:" dropdown menu choose the just added update site
     *   Select "PMD for Eclipse 4" and click next
     *   Follow the instructions, accept the license, wait for Eclipse to download and install the product, accept the installation and restart the IDE.
+    
 *   Set the line delimiter to LF (only for Windows users)
     *   In Eclipse, click window -> preferences
     *   In the search form enter "encoding", then press Enter
     *   Go to General -> Workspace
     *   In the section "New text file line delimiter" check "Other" and choose Unix
     *   Apply
+    
 *   Use space instead of tabs
     *   In Eclipse, click window -> preferences
     *   Go to General -> Editors -> Text Editors
