@@ -2,7 +2,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/acaa3eb255b84676acc52402a39e7e07)](https://www.codacy.com/app/Giulianini/Jestures?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Giulianini/Jestures&amp;utm_campaign=Badge_Grade)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/acaa3eb255b84676acc52402a39e7e07)](https://www.codacy.com/app/Giulianini/Jestures?utm_source=github.com&utm_medium=referral&utm_content=Giulianini/Jestures&utm_campaign=Badge_Coverage)
 [![PyPI - License](https://img.shields.io/github/license/Giulianini/Jestures.svg)](https://github.com/Giulianini/Jestures/blob/master/LICENSE.txt)
-[ ![Download](https://api.bintray.com/packages/giulianini/maven/Jestures/images/download.svg?version=0.0.2) ](https://bintray.com/giulianini/maven/Jestures/0.0.2/link)
+[![Download](https://api.bintray.com/packages/giulianini/maven/Jestures/images/download.svg?version=0.0.2) ](https://bintray.com/giulianini/maven/Jestures/0.0.2/link)
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.giulianini.jestures/jestures.svg)](https://search.maven.org/search?q=g:com.github.giulianini.jestures)
 [![Javadocs](https://www.javadoc.io/badge/com.github.giulianini.jestures/jestures.svg)](https://www.javadoc.io/doc/com.github.giulianini.jestures/jestures)
 ![GitHub issues](https://img.shields.io/github/issues/Giulianini/Jestures.svg)
