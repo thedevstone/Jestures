@@ -1,17 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2018 Giulianini Luca
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Copyright (c) 2018 Giulianini Luca Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+ * this file except in compliance with the License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing permissions and limitations under the
+ * License.
  *******************************************************************************/
 
 package jestures.core.view.screens;
@@ -46,7 +39,7 @@ import jestures.core.codification.GestureLength;
 import jestures.core.file.FileManager;
 import jestures.core.recognition.Recognition;
 import jestures.core.recognition.UpdateRate;
-import jestures.core.recognition.gesturedata.RecognitionSettingsImpl;
+import jestures.core.recognition.gesturedata.RecognitionSettings;
 import jestures.core.view.enums.DialogsType.DimDialogs;
 import jestures.core.view.enums.IconDim;
 import jestures.core.view.enums.NotificationType;
@@ -55,18 +48,17 @@ import jestures.core.view.utils.ViewUtilities;
 
 /**
  * The effective instance of the recognition view. This is a simple screen controller for a javafx fxml file.
- *
  */
 
 @SuppressWarnings("restriction")
 public class RecognitionScreenView extends AbstractRecognitionScreenView {
     private static final Logger LOG = Logger.getLogger(RecognitionScreenView.class);
     /**
-     * Recognizer
+     * Recognizer.
      */
     private final Recognition recognizer;
     /**
-     * Gesture length
+     * Gesture length.
      */
     private GestureLength gestureLength;
 
@@ -144,7 +136,7 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
 
     @Override
     @FXML
-    public void initialize() { // NOPMD
+    public final void initialize() { // NOPMD
         super.initialize();
         // CREATION OF STAGE SCENE AND PANE
         this.stage = new Stage();
@@ -169,7 +161,7 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
     // ############################################## FROM TRACKER (VIEW OBSERVER) ###################################
 
     @Override
-    public void notifyOnFrameChange(final int frame, final Vector2D derivative, final Vector2D path) {
+    public final void notifyOnFrameChange(final int frame, final Vector2D derivative, final Vector2D path) {
         Platform.runLater(() -> {
             // When it's the first frame it reset the canvas.
             if (frame == 0) {
@@ -192,7 +184,7 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
     }
 
     @Override
-    public void refreshUsers() {
+    public final void refreshUsers() {
         Platform.runLater(() -> {
             try {
                 // clear all users
@@ -209,7 +201,7 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
     // ############################## FROM RECOGNIZER (RECOGNITION VIEW OBSERVER )##########################
     // TAB 4
     @Override
-    public void updateSettings(final RecognitionSettingsImpl settings) {
+    public final void updateSettings(final RecognitionSettings settings) {
         Platform.runLater(() -> {
             this.udpateRateCombo.getSelectionModel().select(settings.getUpdateRate());
             this.sliderRadius.setValue(settings.getDtwRadius() * 10);
@@ -221,7 +213,7 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
     }
 
     @Override
-    public void onGestureRecognized(final String gestureName) {
+    public final void onGestureRecognized(final String gestureName) {
         // Snack bar with the gesture name
         Platform.runLater(() -> {
             ViewUtilities.showSnackBar((Pane) this.recorderPane.getCenter(), gestureName, Duration.MEDIUM,
@@ -230,20 +222,20 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
     }
 
     @Override
-    public void setGestureLengthLabel(final GestureLength length) {
+    public final void setGestureLengthLabel(final GestureLength length) {
         // Set the label with the gesture length
         this.labelGestureLength.setText("Gesture length: " + length.getFrameNumber());
     }
 
     // ############################################## TO TRACKER (VIEW) ###################################
     @Override
-    public void startSensor() {
+    public final void startSensor() {
         this.selectUserCombo.setDisable(true);
         this.recognizer.startSensor();
     }
 
     @Override
-    public void stopSensor() {
+    public final void stopSensor() {
         this.clearCanvasAndChart();
         this.recognizer.stopSensor();
         this.selectUserCombo.setDisable(false);
@@ -252,7 +244,7 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
     // ######################################## TO RECOGNIZER (RECOGNITION VIEW) ###################################
 
     @Override
-    public void loadUserProfile(final String name) {
+    public final void loadUserProfile(final String name) {
         try {
             // Load the actual user
             this.recognizer.loadUserProfile(name);
@@ -279,37 +271,37 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
     }
 
     @Override
-    public void setDtwRadius(final double radius) {
+    public final void setDtwRadius(final double radius) {
         this.recognizer.setDtwRadius(radius);
     }
 
     @Override
-    public void setMinDtwThreashold(final int minDtwThreashold) {
+    public final void setMinDtwThreashold(final int minDtwThreashold) {
         this.recognizer.setMinDtwThreashold(minDtwThreashold);
     }
 
     @Override
-    public void setMaxDtwThreashold(final int maxDtwThreashold) {
+    public final void setMaxDtwThreashold(final int maxDtwThreashold) {
         this.recognizer.setMaxDtwThreashold(maxDtwThreashold);
     }
 
     @Override
-    public void setUpdateRate(final UpdateRate updateRate) {
+    public final void setUpdateRate(final UpdateRate updateRate) {
         this.recognizer.setUpdateRate(updateRate);
     }
 
     @Override
-    public void setMinTimeSeparation(final int minTimeSeparation) {
+    public final void setMinTimeSeparation(final int minTimeSeparation) {
         this.recognizer.setMinTimeSeparation(minTimeSeparation);
     }
 
     @Override
-    public void setMatchNumber(final int matchNumber) {
+    public final void setMatchNumber(final int matchNumber) {
         this.recognizer.setMatchNumber(matchNumber);
     }
 
     @Override
-    public void saveSettings() {
+    public final void saveSettings() {
         try {
             this.recognizer.saveSettings();
         } catch (final IOException e) {
@@ -319,14 +311,14 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
     }
 
     @Override
-    public void setSensorElevation(final int angle) {
+    public final void setSensorElevation(final int angle) {
         this.recognizer.setElevationAngle(angle);
     }
 
     // ################# TREE VIEW ###################
     // CANVAS GESTURE
     @Override
-    public void drawSavedGestureOnCanvas(final TreeItem<String> gestureItem, final int templateIndex) {
+    public final void drawSavedGestureOnCanvas(final TreeItem<String> gestureItem, final int templateIndex) {
         // Get the specific gesture from dataset (list of 2D points)
         final List<Vector2D> template = this.recognizer.getGestureDataset(gestureItem.getValue()).get(templateIndex);
         // Reset the canvas

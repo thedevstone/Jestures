@@ -1,17 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2018 Giulianini Luca
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Copyright (c) 2018 Giulianini Luca Licensed under the Apache License, Version
+ * 2.0 (the "License"); you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law
+ * or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
  *******************************************************************************/
 package jestures.core.file;
 
@@ -32,7 +27,6 @@ import org.apache.log4j.Logger;
  * A File manager creates folder, loads dll and manges users.
  */
 public final class FileManager {
-
     private static String libDir;
     private static final Logger LOG = Logger.getLogger(FileManager.class);
 
@@ -41,7 +35,8 @@ public final class FileManager {
      */
     private FileManager() {
     }
-    // ############################# PRIVATE METHOD FOR FOLDER CREATION AND DELETION ################################
+    // ############################# PRIVATE METHOD FOR FOLDER CREATION AND DELETION
+    // ################################
 
     private static boolean createDirectory(final String folder) throws IOException {
         if (!FileManager.checkIfFolderExists(folder)) {
@@ -70,14 +65,13 @@ public final class FileManager {
         }
     }
 
-    // ##################################### CREATE DIRECTORIES ################################
+    // ##################################### CREATE DIRECTORIES
+    // ################################
     /**
-     *
      * Create the framework main directory.
      *
      * @throws IOException
      *             the {@link IOException}
-     *
      */
     public static void createFrameworkDirectory() throws IOException {
         if (FileManager.libDir == null) {
@@ -121,7 +115,6 @@ public final class FileManager {
      *
      * @param folder
      *            the {@link String} path
-     *
      * @throws IOException
      *             the {@link IOException}
      */
@@ -131,7 +124,8 @@ public final class FileManager {
         FileManager.removeDirectory(new File(tempPath));
     }
 
-    // ##################################### LOAD NATIVES ################################
+    // ##################################### LOAD NATIVES
+    // ################################
 
     /**
      * Create the lib for native dll (Kinect).
@@ -172,7 +166,8 @@ public final class FileManager {
         }
     }
 
-    // ##################################### USEFUL METHODS ################################
+    // ##################################### USEFUL METHODS
+    // ################################
 
     /**
      * Get the list of directories.

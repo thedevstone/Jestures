@@ -67,7 +67,7 @@ public interface UserData {
      *
      * @return the settings
      */
-    RecognitionSettingsImpl getRecognitionSettings();
+    RecognitionSettings getRecognitionSettings();
 
     /**
      * Set the settings.
@@ -75,7 +75,7 @@ public interface UserData {
      * @param recognitionSettings
      *            the {@link RecognitionSettings}
      */
-    void setRecognitionSettings(RecognitionSettingsImpl recognitionSettings);
+    void setRecognitionSettings(RecognitionSettings recognitionSettings);
 
     /**
      * Get all user gestures.

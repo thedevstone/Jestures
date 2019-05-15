@@ -61,7 +61,7 @@ public class UserDataImpl implements UserData, Serializable {
     /**
      * User Recognition settings
      */
-    private RecognitionSettingsImpl recognitionSettings;
+    private RecognitionSettings recognitionSettings;
     /**
      * Dataset
      */
@@ -111,12 +111,12 @@ public class UserDataImpl implements UserData, Serializable {
     }
 
     @Override
-    public RecognitionSettingsImpl getRecognitionSettings() {
+    public RecognitionSettings getRecognitionSettings() {
         return this.recognitionSettings;
     }
 
     @Override
-    public void setRecognitionSettings(final RecognitionSettingsImpl recognitionSettings) {
+    public void setRecognitionSettings(final RecognitionSettings recognitionSettings) {
         this.recognitionSettings = recognitionSettings;
     }
 
