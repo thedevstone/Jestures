@@ -57,14 +57,14 @@ Run the demo with:
 #### How to Include In Gradle Project
 ```gradle
 repositories {
-	mavenCentral()
-	jCenter()
+    mavenCentral()
+    jCenter()
 }
 ```
 Reference the repository from this location using:
 ```gradle
 dependencies {
-	compile 'com.github.giulianini.jestures:jestures:1.0.0'
+    compile 'com.github.giulianini.jestures:jestures:1.0.0'
 }
 ```
 
@@ -73,10 +73,10 @@ dependencies {
 #### How to Include In Maven Project
 ```xml
 <dependency>
-	<groupId>com.github.giulianini.jestures</groupId>
-  	<artifactId>jestures</artifactId>
-  	<version>1.0.0</version>
-  	<type>pom</type>
+    <groupId>com.github.giulianini.jestures</groupId>
+    <artifactId>jestures</artifactId>
+    <version>1.0.0</version>
+    <type>pom</type>
 </dependency>
 ```
 
@@ -85,7 +85,7 @@ dependencies {
 #### How to Include In Ivy Project
 ```xml
 <dependency org='com.github.giulianini.jestures' name='jestures' rev='1.0.0'>
-	<artifact name='jestures' ext='pom' ></artifact>
+    <artifact name='jestures' ext='pom' ></artifact>
 </dependency>
 ```
 
@@ -108,51 +108,51 @@ dependencies {
 
 #### Tracker only
 ```java
-	final Sensor sensor = new Kinect(Joint.RIGHT_HAND, KinectSensors.SKELETON_ONLY, KinectVersion.KINECT1);
-        final Tracking tracker = Tracker.getInstance();
-        tracker.attacheSensor(sensor);
-	tracker.startSensor();
-        tracker.setOnJointTracked(new JointListener(){
-	....});
+final Sensor sensor = new Kinect(Joint.RIGHT_HAND, KinectSensors.SKELETON_ONLY, KinectVersion.KINECT1);
+final Tracking tracker = Tracker.getInstance();
+tracker.attacheSensor(sensor);
+tracker.startSensor();
+tracker.setOnJointTracked(new JointListener(){
+....});
 ```
 
 #### Start the Recognizer
 ```java
-	final Sensor sensor = new Kinect(Joint.RIGHT_HAND, KinectSensors.SKELETON_ONLY, KinectVersion.KINECT1);
-        final Recognition recognizer = Recognizer.getInstance();
-        recognizer.attacheSensor(sensor);
-	recognizer.startSensor();
-        recognizer.setOnGestureRecognized(System.out::println);
+final Sensor sensor = new Kinect(Joint.RIGHT_HAND, KinectSensors.SKELETON_ONLY, KinectVersion.KINECT1);
+final Recognition recognizer = Recognizer.getInstance();
+recognizer.attacheSensor(sensor);
+recognizer.startSensor();
+recognizer.setOnGestureRecognized(System.out::println);
 ```
 
 #### Start via UI
 
 ```java
-	final Sensor sensor = new Kinect(Joint.RIGHT_HAND, KinectSensors.SKELETON_ONLY, KinectVersion.KINECT1);
-        final Recognition recognizer = Recognizer.getInstance();
-        recognizer.attacheSensor(sensor);
-        final RecognitionView view = new RecognitionScreenView(recognizer);
-        recognizer.attacheUI(view);
-        recognizer.setOnGestureRecognized(System.out::println);
+final Sensor sensor = new Kinect(Joint.RIGHT_HAND, KinectSensors.SKELETON_ONLY, KinectVersion.KINECT1);
+final Recognition recognizer = Recognizer.getInstance();
+recognizer.attacheSensor(sensor);
+final RecognitionView view = new RecognitionScreenView(recognizer);
+recognizer.attacheUI(view);
+recognizer.setOnGestureRecognized(System.out::println);
 ```
 #### Define your own UI
 
 ```java
-	public class Gui extends AbstractView {
-        public Gui(Recognition recognizer) {
-            super(recognizer);
-            // TODO Auto-generated constructor stub
-        }
-        @Override
-        public void notifyOnFrameChange(int frame, Vector2D derivative, Vector2D path) {
-            // TODO Auto-generated method stub   
-        }
-        @Override
-        public void notifyOnFeatureVectorEvent() {
-            // TODO Auto-generated method stub   
-        }
-	..... A lot of methods to implements
+public class Gui extends AbstractView {
+    public Gui(Recognition recognizer) {
+        super(recognizer);
+        // TODO Auto-generated constructor stub
     }
+    @Override
+    public void notifyOnFrameChange(int frame, Vector2D derivative, Vector2D path) {
+        // TODO Auto-generated method stub   
+    }
+    @Override
+    public void notifyOnFeatureVectorEvent() {
+        // TODO Auto-generated method stub   
+    }
+..... A lot of methods to implements
+}
 ```
 
 ## Supported sensors
@@ -177,39 +177,39 @@ The project has been developed using Eclipse, and can be easily imported in such
 
 #### Recommended configuration
 *  Install the required eclipse plugins:
-  *   In Eclipse, click "Help" -> "Eclipse Marketplace..."
-  *   In the search field enter "findbugs", then press Enter
-  *   One of the retrieved entries should be "FindBugs Eclipse Plugin", click Install
-  *   Click "< Install More"
-  *   In the search field enter "checkstyle", then press Enter
-  *   One of the retrieved entries should be "Checkstyle Plug-in" with a written icon whose text is "eclipse-cs", click Install
-  *   Click "< Install More"
-  *   Wait for Eclipse to resolve all the features
-  *   Click "Confirm >"
-  *   Follow the instructions, accept the license, wait for Eclipse to download and install the product, accept the installation and restart the IDE
-  *   When restarted, click "Help" -> "Install New Software..."
-  *   Click "Add..."
-  *   In "Location" field, enter `https://dl.bintray.com/pmd/pmd-eclipse-plugin/updates/`
-  *   The "Name" field is not mandatory (suggested: "PMD")
-  *   Click OK.
-  *   If not already selected, in "Work with:" dropdown menu choose the just added update site
-  *   Select "PMD for Eclipse 4" and click next
-  *   Follow the instructions, accept the license, wait for Eclipse to download and install the product, accept the installation and restart the IDE.
+    *   In Eclipse, click "Help" -> "Eclipse Marketplace..."
+    *   In the search field enter "findbugs", then press Enter
+    *   One of the retrieved entries should be "FindBugs Eclipse Plugin", click Install
+    *   Click "< Install More"
+    *   In the search field enter "checkstyle", then press Enter
+    *   One of the retrieved entries should be "Checkstyle Plug-in" with a written icon whose text is "eclipse-cs", click Install
+    *   Click "< Install More"
+    *   Wait for Eclipse to resolve all the features
+    *   Click "Confirm >"
+    *   Follow the instructions, accept the license, wait for Eclipse to download and install the product, accept the installation and restart the IDE
+    *   When restarted, click "Help" -> "Install New Software..."
+    *   Click "Add..."
+    *   In "Location" field, enter `https://dl.bintray.com/pmd/pmd-eclipse-plugin/updates/`
+    *   The "Name" field is not mandatory (suggested: "PMD")
+    *   Click OK.
+    *   If not already selected, in "Work with:" dropdown menu choose the just added update site
+    *   Select "PMD for Eclipse 4" and click next
+    *   Follow the instructions, accept the license, wait for Eclipse to download and install the product, accept the installation and restart the IDE.
 *   Set the line delimiter to LF (only for Windows users)
-  *   In Eclipse, click window -> preferences
-  *   In the search form enter "encoding", then press Enter
-  *   Go to General -> Workspace
-  *   In the section "New text file line delimiter" check "Other" and choose Unix
-  *   Apply
+    *   In Eclipse, click window -> preferences
+    *   In the search form enter "encoding", then press Enter
+    *   Go to General -> Workspace
+    *   In the section "New text file line delimiter" check "Other" and choose Unix
+    *   Apply
 *   Use space instead of tabs
-  *   In Eclipse, click window -> preferences
-  *   Go to General -> Editors -> Text Editors
-  *   Check "insert spaces for tabs" option.
-  *   Apply.
-  *   Go to Java -> Code style -> Formatter
-  *   Click Edit button
-  *   In Indentation tab, under "General Settings", set "tab policy" to "Spaces only"
-  *   Apply (you should probably rename the formatter settings).
+    *   In Eclipse, click window -> preferences
+    *   Go to General -> Editors -> Text Editors
+    *   Check "insert spaces for tabs" option.
+    *   Apply.
+    *   Go to Java -> Code style -> Formatter
+    *   Click Edit button
+    *   In Indentation tab, under "General Settings", set "tab policy" to "Spaces only"
+    *   Apply (you should probably rename the formatter settings).
 
 ## Screenshots
 ### Recognition
