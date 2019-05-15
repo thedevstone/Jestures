@@ -69,6 +69,12 @@ check.dependsOn jacocoTestCoverageVerification
 check.finalizedBy jacocoTestReport
 jacocoTestReport.finalizedBy htmlDependencyReport
 
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled false
+    }
+}
 
 jacocoTestCoverageVerification {
     violationRules {
