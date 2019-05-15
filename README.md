@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/5df31f32e8c64512b44f8f8c3c8c4847)](https://app.codacy.com/app/Giulianini/Jestures?utm_source=github.com&utm_medium=referral&utm_content=Giulianini/Jestures&utm_campaign=Badge_Grade_Dashboard)
 [![Build Status](https://travis-ci.org/Giulianini/Jestures.svg?branch=master)](https://travis-ci.org/Giulianini/Jestures)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/LucaGiulianini?locale.x=it_IT)
 [![PyPI - License](https://img.shields.io/github/license/Giulianini/Jestures.svg)](https://github.com/Giulianini/Jestures/blob/master/LICENSE.txt)
