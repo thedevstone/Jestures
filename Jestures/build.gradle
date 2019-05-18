@@ -133,7 +133,7 @@ findbugs {
 
 pmd {
     ignoreFailures = true
-    ruleSetConfig = resources.text.fromFile("../config/pmd/pmd.xml")
+    ruleSetConfig = resources.text.fromFile("../config/pmd/ruleset.xml")
 }
 
 //BINTRAY
