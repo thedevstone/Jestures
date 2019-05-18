@@ -2,7 +2,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/acaa3eb255b84676acc52402a39e7e07)](https://www.codacy.com/app/Giulianini/Jestures?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Giulianini/Jestures&amp;utm_campaign=Badge_Grade)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/acaa3eb255b84676acc52402a39e7e07)](https://www.codacy.com/app/Giulianini/Jestures?utm_source=github.com&utm_medium=referral&utm_content=Giulianini/Jestures&utm_campaign=Badge_Coverage)
 [![PyPI - License](https://img.shields.io/github/license/Giulianini/Jestures.svg)](https://github.com/Giulianini/Jestures/blob/master/LICENSE.txt)
- [ ![Download](https://api.bintray.com/packages/giulianini/maven/Jestures/images/download.svg?version=0.0.2) ](https://bintray.com/giulianini/maven/Jestures/0.0.2/link)
+[![Download](https://api.bintray.com/packages/giulianini/maven/Jestures/images/download.svg?version=0.0.2) ](https://bintray.com/giulianini/maven/Jestures/0.0.2/link)
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.giulianini.jestures/jestures.svg)](https://search.maven.org/search?q=g:com.github.giulianini.jestures)
 [![Javadocs](https://www.javadoc.io/badge/com.github.giulianini.jestures/jestures.svg)](https://www.javadoc.io/doc/com.github.giulianini.jestures/jestures)
 ![GitHub issues](https://img.shields.io/github/issues/Giulianini/Jestures.svg)
@@ -15,7 +15,7 @@
 
 # Jestures
 
-## A simple framework for gesture recognition in Java.
+## A simple framework for gesture recognition in Java
 
 <h1 align="center">
     <img src="/pic/Jestures.png">
@@ -25,9 +25,9 @@
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/LucaGiulianini?locale.x=it_IT)
 
 ## Download
-* Released builds are available from - [Bintray](https://bintray.com/giulianini/maven/Jestures/_latestVersion)
-* Released builds are available from - [Maven Central](https://search.maven.org/search?q=g:com.github.giulianini.jestures)
-* Snapshot builds are available from - [Artifactory](http://oss.jfrog.org/oss-snapshot-local/com/github/giulianini/jestures/)
+*   Released builds are available from - [Bintray](https://bintray.com/giulianini/maven/Jestures/_latestVersion)
+*   Released builds are available from - [Maven Central](https://search.maven.org/search?q=g:com.github.giulianini.jestures)
+*   Snapshot builds are available from - [Artifactory](http://oss.jfrog.org/oss-snapshot-local/com/github/giulianini/jestures/)
 
 ## Javadocs 
 If you need to access the documentation for any stable version, [javadoc.io](https://www.javadoc.io/doc/com.github.giulianini.track4j/track4j/) is probably the right place to search in.
@@ -73,10 +73,10 @@ dependencies {
 #### How to Include In Maven Project
 ```xml
 <dependency>
-  <groupId>com.github.giulianini.jestures</groupId>
-  <artifactId>jestures</artifactId>
-  <version>1.0.0</version>
-  <type>pom</type>
+    <groupId>com.github.giulianini.jestures</groupId>
+    <artifactId>jestures</artifactId>
+    <version>1.0.0</version>
+    <type>pom</type>
 </dependency>
 ```
 
@@ -85,134 +85,133 @@ dependencies {
 #### How to Include In Ivy Project
 ```xml
 <dependency org='com.github.giulianini.jestures' name='jestures' rev='1.0.0'>
-  <artifact name='jestures' ext='pom' ></artifact>
+    <artifact name='jestures' ext='pom' ></artifact>
 </dependency>
 ```
 
-## How can I use Jestures?
+## How can I use Jestures
 
 ### Set Up The Framework
-1. 	Install the [__Kinect SDK__ ](https://www.microsoft.com/en-us/download/confirmation.aspx?id=40278)
-1. 	Download natives - [Natives dll for Kinect](https://drive.google.com/open?id=1Dpvs71O2dN6AxnTrMUGLAIDJkp0y8YXD)
-1. 	Put __ufdw_j4k_**bit.dll_ Natives into __HOME/.Jestures/native__. Jestures will find them.
-1. 
-	* **Build**  
+1.   Install the [__Kinect SDK__ ](https://www.microsoft.com/en-us/download/confirmation.aspx?id=40278)
+2. 	 Download natives - [Natives dll for Kinect](https://drive.google.com/open?id=1Dpvs71O2dN6AxnTrMUGLAIDJkp0y8YXD)
+3. 	 Put __ufdw_j4k_**bit.dll_ Natives into __HOME/.Jestures/native__. Jestures will find them.
+4.   
+	*   **Build**  
 	You can download the source code of the library and build it as mentioned previously. Building Jestures will generate Jestures.jar under the Track4J/build/libs folder. To use Jestures, import Jestures.jar into your project and start recognizing gestures :).
-	* **Import the dependency**  
+	*   **Import the dependency**  
 	Include the dependency for your build system.
  
  ### Start The Recorder Tool
- 1.	Follow the step above and the recorder tool must work with your kinect version.
+ 5.	  Follow the step above and the recorder tool must work with your kinect version.
  
 ### Code
 
 #### Tracker only
 ```java
-	final Sensor sensor = new Kinect(Joint.RIGHT_HAND, KinectSensors.SKELETON_ONLY, KinectVersion.KINECT1);
-        final Tracking tracker = Tracker.getInstance();
-        tracker.attacheSensor(sensor);
-	tracker.startSensor();
-        tracker.setOnJointTracked(new JointListener(){
-	....});
+final Sensor sensor = new Kinect(Joint.RIGHT_HAND, KinectSensors.SKELETON_ONLY, KinectVersion.KINECT1);
+final Tracking tracker = Tracker.getInstance();
+tracker.attacheSensor(sensor);
+tracker.startSensor();
+tracker.setOnJointTracked(new JointListener(){
+....});
 ```
 
 #### Start the Recognizer
 ```java
-	final Sensor sensor = new Kinect(Joint.RIGHT_HAND, KinectSensors.SKELETON_ONLY, KinectVersion.KINECT1);
-        final Recognition recognizer = Recognizer.getInstance();
-        recognizer.attacheSensor(sensor);
-	recognizer.startSensor();
-        recognizer.setOnGestureRecognized(System.out::println);
+final Sensor sensor = new Kinect(Joint.RIGHT_HAND, KinectSensors.SKELETON_ONLY, KinectVersion.KINECT1);
+final Recognition recognizer = Recognizer.getInstance();
+recognizer.attacheSensor(sensor);
+recognizer.startSensor();
+recognizer.setOnGestureRecognized(System.out::println);
 ```
 
 #### Start via UI
 
 ```java
-	final Sensor sensor = new Kinect(Joint.RIGHT_HAND, KinectSensors.SKELETON_ONLY, KinectVersion.KINECT1);
-        final Recognition recognizer = Recognizer.getInstance();
-        recognizer.attacheSensor(sensor);
-        final RecognitionView view = new RecognitionScreenView(recognizer);
-        recognizer.attacheUI(view);
-        recognizer.setOnGestureRecognized(System.out::println);
+final Sensor sensor = new Kinect(Joint.RIGHT_HAND, KinectSensors.SKELETON_ONLY, KinectVersion.KINECT1);
+final Recognition recognizer = Recognizer.getInstance();
+recognizer.attacheSensor(sensor);
+final RecognitionView view = new RecognitionScreenView(recognizer);
+recognizer.attacheUI(view);
+recognizer.setOnGestureRecognized(System.out::println);
 ```
 #### Define your own UI
 
 ```java
- public class Gui extends AbstractView {
-        public Gui(Recognition recognizer) {
-            super(recognizer);
-            // TODO Auto-generated constructor stub
-        }
-        @Override
-        public void notifyOnFrameChange(int frame, Vector2D derivative, Vector2D path) {
-            // TODO Auto-generated method stub   
-        }
-        @Override
-        public void notifyOnFeatureVectorEvent() {
-            // TODO Auto-generated method stub   
-        }
-	..... A lot of methods to implements
+public class Gui extends AbstractView {
+    public Gui(Recognition recognizer) {
+        super(recognizer);
+        // TODO Auto-generated constructor stub
     }
+    @Override
+    public void notifyOnFrameChange(int frame, Vector2D derivative, Vector2D path) {
+        // TODO Auto-generated method stub   
+    }
+    @Override
+    public void notifyOnFeatureVectorEvent() {
+        // TODO Auto-generated method stub   
+    }
+..... A lot of methods to implements
+}
 ```
-
 
 ## Supported sensors
 
-* **Windows:** 
+*   **Windows:** 
 	- _Kinect v1_
 	- _Kinect v2_
 
 ### Future support
 
-* **Windows:** 
+*   **Windows:** 
 	- _Lipmotion_
 	
-* **Linux:**
+*   **Linux:**
 	- _Kinect v1_
 	- _Kinect v2_
 	
-
-
 ## Notes for Developers
 
 ### Importing the project
 The project has been developed using Eclipse, and can be easily imported in such IDE.
 
 #### Recommended configuration
-* Install the required eclipse plugins:
-  * In Eclipse, click "Help" -> "Eclipse Marketplace..."
-  * In the search field enter "findbugs", then press Enter
-  * One of the retrieved entries should be "FindBugs Eclipse Plugin", click Install
-  * Click "< Install More"
-  * In the search field enter "checkstyle", then press Enter
-  * One of the retrieved entries should be "Checkstyle Plug-in" with a written icon whose text is "eclipse-cs", click Install
-  * Click "< Install More"
-  * Wait for Eclipse to resolve all the features
-  * Click "Confirm >"
-  * Follow the instructions, accept the license, wait for Eclipse to download and install the product, accept the installation and restart the IDE
-  * When restarted, click "Help" -> "Install New Software..."
-  * Click "Add..."
-  * In "Location" field, enter `https://dl.bintray.com/pmd/pmd-eclipse-plugin/updates/`
-  * The "Name" field is not mandatory (suggested: "PMD")
-  * Click OK.
-  * If not already selected, in "Work with:" dropdown menu choose the just added update site
-  * Select "PMD for Eclipse 4" and click next
-  * Follow the instructions, accept the license, wait for Eclipse to download and install the product, accept the installation and restart the IDE.
-* Set the line delimiter to LF (only for Windows users)
-  * In Eclipse, click window -> preferences
-  * In the search form enter "encoding", then press Enter
-  * Go to General -> Workspace
-  * In the section "New text file line delimiter" check "Other" and choose Unix
-  * Apply
-* Use space instead of tabs
-  * In Eclipse, click window -> preferences
-  * Go to General -> Editors -> Text Editors
-  * Check "insert spaces for tabs" option.
-  * Apply.
-  * Go to Java -> Code style -> Formatter
-  * Click Edit button
-  * In Indentation tab, under "General Settings", set "tab policy" to "Spaces only"
-  * Apply (you should probably rename the formatter settings).
+*  Install the required eclipse plugins:
+    *   In Eclipse, click "Help" -> "Eclipse Marketplace..."
+    *   In the search field enter "findbugs", then press Enter
+    *   One of the retrieved entries should be "FindBugs Eclipse Plugin", click Install
+    *   Click "< Install More"
+    *   In the search field enter "checkstyle", then press Enter
+    *   One of the retrieved entries should be "Checkstyle Plug-in" with a written icon whose text is "eclipse-cs", click Install
+    *   Click "< Install More"
+    *   Wait for Eclipse to resolve all the features
+    *   Click "Confirm >"
+    *   Follow the instructions, accept the license, wait for Eclipse to download and install the product, accept the installation and restart the IDE
+    *   When restarted, click "Help" -> "Install New Software..."
+    *   Click "Add..."
+    *   In "Location" field, enter `https://dl.bintray.com/pmd/pmd-eclipse-plugin/updates/`
+    *   The "Name" field is not mandatory (suggested: "PMD")
+    *   Click OK.
+    *   If not already selected, in "Work with:" dropdown menu choose the just added update site
+    *   Select "PMD for Eclipse 4" and click next
+    *   Follow the instructions, accept the license, wait for Eclipse to download and install the product, accept the installation and restart the IDE.
+    
+*   Set the line delimiter to LF (only for Windows users)
+    *   In Eclipse, click window -> preferences
+    *   In the search form enter "encoding", then press Enter
+    *   Go to General -> Workspace
+    *   In the section "New text file line delimiter" check "Other" and choose Unix
+    *   Apply
+    
+*   Use space instead of tabs
+    *   In Eclipse, click window -> preferences
+    *   Go to General -> Editors -> Text Editors
+    *   Check "insert spaces for tabs" option.
+    *   Apply.
+    *   Go to Java -> Code style -> Formatter
+    *   Click Edit button
+    *   In Indentation tab, under "General Settings", set "tab policy" to "Spaces only"
+    *   Apply (you should probably rename the formatter settings).
 
 ## Screenshots
 ### Recognition
