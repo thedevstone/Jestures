@@ -90,7 +90,7 @@ jacocoTestCoverageVerification {
 
 checkstyle {
     toolVersion = '8.0'
-    configFile = file('config/checkstyle/checkstyle.xml')
+    configFile = file('../config/checkstyle/checkstyle.xml')
 }
 
 findbugs {
@@ -101,7 +101,7 @@ findbugs {
 
 pmdMain {
     ignoreFailures = true
-    ruleSetConfig = resources.text.fromFile("config/pmd/pmd.xml")
+    ruleSetConfig = resources.text.fromFile("../config/pmd/pmd.xml")
 }
 
 //BINTRAY
