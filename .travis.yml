@@ -1,5 +1,6 @@
-language: java
+language: openjdk:8
 script:
+  - 'apt-get update && apt-get install -y openjfx'
   - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then bash travis_build.sh; fi'
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then bash travis_build_pull_request.sh; fi'
 before_deploy: echo Preparing for deploy
