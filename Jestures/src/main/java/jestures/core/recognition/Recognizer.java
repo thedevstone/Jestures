@@ -17,13 +17,7 @@ package jestures.core.recognition;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
@@ -42,7 +36,10 @@ import jestures.core.tracking.Tracker;
 import jestures.core.tracking.TrackerImpl;
 import jestures.core.view.RecognitionViewObserver;
 import jestures.core.view.screens.RecognitionScreenView;
+import smile.classification.KNN;
 import smile.math.distance.DynamicTimeWarping;
+import smile.neighbor.KDTree;
+import smile.neighbor.KNNSearch;
 
 /**
  * A Recognizer is a simple tracker that can also perform a recognition task.
@@ -69,7 +66,8 @@ public final class Recognizer extends TrackerImpl implements Recognition {
     /**
      * User dataset of gsetures. Deserialized and loaded in memory. Reduced memory cost.
      */
-    private Map<Integer, List<Vector2D[]>> userDataset;
+    private Pair<int[], Vector2D[][]> userDataset;
+
     /**
      * Temporary map that stores the mapping from integer to gesture name
      */
@@ -83,6 +81,7 @@ public final class Recognizer extends TrackerImpl implements Recognition {
      * Dynamic Time Warping algorithm
      */
     private final DynamicTimeWarping<Vector2D> dtw;
+    private  KNN<Vector2D[]> knn;
     /**
      * User recognition settings
      */
@@ -101,6 +100,7 @@ public final class Recognizer extends TrackerImpl implements Recognition {
         this.lastGestureTime = 0;
         this.recognitionSettings = new RecognitionSettingsImpl(UpdateRate.FPS_10, 0, 0, 0, 0, 0);
         this.dtw = new DynamicTimeWarping<Vector2D>((a, b) -> a.distance(b), this.recognitionSettings.getDtwRadius());
+
         RecognitionScreenView.startFxThread();
     }
 
@@ -190,6 +190,8 @@ public final class Recognizer extends TrackerImpl implements Recognition {
             t.updateSettings(this.recognitionSettings);
             t.setGestureLengthLabel(this.getUserGestureLength());
         });
+        this.knn = new KNN<Vector2D[]>(this.userDataset.getValue(), this.userDataset.getKey(), this.dtw, this.recognitionSettings.getMatchNumber());
+        LOG.debug("KNN: " + this.knn + " K = " + this.recognitionSettings.getMatchNumber());
         return userExists;
     }
 
@@ -222,44 +224,13 @@ public final class Recognizer extends TrackerImpl implements Recognition {
      *            the gesture
      */
     private void recognize(final Vector2D... featureVector) {
-        // Array of distances
-        final List<Pair<Double, Integer>> distances = new ArrayList<>();
-        // Get the distances from every template and save in the array
-        for (final Integer gestureKey : this.userDataset.keySet()) {
-            for (final Vector2D[] gestureTemplate : this.userDataset.get(gestureKey)) {
-                // Distance calculated with DTW
-                final double dtwDist = this.dtw.d(gestureTemplate, featureVector);
-                // Threshold prevent unreasonable cpu calc
-                if (dtwDist < this.recognitionSettings.getMaxDTWThreashold()
-                        && dtwDist > this.recognitionSettings.getMinDtwThreashold()) {
-                    distances.add(new Pair<Double, Integer>(dtwDist, gestureKey));
-                }
+        this.gestureRecognized = true;
+        double[] posterioris = new double[this.intToStringGestureMapping.size()];
+        this.intToStringGestureMapping.get(this.knn.predict(featureVector, posterioris));
+        for (int i = 0; i < posterioris.length; i++) {
+            if (posterioris[i] > 0.9) {
+                LOG.debug(this.intToStringGestureMapping.get(i));
             }
-        }
-
-        /**
-         * Knn algorithm. Take the nearest k vector from our feature vector and return the associated gesture
-         *
-         */
-        if (distances.size() > this.recognitionSettings.getMatchNumber()) {
-            // Shorter distances first
-            distances.sort((a, b) -> a.getKey().compareTo(b.getKey()));
-            // Array of double with the distances
-            final double[] kNearestNeighbor = new double[this.recognitionSettings.getMatchNumber()];
-            // Fill the array
-            for (int i = 0; i < this.recognitionSettings.getMatchNumber(); i++) {
-                kNearestNeighbor[i] = distances.get(i).getValue() + 0.0;
-            }
-            // Get gseture name
-            final String gesture = this.intToStringGestureMapping.get((int) StatUtils.mode(kNearestNeighbor)[0]);
-            // Notification
-            this.gestureListener.forEach(t -> t.onGestureRecognized(gesture));
-            this.view.forEach(t -> t.onGestureRecognized(gesture));
-
-            this.gestureRecognized = true;
-        } else {
-            // NO GESTURE
-            this.gestureRecognized = false;
         }
     }
 

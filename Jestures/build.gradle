@@ -68,6 +68,7 @@ repositories {
 dependencies {
     localCompile fileTree(dir: 'libs', include: '*.jar')
     implementation "org.apache.commons:commons-math3:${project.commonMathVersion}"
+    implementation 'org.apache.commons:commons-lang3:3.6'
     implementation "com.google.guava:guava:${project.guavaVersion}"
     implementation "log4j:log4j:${project.log4jVersion}"
     implementation "com.google.code.gson:gson:${project.gsonVersion}"
