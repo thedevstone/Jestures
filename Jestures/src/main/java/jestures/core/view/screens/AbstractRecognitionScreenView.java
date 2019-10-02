@@ -112,22 +112,19 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
 
     // ########### TAB 4 #############
     @FXML
-    private JFXComboBox<UpdateRate> udpateRateCombo;
+    private JFXComboBox<UpdateRate> samplingRateCombo;
 
     @FXML
     private JFXSlider sliderRadius;
 
     @FXML
-    private JFXSlider sliderMinThreshold;
-
-    @FXML
-    private JFXSlider sliderMaxThreshold;
+    private JFXSlider sliderConfidence;
 
     @FXML
     private JFXSlider sliderTimeSeparation;
 
     @FXML
-    private JFXSlider sliderMatchNumber;
+    private JFXSlider sliderK;
     @FXML
     private JFXButton saveSettingsButton;
 
@@ -162,18 +159,18 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
 
     private void initSliders() {
         for (final UpdateRate elem : UpdateRate.values()) {
-            this.udpateRateCombo.getItems().add(elem);
+            this.samplingRateCombo.getItems().add(elem);
         }
-        this.udpateRateCombo.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> this.setUpdateRate(newValue));
+        this.samplingRateCombo.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> this.setSamplingRate(newValue));
         this.sliderRadius.valueProperty().addListener(
                 (observable, oldValue, newValue) -> this.setDtwRadius(newValue.doubleValue() / 10));
-        this.sliderMaxThreshold.valueProperty().addListener(
-                (observable, oldValue, newValue) -> this.setMaxDtwThreashold(newValue.intValue()));
+        this.sliderConfidence.valueProperty().addListener(
+                (observable, oldValue, newValue) -> this.setConfidenceThreshold(newValue.intValue()));
         this.sliderTimeSeparation.valueProperty().addListener(
                 (observable, oldValue, newValue) -> this.setMinTimeSeparation(newValue.intValue()));
-        this.sliderMatchNumber.valueProperty().addListener(
-                (observable, oldValue, newValue) -> this.setMatchNumber(newValue.intValue()));
+        this.sliderK.valueProperty().addListener(
+                (observable, oldValue, newValue) -> this.setK(newValue.intValue()));
 
         // CHECKSTYLE:OFF
         this.elevationSlider = new JFXSlider(0, 30, 10);

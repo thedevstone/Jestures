@@ -81,16 +81,16 @@ public interface Recognition extends Tracker {
      * <p>
      * Only gestures, that have a feature vector distance (by DTW) greater than minThreashold, are accepted.
      *
-     * @param maxDtwThreashold represents the maximum distance above which a feature vector is accepted
+     * @param confidenceThreshold represents the maximum distance above which a feature vector is accepted
      */
-    void setMaxDtwThreashold(int maxDtwThreashold);
+    void setConfidenceThreshold(int confidenceThreshold);
 
     /**
      * Set the update rate of the recognizer. The rate must be a value that can be divided by the frame length.
      *
-     * @param updateRate the update rate
+     * @param samplingRate the update rate
      */
-    void setUpdateRate(UpdateRate updateRate);
+    void setSamplingRate(UpdateRate samplingRate);
 
     /**
      * Set the minimum time separation between two gestures.
@@ -106,9 +106,9 @@ public interface Recognition extends Tracker {
      * <p>
      * Set the k of the Knn algorithm. K represents the nearest neighbor, in other way the nearest feature vector
      *
-     * @param matchNumber the number of templates.
+     * @param k the number of templates.
      */
-    void setMatchNumber(int matchNumber);
+    void setK(int k);
 
     /**
      * Save the recognition settings.

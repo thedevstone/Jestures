@@ -44,30 +44,30 @@ public interface RecognitionSettings {
      *
      * @return represents the maximum distance above which a feature vector is accepted
      */
-    double getMaxDTWThreashold();
+    double getDTWConfidenceThreshold();
 
     /**
      * Set the threshold for gesture maximum acceptance.
      * <p>
      * Only gestures, that have a feature vector distance (by DTW) greater than minThreashold, are accepted.
      *
-     * @param maxDtwThreashold represents the maximum distance above which a feature vector is accepted
+     * @param confidenceThreshold represents the maximum distance above which a feature vector is accepted
      */
-    void setMaxDtwThreashold(int maxDtwThreashold);
+    void setDTWConfidenceThreshold(double confidenceThreshold);
 
     /**
      * Get the update rate of the recognizer.
      *
      * @return the frame value
      */
-    UpdateRate getUpdateRate();
+    UpdateRate getSamplingRate();
 
     /**
      * Set the update rate of the recognizer. The rate must be a value that can be devided by the frame length.
      *
      * @param updateRate the update rate
      */
-    void setUpdateRate(UpdateRate updateRate);
+    void setSamplingRate(UpdateRate updateRate);
 
     /**
      * Get the minimum time separation between two gestures.
@@ -92,12 +92,12 @@ public interface RecognitionSettings {
      *
      * @return the number of templates.
      */
-    int getMatchNumber();
+    int getK();
 
     /**
      * Set the minimum number of gesture that have to match the template to get a gesture recognized.
      *
-     * @param matchNumber the number of templates.
+     * @param k the number of templates.
      */
-    void setMatchNumber(int matchNumber);
+    void setK(int k);
 }

@@ -30,22 +30,21 @@ public interface RecognitionView extends View, RecognitionViewObserver {
      */
     void setDtwRadius(double radius);
 
-
     /**
      * Set the threshold for gesture maximum acceptance.
      * <p>
      * Only gestures, that have a feature vector distance (by DTW) greater than minThreashold, are accepted.
      *
-     * @param maxDtwThreashold represents the maximum distance above which a feature vector is accepted
+     * @param confidenceThreshold represents the maximum distance above which a feature vector is accepted
      */
-    void setMaxDtwThreashold(int maxDtwThreashold);
+    void setConfidenceThreshold(int confidenceThreshold);
 
     /**
      * Set the update rate of the recognizer. The rate must be a value that can be devided by the frame length.
      *
-     * @param updateRate the update rate
+     * @param samplingRate the update rate
      */
-    void setUpdateRate(UpdateRate updateRate);
+    void setSamplingRate(UpdateRate samplingRate);
 
     /**
      * Set the minimum time separation between two gestures.
@@ -59,9 +58,9 @@ public interface RecognitionView extends View, RecognitionViewObserver {
     /**
      * Set the minimum number of gesture that have to match the template to get a gesture recognized.
      *
-     * @param matchNumber the number of templates.
+     * @param k the number of templates.
      */
-    void setMatchNumber(int matchNumber);
+    void setK(int k);
 
     /**
      * Save the settings.

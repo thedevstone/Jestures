@@ -91,22 +91,21 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
 
     // ########### TAB 4 #############
     @FXML
-    private JFXComboBox<UpdateRate> udpateRateCombo;
+    private JFXComboBox<UpdateRate> samplingRateCombo;
 
     @FXML
     private JFXSlider sliderRadius;
 
     @FXML
-    private JFXSlider sliderMinThreshold;
-
-    @FXML
-    private JFXSlider sliderMaxThreshold;
+    private JFXSlider sliderConfidence;
 
     @FXML
     private JFXSlider sliderTimeSeparation;
 
     @FXML
-    private JFXSlider sliderMatchNumber;
+    private JFXSlider sliderK;
+    @FXML
+    private JFXButton saveSettingsButton;
 
     /**
      * @param recognizer the {@link RecognitionScreenView}
@@ -199,11 +198,11 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
     @Override
     public final void updateSettings(final RecognitionSettings settings) {
         Platform.runLater(() -> {
-            this.udpateRateCombo.getSelectionModel().select(settings.getUpdateRate());
+            this.samplingRateCombo.getSelectionModel().select(settings.getSamplingRate());
             this.sliderRadius.setValue(settings.getDtwRadius() * 10);
-            this.sliderMaxThreshold.setValue(settings.getMaxDTWThreashold());
+            this.sliderConfidence.setValue(settings.getDTWConfidenceThreshold() * 100);
             this.sliderTimeSeparation.setValue(settings.getMinTimeSeparation());
-            this.sliderMatchNumber.setValue(settings.getMatchNumber());
+            this.sliderK.setValue(settings.getK());
         });
     }
 
@@ -271,13 +270,13 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
     }
 
     @Override
-    public final void setMaxDtwThreashold(final int maxDtwThreashold) {
-        this.recognizer.setMaxDtwThreashold(maxDtwThreashold);
+    public final void setConfidenceThreshold(final int confidenceThreshold) {
+        this.recognizer.setConfidenceThreshold(confidenceThreshold / 100);
     }
 
     @Override
-    public final void setUpdateRate(final UpdateRate updateRate) {
-        this.recognizer.setUpdateRate(updateRate);
+    public final void setSamplingRate(final UpdateRate samplingRate) {
+        this.recognizer.setSamplingRate(samplingRate);
     }
 
     @Override
@@ -286,8 +285,8 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
     }
 
     @Override
-    public final void setMatchNumber(final int matchNumber) {
-        this.recognizer.setMatchNumber(matchNumber);
+    public final void setK(final int k) {
+        this.recognizer.setK(k);
     }
 
     @Override

@@ -99,7 +99,7 @@ public final class Recognizer extends TrackerImpl implements Recognition {
         this.userManager = new UserManager();
         this.userDataset = null;
         this.lastGestureTime = 0;
-        this.recognitionSettings = new RecognitionSettingsImpl(UpdateRate.FPS_10, 0, 0, 0, 0, 0);
+        this.recognitionSettings = new RecognitionSettingsImpl(UpdateRate.FPS_10, 0, 0, 0, 0);
         this.dtw = new DynamicTimeWarping<>((a, b) -> a.distance(b), this.recognitionSettings.getDtwRadius());
 
         RecognitionScreenView.startFxThread();
@@ -146,7 +146,7 @@ public final class Recognizer extends TrackerImpl implements Recognition {
         // view update
         this.view.forEach(t -> t.notifyOnFrameChange(frame, derivative, distanceVector));
         // When the actual frame is a multiple of the recognition update time, recognition can be performed
-        if ((frame + 1) % this.recognitionSettings.getUpdateRate().getFrameNumber() == 0) {
+        if ((frame + 1) % this.recognitionSettings.getSamplingRate().getFrameNumber() == 0) {
             // conversion from list to array. Library need arrays
             final Vector2D[] arrayFeatureVector = new Vector2D[featureVector.size()];
             featureVector.toArray(arrayFeatureVector);
@@ -191,8 +191,8 @@ public final class Recognizer extends TrackerImpl implements Recognition {
             t.updateSettings(this.recognitionSettings);
             t.setGestureLengthLabel(this.getUserGestureLength());
         });
-        this.knn = new KNN<>(this.userDataset.getValue(), this.userDataset.getKey(), this.dtw, this.recognitionSettings.getMatchNumber());
-        Recognizer.LOG.debug("KNN: " + this.knn + " K = " + this.recognitionSettings.getMatchNumber());
+        this.knn = new KNN<>(this.userDataset.getValue(), this.userDataset.getKey(), this.dtw, this.recognitionSettings.getK());
+        Recognizer.LOG.debug("KNN: " + this.knn + " K = " + this.recognitionSettings.getK());
         return userExists;
     }
 
@@ -248,14 +248,14 @@ public final class Recognizer extends TrackerImpl implements Recognition {
     }
 
     @Override
-    public void setMaxDtwThreashold(final int maxDtwThreashold) {
-        this.recognitionSettings.setMaxDtwThreashold(maxDtwThreashold);
+    public void setConfidenceThreshold(final int confidenceThreshold) {
+        this.recognitionSettings.setDTWConfidenceThreshold(confidenceThreshold/100);
     }
 
     @Override
-    public void setUpdateRate(final UpdateRate updateRate) {
-        if (this.getFrameLength().getFrameNumber() % updateRate.getFrameNumber() == 0) {
-            this.recognitionSettings.setUpdateRate(updateRate);
+    public void setSamplingRate(final UpdateRate samplingRate) {
+        if (this.getFrameLength().getFrameNumber() % samplingRate.getFrameNumber() == 0) {
+            this.recognitionSettings.setSamplingRate(samplingRate);
         } else {
             Recognizer.LOG.error("Update rate must be a MCD of frame rate");
             throw new IllegalStateException("Update rate must be a MCD of frame rate");
@@ -268,8 +268,8 @@ public final class Recognizer extends TrackerImpl implements Recognition {
     }
 
     @Override
-    public void setMatchNumber(final int matchNumber) {
-        this.recognitionSettings.setMatchNumber(matchNumber);
+    public void setK(final int k) {
+        this.recognitionSettings.setK(k);
 
     }
 

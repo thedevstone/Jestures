@@ -31,12 +31,11 @@ public class RecognitionSettingsImpl implements Serializable, RecognitionSetting
     private static final long serialVersionUID = -698249799317303588L;
 
     // private static final Logger LOG = Logger.getLogger(RecognitionSettingsImpl.class);
-    private UpdateRate updateRate;
+    private UpdateRate samplingRate;
     private double dtwRadius;
-    private int minDTWThreashold;
-    private int maxDTWThreashold;
+    private double confidenceThresholdDTW;
     private int minTimeSeparation;
-    private int matchNumber;
+    private int kNearestNeighbors;
 
     /**
      * The constructor for the class.
@@ -48,20 +47,18 @@ public class RecognitionSettingsImpl implements Serializable, RecognitionSetting
      * The constructor for the class.
      *
      * @param updateRate        the update rate
-     * @param dtwRadius         the radius
-     * @param minDTWThreshold   the min threshold
-     * @param maxDTWTreshold    the max threshold
+     * @param dtwRadius         the radius of the Sakoe and Chiba band
+     * @param confidenceThresholdDTW the Threshold of confidence
      * @param minTimeSeparation the min time separation
      * @param matchNumber       the match number
      */
-    public RecognitionSettingsImpl(final UpdateRate updateRate, final double dtwRadius, final int minDTWThreshold,
-                                   final int maxDTWTreshold, final int minTimeSeparation, final int matchNumber) {
-        this.updateRate = updateRate;
+    public RecognitionSettingsImpl(final UpdateRate updateRate, final double dtwRadius,
+                                   final double confidenceThresholdDTW, final int minTimeSeparation, final int matchNumber) {
+        this.samplingRate = updateRate;
         this.dtwRadius = dtwRadius;
-        this.minDTWThreashold = minDTWThreshold;
-        this.maxDTWThreashold = maxDTWTreshold;
+        this.confidenceThresholdDTW = confidenceThresholdDTW;
         this.minTimeSeparation = minTimeSeparation;
-        this.matchNumber = matchNumber;
+        this.kNearestNeighbors = matchNumber;
     }
 
     /**
@@ -96,44 +93,44 @@ public class RecognitionSettingsImpl implements Serializable, RecognitionSetting
      * @return represents the maximum distance above which a feature vector is accepted
      */
     @Override
-    public double getMaxDTWThreashold() {
-        return this.maxDTWThreashold;
+    public double getDTWConfidenceThreshold() {
+        return this.confidenceThresholdDTW;
     }
 
     /**
-     * Set the threshold for gesture maximum acceptance.
+     * Set the threshold for gesture minimum confidence.
      * <p>
-     * Only gestures, that have a feature vector distance (by DTW) greater than minThreashold, are accepted.
+     * Only gestures, that have a feature vector confidence (by KNN) greater than Threashold, are accepted.
      *
-     * @param maxDtwThreashold represents the maximum distance above which a feature vector is accepted
+     * @param confidenceThreshold represents the minimum confidence above which a feature vector is accepted
      */
     @Override
-    public void setMaxDtwThreashold(final int maxDtwThreashold) {
-        if (maxDtwThreashold >= 0) {
-            this.maxDTWThreashold = maxDtwThreashold;
+    public void setDTWConfidenceThreshold(final double confidenceThreshold) {
+        if (confidenceThreshold >= 0 && confidenceThreshold <= 1) {
+            this.confidenceThresholdDTW = confidenceThreshold;
         } else {
-            throw new IllegalStateException("Min threshold must be greater than 0");
+            throw new IllegalStateException("Threshold must be greater than 0 and less than 1");
         }
     }
 
     /**
-     * Get the update rate of the recognizer.
+     * Get the sampling rate of the recognizer.
      *
      * @return the frame value
      */
     @Override
-    public UpdateRate getUpdateRate() {
-        return this.updateRate;
+    public UpdateRate getSamplingRate() {
+        return this.samplingRate;
     }
 
     /**
-     * Set the update rate of the recognizer. The rate must be a value that can be devided by the frame length.
+     * Set the sampling rate of the recognizer. The rate must be a value that can be devided by the frame length.
      *
      * @param updateRate the update rate
      */
     @Override
-    public void setUpdateRate(final UpdateRate updateRate) {
-        this.updateRate = updateRate;
+    public void setSamplingRate(final UpdateRate updateRate) {
+        this.samplingRate = updateRate;
     }
 
     /**
@@ -157,10 +154,10 @@ public class RecognitionSettingsImpl implements Serializable, RecognitionSetting
      */
     @Override
     public void setMinTimeSeparation(final int minTimeSeparation) {
-        if (minTimeSeparation >= 0 && minTimeSeparation < 1000) {
+        if (minTimeSeparation >= 0 && minTimeSeparation < 10000) {
             this.minTimeSeparation = minTimeSeparation;
         } else {
-            throw new IllegalStateException("Time must be greater than 0 and less than 1000");
+            throw new IllegalStateException("Time must be greater than 0 and less than 10000");
         }
     }
 
@@ -170,19 +167,19 @@ public class RecognitionSettingsImpl implements Serializable, RecognitionSetting
      * @return the number of templates.
      */
     @Override
-    public int getMatchNumber() {
-        return this.matchNumber;
+    public int getK() {
+        return this.kNearestNeighbors;
     }
 
     /**
      * Set the minimum number of gesture that have to match the template to get a gesture recognized.
      *
-     * @param matchNumber the number of templates.
+     * @param k the number of templates.
      */
     @Override
-    public void setMatchNumber(final int matchNumber) {
-        if (matchNumber >= 0) {
-            this.matchNumber = matchNumber;
+    public void setK(final int k) {
+        if (k >= 0) {
+            this.kNearestNeighbors = k;
         } else {
             throw new IllegalStateException("Match number must be greater than 0");
         }

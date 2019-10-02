@@ -10,6 +10,7 @@
 <?import com.jfoenix.controls.JFXTreeView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -26,7 +27,7 @@
                   <Tab>
                     <content>
                       <JFXScrollPane id="userScrollPane" fx:id="userScrollPane">
-                         <children>  
+                         <children>
 	                        <BorderPane id="userBorderPane" fx:id="userBorderPane">
 	                           <top>
                                     <StackPane fx:id="userStackPane" BorderPane.alignment="CENTER">
@@ -83,59 +84,111 @@
                            <center>
                               <VBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">
                                  <children>
-                                    <JFXComboBox id="exercise-combo-box" fx:id="udpateRateCombo" focusColor="#405aa800" promptText="Gesture Sample Rate" unFocusColor="#4d4d4d00" />
-                                    <Label text="Radius (Sakoe &amp; Chiba Band width)">
-                                       <VBox.margin>
-                                          <Insets top="30.0" />
-                                       </VBox.margin>
+                                    <Label text="Gestures">
                                        <font>
-                                          <Font size="15.0" />
+                                          <Font size="20.0" />
                                        </font>
                                     </Label>
-                                    <JFXSlider fx:id="sliderRadius" blockIncrement="0.0" majorTickUnit="1.0" max="10.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true">
+                                    <VBox>
+                                       <children>
+                                          <Label text="Sampling Rate">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <StackPane>
+                                             <children>
+                                                <JFXComboBox id="exercise-combo-box" fx:id="samplingRateCombo" focusColor="#405aa800" minWidth="100.0" promptText="[Reactive &lt;----&gt; Slower] Recognition" unFocusColor="#4d4d4d00" StackPane.alignment="CENTER" />
+                                             </children>
+                                          </StackPane>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </VBox>
+                                    <VBox>
+                                       <children>
+                                          <Label text="Time Separation (ms)">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <JFXSlider fx:id="sliderTimeSeparation" majorTickUnit="100.0" max="3000.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="5.0" />
+                                       </VBox.margin>
+                                    </VBox>
+                                    <Separator prefWidth="200.0">
                                        <VBox.margin>
                                           <Insets top="10.0" />
                                        </VBox.margin>
-                                    </JFXSlider>
-                                    <Label text="Maximun Threshold">
+                                    </Separator>
+                                    <Label text="Dynamic Time Warping">
                                        <font>
-                                          <Font size="15.0" />
+                                          <Font size="20.0" />
                                        </font>
                                        <VBox.margin>
                                           <Insets top="30.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <JFXSlider fx:id="sliderMaxThreshold" blockIncrement="25.0" max="1000.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true">
+                                    <VBox>
+                                       <children>
+                                          <Label text="Radius">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <JFXSlider fx:id="sliderRadius" blockIncrement="0.0" majorTickUnit="1.0" max="10.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </VBox>
+                                    <Separator prefWidth="200.0">
                                        <VBox.margin>
                                           <Insets top="10.0" />
                                        </VBox.margin>
-                                    </JFXSlider>
-                                    <Label text="Time Separation">
+                                    </Separator>
+                                    <Label text="K-Nearest Neighbor">
                                        <font>
-                                          <Font size="15.0" />
+                                          <Font size="20.0" />
                                        </font>
                                        <VBox.margin>
-                                          <Insets top="30.0" />
+                                          <Insets top="40.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <JFXSlider fx:id="sliderTimeSeparation" majorTickUnit="100.0" max="1000.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true">
+                                    <VBox>
+                                       <children>
+                                          <Label text="Confidence Threshold">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <JFXSlider fx:id="sliderConfidence" blockIncrement="25.0" majorTickUnit="10.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </VBox>
+                                    <VBox>
+                                       <children>
+                                          <Label text="K">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <JFXSlider fx:id="sliderK" majorTickUnit="1.0" max="10.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets top="5.0" />
+                                       </VBox.margin>
+                                    </VBox>
+                                    <Separator prefWidth="200.0">
                                        <VBox.margin>
                                           <Insets top="10.0" />
                                        </VBox.margin>
-                                    </JFXSlider>
-                                    <Label text="Match Number">
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets top="30.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <JFXSlider fx:id="sliderMatchNumber" majorTickUnit="1.0" max="10.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true">
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                    </JFXSlider>
+                                    </Separator>
                                  </children>
                                  <BorderPane.margin>
                                     <Insets top="50.0" />

@@ -15,18 +15,17 @@
  *******************************************************************************/
 package jestures.core.recognition.gesturedata;
 
+import jestures.core.codification.GestureLength;
+import jestures.core.recognition.UpdateRate;
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.apache.log4j.Logger;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-import org.apache.log4j.Logger;
-
-import jestures.core.codification.GestureLength;
-import jestures.core.recognition.UpdateRate;
 
 /**
  * The {@link UserDataImpl} class that contains all the gestures codified by the codifier.
@@ -38,8 +37,7 @@ public class UserDataImpl implements UserData, Serializable {
      */
     private static final UpdateRate DEFAULT_UPDATE = UpdateRate.FPS_10;
     private static final double DEFAULT_RADIUS = 0.5;
-    private static final int DEFAULT_MIN_TRESHOLD = 300;
-    private static final int DEFAULT_MAX_TRESHOLD = 700;
+    private static final double DEFAULT_CONFIDENCE_THRESHOLD = 0.9;
     private static final int DEFAULT_TIME_SEP = 500;
     private static final int DEFAULT_MATCH = 3;
 
@@ -78,10 +76,9 @@ public class UserDataImpl implements UserData, Serializable {
         this.userName = name;
         this.gestureLength = UserDataImpl.DEFAULT_GESTURE_LENGTH;
         this.recognitionSettings = new RecognitionSettingsImpl(UserDataImpl.DEFAULT_UPDATE, UserDataImpl.DEFAULT_RADIUS,
-                UserDataImpl.DEFAULT_MIN_TRESHOLD, UserDataImpl.DEFAULT_MAX_TRESHOLD, UserDataImpl.DEFAULT_TIME_SEP,
+                UserDataImpl.DEFAULT_CONFIDENCE_THRESHOLD, UserDataImpl.DEFAULT_TIME_SEP,
                 UserDataImpl.DEFAULT_MATCH);
         this.gestures = new HashMap<>();
-        UserDataImpl.LOG.getClass();
     }
 
     @Override
@@ -151,7 +148,7 @@ public class UserDataImpl implements UserData, Serializable {
         if (this.gestures.containsKey(gestureName)) {
             this.gestures.get(gestureName).addAll(gestureFeatureVectors);
         } else {
-            this.gestures.put(gestureName, new ArrayList<List<Vector2D>>(gestureFeatureVectors));
+            this.gestures.put(gestureName, new ArrayList<>(gestureFeatureVectors));
         }
     }
 
