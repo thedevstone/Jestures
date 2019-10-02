@@ -15,16 +15,7 @@
  *******************************************************************************/
 package jestures.core.recognition;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.*;
-
-import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-import org.apache.log4j.Logger;
-
 import com.google.gson.JsonSyntaxException;
-
 import javafx.util.Pair;
 import jestures.core.codification.GestureLength;
 import jestures.core.recognition.gesturedata.RecognitionSettings;
@@ -34,16 +25,29 @@ import jestures.core.serialization.UserManager;
 import jestures.core.tracking.Tracker;
 import jestures.core.tracking.TrackerImpl;
 import jestures.core.view.RecognitionViewObserver;
+import jestures.core.view.ViewObserver;
 import jestures.core.view.screens.RecognitionScreenView;
+import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.apache.log4j.Logger;
 import smile.classification.KNN;
 import smile.math.distance.DynamicTimeWarping;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
+
+
 /**
  * A Recognizer is a simple tracker that can also perform a recognition task.
- *
  */
 public final class Recognizer extends TrackerImpl implements Recognition {
     private static final Logger LOG = Logger.getLogger(Recognizer.class);
+    private static final double POSTERIORI_THRESHOLD = 0.9;
     /**
      * Access to user serialization and deserialization.
      */
@@ -78,7 +82,7 @@ public final class Recognizer extends TrackerImpl implements Recognition {
      * Dynamic Time Warping algorithm
      */
     private final DynamicTimeWarping<Vector2D> dtw;
-    private  KNN<Vector2D[]> knn;
+    private KNN<Vector2D[]> knn;
     /**
      * User recognition settings
      */
@@ -96,7 +100,7 @@ public final class Recognizer extends TrackerImpl implements Recognition {
         this.userDataset = null;
         this.lastGestureTime = 0;
         this.recognitionSettings = new RecognitionSettingsImpl(UpdateRate.FPS_10, 0, 0, 0, 0, 0);
-        this.dtw = new DynamicTimeWarping<Vector2D>((a, b) -> a.distance(b), this.recognitionSettings.getDtwRadius());
+        this.dtw = new DynamicTimeWarping<>((a, b) -> a.distance(b), this.recognitionSettings.getDtwRadius());
 
         RecognitionScreenView.startFxThread();
     }
@@ -118,7 +122,7 @@ public final class Recognizer extends TrackerImpl implements Recognition {
     @Override
     public void attacheUI(final RecognitionViewObserver view) {
         this.view.add(view);
-        this.view.forEach(t -> t.refreshUsers());
+        this.view.forEach(ViewObserver::refreshUsers);
     }
 
     // ############################################## FROM SENSOR ###################################
@@ -136,7 +140,7 @@ public final class Recognizer extends TrackerImpl implements Recognition {
 
     @Override
     public void notifyOnFrameChange(final int frame, final Queue<Vector2D> featureVector, final Vector2D derivative,
-            final Vector2D distanceVector) {
+                                    final Vector2D distanceVector) {
         // super call for simple hand tracking
         super.notifyOnFrameChange(frame, featureVector, derivative, distanceVector);
         // view update
@@ -166,12 +170,12 @@ public final class Recognizer extends TrackerImpl implements Recognition {
     @Override
     public void notifyOnFeatureVectorEvent(final List<Vector2D> featureVector) {
         super.notifyOnFeatureVectorEvent(featureVector);
-        this.view.forEach(t -> t.notifyOnFeatureVectorEvent());
+        this.view.forEach(ViewObserver::notifyOnFeatureVectorEvent);
     }
 
     // ############################################# TRACKER #########################################
     @Override
-    public boolean loadUserProfile(final String name) throws FileNotFoundException, IOException, JsonSyntaxException {
+    public boolean loadUserProfile(final String name) throws IOException, JsonSyntaxException {
         // Load the user or create a new one
         final boolean userExists = this.userManager.loadOrCreateNewUser(name);
         // Clear old mapping
@@ -187,8 +191,8 @@ public final class Recognizer extends TrackerImpl implements Recognition {
             t.updateSettings(this.recognitionSettings);
             t.setGestureLengthLabel(this.getUserGestureLength());
         });
-        this.knn = new KNN<Vector2D[]>(this.userDataset.getValue(), this.userDataset.getKey(), this.dtw, this.recognitionSettings.getMatchNumber());
-        LOG.debug("KNN: " + this.knn + " K = " + this.recognitionSettings.getMatchNumber());
+        this.knn = new KNN<>(this.userDataset.getValue(), this.userDataset.getKey(), this.dtw, this.recognitionSettings.getMatchNumber());
+        Recognizer.LOG.debug("KNN: " + this.knn + " K = " + this.recognitionSettings.getMatchNumber());
         return userExists;
     }
 
@@ -217,16 +221,17 @@ public final class Recognizer extends TrackerImpl implements Recognition {
     /**
      * The core of recognition.
      *
-     * @param featureVector
-     *            the gesture
+     * @param featureVector the gesture
      */
     private void recognize(final Vector2D... featureVector) {
         this.gestureRecognized = true;
-        double[] posterioris = new double[this.intToStringGestureMapping.size()];
+        final double[] posterioris = new double[this.intToStringGestureMapping.size()];
         this.intToStringGestureMapping.get(this.knn.predict(featureVector, posterioris));
         for (int i = 0; i < posterioris.length; i++) {
-            if (posterioris[i] > 0.9) {
-                LOG.debug(this.intToStringGestureMapping.get(i));
+            if (posterioris[i] > Recognizer.POSTERIORI_THRESHOLD) {
+                final String gesture = this.intToStringGestureMapping.get(i);
+                this.gestureListener.forEach(t -> t.onGestureRecognized(gesture));
+                this.view.forEach(t -> t.onGestureRecognized(gesture));
             }
         }
     }
