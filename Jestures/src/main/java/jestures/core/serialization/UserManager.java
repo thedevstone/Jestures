@@ -86,29 +86,29 @@ public class UserManager implements Serializer {
     }
 
     @Override
-    public final Pair<int[], Vector2D[][]> getDatasetForRecognition(
+    public final Pair<int[], Vector2D[][]> getLinearDatasetForRecognition(
             final Map<Integer, String> gestureKeyToStringMapping) {
         // Craete a map of vectors and another map for gesture Integer-String mapping
-        final Map<String, List<List<Vector2D>>> tempMap = this.userData.getAllGesturesData();
-        Vector2D[][] linearDatasetOut = new Vector2D[countPatternsInDataset(tempMap)][];
-        int[] linearLabelsOut = new int[countPatternsInDataset(tempMap)];
+        final Map<String, List<List<Vector2D>>> dataset = this.userData.getAllGesturesData();
+        //linear dataset in the form of vector of vector of 2D/3D vectors
+        Vector2D[][] linearDatasetOut = new Vector2D[countPatternsInDataset(dataset)][];
+        //linear vector of integer numbers corresponding to labels in linearDataset
+        int[] linearLabelsOut = new int[countPatternsInDataset(dataset)];
 
         int patternIndex = 0;
         int gestureKey = 0;
-        for (final String gestureName : tempMap.keySet()) {
-            for (final List<Vector2D> gesturePatterns : tempMap.get(gestureName)) {
-                final Vector2D[] newGesture = new Vector2D[gesturePatterns.size()];
-                gesturePatterns.toArray(newGesture);
-                linearDatasetOut[patternIndex] = newGesture;
+        for (final String gestureName : dataset.keySet()) {
+            List<List<Vector2D>> gesturePatterns = dataset.get(gestureName);
+            for (final List<Vector2D> gesturePattern : gesturePatterns) {
+                final Vector2D[] newPattern = new Vector2D[gesturePattern.size()];
+                gesturePattern.toArray(newPattern);
+                linearDatasetOut[patternIndex] = newPattern;
                 linearLabelsOut[patternIndex] = gestureKey;
                 patternIndex++;
             }
             gestureKeyToStringMapping.put(gestureKey, gestureName);
             gestureKey++;
         }
-        LOG.debug("Numero di pattern: " + countPatternsInDataset(tempMap) + "Numero di pattern reali: " + patternIndex + "Numero di labels: "+ gestureKey);
-        LOG.debug(Arrays.toString(linearDatasetOut));
-        LOG.debug(Arrays.toString(linearLabelsOut));
         return new Pair<int[], Vector2D[][]>(linearLabelsOut, linearDatasetOut);
     }
 

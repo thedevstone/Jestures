@@ -21,7 +21,6 @@ import java.util.*;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-import org.apache.commons.math3.stat.StatUtils;
 import org.apache.log4j.Logger;
 
 import com.google.gson.JsonSyntaxException;
@@ -38,8 +37,6 @@ import jestures.core.view.RecognitionViewObserver;
 import jestures.core.view.screens.RecognitionScreenView;
 import smile.classification.KNN;
 import smile.math.distance.DynamicTimeWarping;
-import smile.neighbor.KDTree;
-import smile.neighbor.KNNSearch;
 
 /**
  * A Recognizer is a simple tracker that can also perform a recognition task.
@@ -180,7 +177,7 @@ public final class Recognizer extends TrackerImpl implements Recognition {
         // Clear old mapping
         this.intToStringGestureMapping.clear();
         // Load gesture dataset
-        this.userDataset = this.userManager.getDatasetForRecognition(this.intToStringGestureMapping);
+        this.userDataset = this.userManager.getLinearDatasetForRecognition(this.intToStringGestureMapping);
         // Load user settings
         this.recognitionSettings = this.userManager.getRecognitionSettings();
         // Load the new gesture length

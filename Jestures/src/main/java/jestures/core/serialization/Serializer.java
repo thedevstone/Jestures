@@ -90,7 +90,7 @@ public interface Serializer {
      *            map for int to string
      * @return the {@link Map} of all gestures data
      */
-    Pair<int[], Vector2D[][]> getDatasetForRecognition(Map<Integer, String> gestureNameMapping);
+    Pair<int[], Vector2D[][]> getLinearDatasetForRecognition(Map<Integer, String> gestureNameMapping);
 
     /**
      * Get all template (feature vectors) for the selected gesture.
