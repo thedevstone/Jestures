@@ -46,11 +46,11 @@ public class RecognitionSettingsImpl implements Serializable, RecognitionSetting
     /**
      * The constructor for the class.
      *
-     * @param updateRate        the update rate
-     * @param dtwRadius         the radius of the Sakoe and Chiba band
+     * @param updateRate             the update rate
+     * @param dtwRadius              the radius of the Sakoe and Chiba band
      * @param confidenceThresholdDTW the Threshold of confidence
-     * @param minTimeSeparation the min time separation
-     * @param matchNumber       the match number
+     * @param minTimeSeparation      the min time separation
+     * @param matchNumber            the match number
      */
     public RecognitionSettingsImpl(final UpdateRate updateRate, final double dtwRadius,
                                    final double confidenceThresholdDTW, final int minTimeSeparation, final int matchNumber) {
@@ -178,7 +178,7 @@ public class RecognitionSettingsImpl implements Serializable, RecognitionSetting
      */
     @Override
     public void setK(final int k) {
-        if (k >= 0) {
+        if (k > 0) {
             this.kNearestNeighbors = k;
         } else {
             throw new IllegalStateException("Match number must be greater than 0");

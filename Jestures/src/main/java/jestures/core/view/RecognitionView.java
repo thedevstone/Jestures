@@ -37,7 +37,7 @@ public interface RecognitionView extends View, RecognitionViewObserver {
      *
      * @param confidenceThreshold represents the maximum distance above which a feature vector is accepted
      */
-    void setConfidenceThreshold(int confidenceThreshold);
+    void setConfidenceThreshold(double confidenceThreshold);
 
     /**
      * Set the update rate of the recognizer. The rate must be a value that can be devided by the frame length.
@@ -66,4 +66,9 @@ public interface RecognitionView extends View, RecognitionViewObserver {
      * Save the settings.
      */
     void saveSettings();
+
+    /**
+     * Learn Classifier.
+     */
+    void learnClassifier();
 }

@@ -270,8 +270,8 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
     }
 
     @Override
-    public final void setConfidenceThreshold(final int confidenceThreshold) {
-        this.recognizer.setConfidenceThreshold(confidenceThreshold / 100);
+    public final void setConfidenceThreshold(final double confidenceThreshold) {
+        this.recognizer.setConfidenceThreshold(confidenceThreshold);
     }
 
     @Override
@@ -297,6 +297,11 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
             ViewUtilities.showNotificationPopup("Exception", "Cannot serialize user data", Duration.MEDIUM,
                     NotificationType.WARNING, null);
         }
+    }
+
+    @Override
+    public void learnClassifier() {
+        this.recognizer.learnClassifier();
     }
 
     @Override

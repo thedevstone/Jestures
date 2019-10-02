@@ -127,6 +127,8 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
     private JFXSlider sliderK;
     @FXML
     private JFXButton saveSettingsButton;
+    @FXML
+    private JFXButton learnClassifierButton;
 
     /**
      * The constructor.
@@ -166,11 +168,14 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
         this.sliderRadius.valueProperty().addListener(
                 (observable, oldValue, newValue) -> this.setDtwRadius(newValue.doubleValue() / 10));
         this.sliderConfidence.valueProperty().addListener(
-                (observable, oldValue, newValue) -> this.setConfidenceThreshold(newValue.intValue()));
+                (observable, oldValue, newValue) -> this.setConfidenceThreshold(newValue.doubleValue() / 100));
         this.sliderTimeSeparation.valueProperty().addListener(
                 (observable, oldValue, newValue) -> this.setMinTimeSeparation(newValue.intValue()));
         this.sliderK.valueProperty().addListener(
                 (observable, oldValue, newValue) -> this.setK(newValue.intValue()));
+
+        //TOOLTIP
+        this.sliderConfidence.setTooltip(new Tooltip("Confidence can be unstable for lower k"));
 
         // CHECKSTYLE:OFF
         this.elevationSlider = new JFXSlider(0, 30, 10);
@@ -224,7 +229,7 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
         this.saveSettingsButton.setGraphic(ViewUtilities.iconSetter(Material.SAVE, IconDim.MEDIUM));
         JFXDepthManager.setDepth(this.saveSettingsButton, 4);
         this.saveSettingsButton.setOnAction(t -> this.saveSettings());
-
+        this.learnClassifierButton.setOnAction(t -> this.learnClassifier());
     }
 
     private void initLiveCanvas() {

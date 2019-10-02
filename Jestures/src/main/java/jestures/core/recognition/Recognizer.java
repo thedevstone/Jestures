@@ -47,7 +47,6 @@ import java.util.Set;
  */
 public final class Recognizer extends TrackerImpl implements Recognition {
     private static final Logger LOG = Logger.getLogger(Recognizer.class);
-    private static final double POSTERIORI_THRESHOLD = 0.9;
     /**
      * Access to user serialization and deserialization.
      */
@@ -81,8 +80,9 @@ public final class Recognizer extends TrackerImpl implements Recognition {
     /**
      * Dynamic Time Warping algorithm
      */
-    private final DynamicTimeWarping<Vector2D> dtw;
+    private DynamicTimeWarping<Vector2D> dtw;
     private KNN<Vector2D[]> knn;
+    private double posterioriThreshold = 0;
     /**
      * User recognition settings
      */
@@ -100,8 +100,6 @@ public final class Recognizer extends TrackerImpl implements Recognition {
         this.userDataset = null;
         this.lastGestureTime = 0;
         this.recognitionSettings = new RecognitionSettingsImpl(UpdateRate.FPS_10, 0, 0, 0, 0);
-        this.dtw = new DynamicTimeWarping<>((a, b) -> a.distance(b), this.recognitionSettings.getDtwRadius());
-
         RecognitionScreenView.startFxThread();
     }
 
@@ -191,8 +189,7 @@ public final class Recognizer extends TrackerImpl implements Recognition {
             t.updateSettings(this.recognitionSettings);
             t.setGestureLengthLabel(this.getUserGestureLength());
         });
-        this.knn = new KNN<>(this.userDataset.getValue(), this.userDataset.getKey(), this.dtw, this.recognitionSettings.getK());
-        Recognizer.LOG.debug("KNN: " + this.knn + " K = " + this.recognitionSettings.getK());
+        this.learnClassifier();
         return userExists;
     }
 
@@ -228,7 +225,7 @@ public final class Recognizer extends TrackerImpl implements Recognition {
         final double[] posterioris = new double[this.intToStringGestureMapping.size()];
         this.intToStringGestureMapping.get(this.knn.predict(featureVector, posterioris));
         for (int i = 0; i < posterioris.length; i++) {
-            if (posterioris[i] > Recognizer.POSTERIORI_THRESHOLD) {
+            if (posterioris[i] > this.posterioriThreshold) {
                 final String gesture = this.intToStringGestureMapping.get(i);
                 this.gestureListener.forEach(t -> t.onGestureRecognized(gesture));
                 this.view.forEach(t -> t.onGestureRecognized(gesture));
@@ -242,14 +239,21 @@ public final class Recognizer extends TrackerImpl implements Recognition {
     }
 
     @Override
+    public void learnClassifier() {
+        this.knn = new KNN<>(this.userDataset.getValue(), this.userDataset.getKey(), this.dtw, this.recognitionSettings.getK());
+        this.dtw = new DynamicTimeWarping<>((a, b) -> a.distance(b), this.recognitionSettings.getDtwRadius());
+        this.posterioriThreshold = this.recognitionSettings.getDTWConfidenceThreshold();
+    }
+
+    @Override
     public void setDtwRadius(final double radius) {
         this.recognitionSettings.setDtwRadius(radius);
 
     }
 
     @Override
-    public void setConfidenceThreshold(final int confidenceThreshold) {
-        this.recognitionSettings.setDTWConfidenceThreshold(confidenceThreshold/100);
+    public void setConfidenceThreshold(final double confidenceThreshold) {
+        this.recognitionSettings.setDTWConfidenceThreshold(confidenceThreshold);
     }
 
     @Override
