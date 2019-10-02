@@ -15,10 +15,6 @@
  *******************************************************************************/
 package jestures.core.view.screens;
 
-import java.util.Collections;
-
-import org.kordamp.ikonli.material.Material;
-
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPopup;
@@ -28,7 +24,6 @@ import com.jfoenix.controls.JFXSlider;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTreeView;
 import com.jfoenix.effects.JFXDepthManager;
-
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -50,11 +45,13 @@ import jestures.core.view.enums.IconDim;
 import jestures.core.view.utils.RecordingFactory;
 import jestures.core.view.utils.ScrollPaneFactory;
 import jestures.core.view.utils.ViewUtilities;
+import org.kordamp.ikonli.material.Material;
+
+import java.util.Collections;
 
 /**
  * The abstract class of the recognition view. This is a simple abstract screen controller for a javafx fxml file. It is
  * used for initialization of buttons, cavnvas, list-view etc
- *
  */
 
 public abstract class AbstractRecognitionScreenView extends AbstractView {
@@ -137,11 +134,9 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
     /**
      * The constructor.
      *
-     * @param recognizer
-     *            the {@link Recognition} recognizer
-     *
+     * @param recognizer the {@link Recognition} recognizer
      */
-    public AbstractRecognitionScreenView(final Recognition recognizer) {
+    AbstractRecognitionScreenView(final Recognition recognizer) {
         super(recognizer);
         this.recognizer = recognizer;
     }
@@ -173,8 +168,6 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
                 (observable, oldValue, newValue) -> this.setUpdateRate(newValue));
         this.sliderRadius.valueProperty().addListener(
                 (observable, oldValue, newValue) -> this.setDtwRadius(newValue.doubleValue() / 10));
-        this.sliderMinThreshold.valueProperty().addListener(
-                (observable, oldValue, newValue) -> this.setMinDtwThreashold(newValue.intValue()));
         this.sliderMaxThreshold.valueProperty().addListener(
                 (observable, oldValue, newValue) -> this.setMaxDtwThreashold(newValue.intValue()));
         this.sliderTimeSeparation.valueProperty().addListener(
@@ -290,7 +283,7 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
     }
 
     private void initTreeView() {
-        final TreeItem<String> root = new TreeItem<String>("Empty User");
+        final TreeItem<String> root = new TreeItem<>("Empty User");
         root.setGraphic(ViewUtilities.iconSetter(Material.PERSON, IconDim.SMALL));
         this.treeView.setRoot(root);
         this.treeView.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
@@ -304,12 +297,10 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
     /**
      * Set the chart with the selected length.
      *
-     * @param xFrames
-     *            the x frame length
-     * @param yFrames
-     *            the y frame length
+     * @param xFrames the x frame length
+     * @param yFrames the y frame length
      */
-    public void setChart(final int xFrames, final int yFrames) {
+    void setChart(final int xFrames, final int yFrames) {
         this.xSeries = new XYChart.Series<>();
         this.ySeries = new XYChart.Series<>();
         this.lineChartX = RecordingFactory.createDerivativeLineChart(xFrames);
@@ -326,20 +317,19 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
     /**
      * Draw saved gestures on canvas.
      *
-     * @param parent
-     *            the {@link TreeItem} parent
-     * @param indexOf
-     *            the feature vevector index for the selected gesture
+     * @param parent  the {@link TreeItem} parent
+     * @param indexOf the feature vevector index for the selected gesture
      */
     public abstract void drawSavedGestureOnCanvas(TreeItem<String> parent, int indexOf);
 
     // ################################################ GETTER FOR INSTANCE CLASS #####################################
+
     /**
      * Get the xSerie.
      *
      * @return the {@link Series}
      */
-    public XYChart.Series<Number, Number> getxSeries() {
+    XYChart.Series<Number, Number> getxSeries() {
         return this.xSeries;
     }
 
@@ -348,7 +338,7 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
      *
      * @return the {@link Series}
      */
-    public XYChart.Series<Number, Number> getySeries() {
+    XYChart.Series<Number, Number> getySeries() {
         return this.ySeries;
     }
 
@@ -357,7 +347,7 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
      *
      * @return the {@link Canvas}.
      */
-    public Canvas getLiveCanvas() {
+    Canvas getLiveCanvas() {
         return this.liveCanvas;
     }
 
@@ -366,7 +356,7 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
      *
      * @return the {@link GraphicsContext}
      */
-    public GraphicsContext getLiveContext() {
+    GraphicsContext getLiveContext() {
         return this.liveCanvasContext;
     }
 
@@ -375,7 +365,7 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
      *
      * @return the {@link Canvas}
      */
-    public Canvas getUserCanvas() {
+    private Canvas getUserCanvas() {
         return this.userCanvas;
     }
 
@@ -384,7 +374,7 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
      *
      * @return the {@link GraphicsContext}
      */
-    public GraphicsContext getUserCanvasContext() {
+    GraphicsContext getUserCanvasContext() {
         return this.userCanvasContext;
     }
 
@@ -393,7 +383,7 @@ public abstract class AbstractRecognitionScreenView extends AbstractView {
      *
      * @return the {@link JFXPopup}
      */
-    public JFXPopup getCnavasPopup() {
+    JFXPopup getCnavasPopup() {
         return this.cnavasPopup;
     }
 }

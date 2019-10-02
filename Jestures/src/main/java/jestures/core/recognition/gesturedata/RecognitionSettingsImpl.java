@@ -15,14 +15,13 @@
  *******************************************************************************/
 package jestures.core.recognition.gesturedata;
 
-import java.io.Serializable;
-
 import jestures.core.recognition.UpdateRate;
 import smile.math.distance.DynamicTimeWarping;
 
+import java.io.Serializable;
+
 /**
  * The {@link RecognitionSettingsImpl} class.
- *
  */
 public class RecognitionSettingsImpl implements Serializable, RecognitionSettings {
 
@@ -40,31 +39,23 @@ public class RecognitionSettingsImpl implements Serializable, RecognitionSetting
     private int matchNumber;
 
     /**
-     *
      * The constructor for the class.
      */
     public RecognitionSettingsImpl() { // NOPMD
     }
 
     /**
-     *
      * The constructor for the class.
      *
-     * @param updateRate
-     *            the update rate
-     * @param dtwRadius
-     *            the radius
-     * @param minDTWThreshold
-     *            the min threshold
-     * @param maxDTWTreshold
-     *            the max threshold
-     * @param minTimeSeparation
-     *            the min time separation
-     * @param matchNumber
-     *            the match number
+     * @param updateRate        the update rate
+     * @param dtwRadius         the radius
+     * @param minDTWThreshold   the min threshold
+     * @param maxDTWTreshold    the max threshold
+     * @param minTimeSeparation the min time separation
+     * @param matchNumber       the match number
      */
     public RecognitionSettingsImpl(final UpdateRate updateRate, final double dtwRadius, final int minDTWThreshold,
-            final int maxDTWTreshold, final int minTimeSeparation, final int matchNumber) {
+                                   final int maxDTWTreshold, final int minTimeSeparation, final int matchNumber) {
         this.updateRate = updateRate;
         this.dtwRadius = dtwRadius;
         this.minDTWThreashold = minDTWThreshold;
@@ -86,8 +77,7 @@ public class RecognitionSettingsImpl implements Serializable, RecognitionSetting
     /**
      * Set the {@link DynamicTimeWarping} radius.
      *
-     * @param dtwRadius
-     *            the window width of Sakoe-Chiba band in terms of percentage of sequence length.
+     * @param dtwRadius the window width of Sakoe-Chiba band in terms of percentage of sequence length.
      */
     @Override
     public void setDtwRadius(final double dtwRadius) {
@@ -99,41 +89,9 @@ public class RecognitionSettingsImpl implements Serializable, RecognitionSetting
     }
 
     /**
-     * Get the threshold for gesture minimum acceptance.
-     * <p>
-     * Only gestures, that have a feature vector distance (by DTW) lower than minThreashold, are accepted.
-     *
-     *
-     * @return represents the minimum distance above which a feature vector is accepted
-     */
-    @Override
-    public double getMinDtwThreashold() {
-        return this.minDTWThreashold;
-    }
-
-    /**
-     * Set the threshold for gesture minimum acceptance.
-     * <p>
-     * Only gestures, that have a feature vector distance (by DTW) lower than minThreashold, are accepted.
-     *
-     *
-     * @param minDTWThreashold
-     *            represents the minimum distance above which a feature vector is accepted
-     */
-    @Override
-    public void setMinDtwThreashold(final int minDTWThreashold) {
-        if (minDTWThreashold >= 0) {
-            this.minDTWThreashold = minDTWThreashold;
-        } else {
-            throw new IllegalStateException("Min threshold must be greater than 0");
-        }
-    }
-
-    /**
      * Get the threshold for gesture maximum acceptance.
      * <p>
      * Only gestures, that have a feature vector distance (by DTW) greater than minThreashold, are accepted.
-     *
      *
      * @return represents the maximum distance above which a feature vector is accepted
      */
@@ -147,9 +105,7 @@ public class RecognitionSettingsImpl implements Serializable, RecognitionSetting
      * <p>
      * Only gestures, that have a feature vector distance (by DTW) greater than minThreashold, are accepted.
      *
-     *
-     * @param maxDtwThreashold
-     *            represents the maximum distance above which a feature vector is accepted
+     * @param maxDtwThreashold represents the maximum distance above which a feature vector is accepted
      */
     @Override
     public void setMaxDtwThreashold(final int maxDtwThreashold) {
@@ -173,8 +129,7 @@ public class RecognitionSettingsImpl implements Serializable, RecognitionSetting
     /**
      * Set the update rate of the recognizer. The rate must be a value that can be devided by the frame length.
      *
-     * @param updateRate
-     *            the update rate
+     * @param updateRate the update rate
      */
     @Override
     public void setUpdateRate(final UpdateRate updateRate) {
@@ -198,8 +153,7 @@ public class RecognitionSettingsImpl implements Serializable, RecognitionSetting
      * <p>
      * If the time is too short a long gesture can be recognized multiple time according to update rate value
      *
-     * @param minTimeSeparation
-     *            the time separation in milliseconds, a value usually between 0 and 1000.
+     * @param minTimeSeparation the time separation in milliseconds, a value usually between 0 and 1000.
      */
     @Override
     public void setMinTimeSeparation(final int minTimeSeparation) {
@@ -223,8 +177,7 @@ public class RecognitionSettingsImpl implements Serializable, RecognitionSetting
     /**
      * Set the minimum number of gesture that have to match the template to get a gesture recognized.
      *
-     * @param matchNumber
-     *            the number of templates.
+     * @param matchNumber the number of templates.
      */
     @Override
     public void setMatchNumber(final int matchNumber) {

@@ -20,7 +20,6 @@ import smile.math.distance.DynamicTimeWarping;
 
 /**
  * Recognition settings.
- *
  */
 public interface RecognitionSettings {
 
@@ -34,37 +33,14 @@ public interface RecognitionSettings {
     /**
      * Set the {@link DynamicTimeWarping} radius.
      *
-     * @param radius
-     *            the window width of Sakoe-Chiba band in terms of percentage of sequence length.
+     * @param radius the window width of Sakoe-Chiba band in terms of percentage of sequence length.
      */
     void setDtwRadius(double radius);
-
-    /**
-     * Get the threshold for gesture minimum acceptance.
-     * <p>
-     * Only gestures, that have a feature vector distance (by DTW) lower than minThreashold, are accepted.
-     *
-     *
-     * @return represents the minimum distance above which a feature vector is accepted
-     */
-    double getMinDtwThreashold();
-
-    /**
-     * Set the threshold for gesture minimum acceptance.
-     * <p>
-     * Only gestures, that have a feature vector distance (by DTW) lower than minThreashold, are accepted.
-     *
-     *
-     * @param minDtwThreashold
-     *            represents the minimum distance above which a feature vector is accepted
-     */
-    void setMinDtwThreashold(int minDtwThreashold);
 
     /**
      * Get the threshold for gesture maximum acceptance.
      * <p>
      * Only gestures, that have a feature vector distance (by DTW) greater than minThreashold, are accepted.
-     *
      *
      * @return represents the maximum distance above which a feature vector is accepted
      */
@@ -75,9 +51,7 @@ public interface RecognitionSettings {
      * <p>
      * Only gestures, that have a feature vector distance (by DTW) greater than minThreashold, are accepted.
      *
-     *
-     * @param maxDtwThreashold
-     *            represents the maximum distance above which a feature vector is accepted
+     * @param maxDtwThreashold represents the maximum distance above which a feature vector is accepted
      */
     void setMaxDtwThreashold(int maxDtwThreashold);
 
@@ -91,8 +65,7 @@ public interface RecognitionSettings {
     /**
      * Set the update rate of the recognizer. The rate must be a value that can be devided by the frame length.
      *
-     * @param updateRate
-     *            the update rate
+     * @param updateRate the update rate
      */
     void setUpdateRate(UpdateRate updateRate);
 
@@ -110,8 +83,7 @@ public interface RecognitionSettings {
      * <p>
      * If the time is too short a long gesture can be recognized multiple time according to update rate value
      *
-     * @param minTimeSeparation
-     *            the time separation in milliseconds, a value usually between 0 and 1000.
+     * @param minTimeSeparation the time separation in milliseconds, a value usually between 0 and 1000.
      */
     void setMinTimeSeparation(int minTimeSeparation);
 
@@ -125,8 +97,7 @@ public interface RecognitionSettings {
     /**
      * Set the minimum number of gesture that have to match the template to get a gesture recognized.
      *
-     * @param matchNumber
-     *            the number of templates.
+     * @param matchNumber the number of templates.
      */
     void setMatchNumber(int matchNumber);
 }

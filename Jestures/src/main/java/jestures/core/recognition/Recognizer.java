@@ -248,11 +248,6 @@ public final class Recognizer extends TrackerImpl implements Recognition {
     }
 
     @Override
-    public void setMinDtwThreashold(final int minDtwThreashold) {
-        this.recognitionSettings.setMinDtwThreashold(minDtwThreashold);
-    }
-
-    @Override
     public void setMaxDtwThreashold(final int maxDtwThreashold) {
         this.recognitionSettings.setMaxDtwThreashold(maxDtwThreashold);
     }

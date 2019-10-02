@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="recorderPane" minHeight="800.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="recorderPane" minHeight="800.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <StackPane id="tabStackPane" fx:id="tabStackPane" BorderPane.alignment="CENTER">
          <children>
@@ -83,8 +83,8 @@
                            <center>
                               <VBox alignment="TOP_CENTER" BorderPane.alignment="CENTER">
                                  <children>
-                                    <JFXComboBox id="exercise-combo-box" fx:id="udpateRateCombo" focusColor="#405aa800" promptText="Update Rate" unFocusColor="#4d4d4d00" />
-                                    <Label text="Accuracy">
+                                    <JFXComboBox id="exercise-combo-box" fx:id="udpateRateCombo" focusColor="#405aa800" promptText="Gesture Sample Rate" unFocusColor="#4d4d4d00" />
+                                    <Label text="Radius (Sakoe &amp; Chiba Band width)">
                                        <VBox.margin>
                                           <Insets top="30.0" />
                                        </VBox.margin>
@@ -93,19 +93,6 @@
                                        </font>
                                     </Label>
                                     <JFXSlider fx:id="sliderRadius" blockIncrement="0.0" majorTickUnit="1.0" max="10.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true">
-                                       <VBox.margin>
-                                          <Insets top="10.0" />
-                                       </VBox.margin>
-                                    </JFXSlider>
-                                    <Label text="Minimun Threshold">
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets top="30.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <JFXSlider fx:id="sliderMinThreshold" blockIncrement="0.0" max="1000.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true">
                                        <VBox.margin>
                                           <Insets top="10.0" />
                                        </VBox.margin>

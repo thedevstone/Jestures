@@ -9,13 +9,6 @@
 
 package jestures.core.view.screens;
 
-import java.io.IOException;
-import java.util.List;
-
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-import org.apache.log4j.Logger;
-import org.kordamp.ikonli.material.Material;
-
 import com.google.gson.JsonSyntaxException;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -24,7 +17,6 @@ import com.jfoenix.controls.JFXScrollPane;
 import com.jfoenix.controls.JFXSlider;
 import com.jfoenix.controls.JFXTreeView;
 import com.sun.javafx.application.PlatformImpl;
-
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -45,12 +37,17 @@ import jestures.core.view.enums.IconDim;
 import jestures.core.view.enums.NotificationType;
 import jestures.core.view.enums.NotificationType.Duration;
 import jestures.core.view.utils.ViewUtilities;
+import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
+import org.apache.log4j.Logger;
+import org.kordamp.ikonli.material.Material;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * The effective instance of the recognition view. This is a simple screen controller for a javafx fxml file.
  */
 
-@SuppressWarnings("restriction")
 public class RecognitionScreenView extends AbstractRecognitionScreenView {
     private static final Logger LOG = Logger.getLogger(RecognitionScreenView.class);
     /**
@@ -112,8 +109,7 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
     private JFXSlider sliderMatchNumber;
 
     /**
-     * @param recognizer
-     *            the {@link RecognitionScreenView}
+     * @param recognizer the {@link RecognitionScreenView}
      */
     public RecognitionScreenView(final Recognition recognizer) {
         super(recognizer);
@@ -168,8 +164,8 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
                 this.clearCanvasAndChart();
             }
             // fill the chart with data
-            this.getxSeries().getData().add(new XYChart.Data<Number, Number>(frame, (int) derivative.getX()));
-            this.getySeries().getData().add(new XYChart.Data<Number, Number>(frame, (int) derivative.getY()));
+            this.getxSeries().getData().add(new XYChart.Data<>(frame, (int) derivative.getX()));
+            this.getySeries().getData().add(new XYChart.Data<>(frame, (int) derivative.getY()));
             // Draw oval on canvas
             this.getLiveContext().fillOval(-path.getX() + this.getLiveCanvas().getWidth() / 2,
                     path.getY() + this.getLiveCanvas().getHeight() / 2, 10, 10);
@@ -205,7 +201,6 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
         Platform.runLater(() -> {
             this.udpateRateCombo.getSelectionModel().select(settings.getUpdateRate());
             this.sliderRadius.setValue(settings.getDtwRadius() * 10);
-            this.sliderMinThreshold.setValue(settings.getMinDtwThreashold());
             this.sliderMaxThreshold.setValue(settings.getMaxDTWThreashold());
             this.sliderTimeSeparation.setValue(settings.getMinTimeSeparation());
             this.sliderMatchNumber.setValue(settings.getMatchNumber());
@@ -276,11 +271,6 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
     }
 
     @Override
-    public final void setMinDtwThreashold(final int minDtwThreashold) {
-        this.recognizer.setMinDtwThreashold(minDtwThreashold);
-    }
-
-    @Override
     public final void setMaxDtwThreashold(final int maxDtwThreashold) {
         this.recognizer.setMaxDtwThreashold(maxDtwThreashold);
     }
@@ -346,7 +336,7 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
 
     private void createGestureTreeView(final String root) {
         // Create the treeview in a recursive way
-        this.root = new TreeItem<String>(root);
+        this.root = new TreeItem<>(root);
         this.root.setExpanded(true);
         this.treeView.setRoot(this.root);
         final List<String> userGestures = this.recognizer.getAllUserGesture();
@@ -362,14 +352,14 @@ public class RecognitionScreenView extends AbstractRecognitionScreenView {
         // RICORSIVA CREO TUTTO L'ALBERO
         final List<List<Vector2D>> gestureDataset = this.recognizer.getGestureDataset(gestureName);
         for (int i = 0; i < gestureDataset.size(); i++) {
-            this.makeTemplateBranch("Template: " + (i + 1), item);
+            RecognitionScreenView.makeTemplateBranch("Template: " + (i + 1), item);
         }
         parent.getChildren().add(item);
         return item;
     }
 
     // CREO UN TREEELEM PER OGNI TEMPLATE
-    private TreeItem<String> makeTemplateBranch(final String gestureName, final TreeItem<String> parent) {
+    private static TreeItem<String> makeTemplateBranch(final String gestureName, final TreeItem<String> parent) {
         final TreeItem<String> item = new TreeItem<>(gestureName);
         item.setGraphic(ViewUtilities.iconSetter(Material.SHOW_CHART, IconDim.SMALL));
         parent.getChildren().add(item);
